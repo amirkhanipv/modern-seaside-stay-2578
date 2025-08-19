@@ -55,19 +55,19 @@ export default function NoraStudio() {
   const testimonials = [
     {
       name: "فاطمه احمدی",
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612b302?w=60&h=60&fit=crop&crop=face",
+      image: "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&h=600&fit=crop",
       review: "آتلیه نورا بهترین تجربه عکاسی که داشتم. عکس‌های عروسی‌ام فوق‌العاده زیبا شد.",
       rating: 5
     },
     {
-      name: "علی رضایی",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop&crop=face",
+      name: "علی رضایی", 
+      image: "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=800&h=600&fit=crop",
       review: "عکس‌های خانوادگی ما خیلی طبیعی و زیبا شد. کیفیت کار عالی بود.",
       rating: 5
     },
     {
       name: "مریم کریمی",
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=60&h=60&fit=crop&crop=face",
+      image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&h=600&fit=crop", 
       review: "برای عکس‌های بچه‌ام به آتلیه نورا رفتم و خیلی راضی بودم. حرفه‌ای و دقیق.",
       rating: 5
     }
@@ -123,10 +123,7 @@ export default function NoraStudio() {
         
         <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
           <div className="animate-fade-in">
-            <Badge className="mb-6 bg-gold/20 text-gold border-gold/30 text-lg px-4 py-2">
-              آتلیه نورا
-            </Badge>
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+            <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-tight">
               آتلیه نورا
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-gray-200">
@@ -137,7 +134,7 @@ export default function NoraStudio() {
                 <Camera className="ml-2 h-5 w-5" />
                 مشاهده نمونه‌کارها
               </Button>
-              <Button variant="outline" className="text-lg px-8 py-4 border-white text-white hover:bg-white hover:text-black" onClick={() => window.location.href = '/booking'}>
+              <Button variant="outline" className="text-lg px-8 py-4 border-white/80 text-white bg-black/20 backdrop-blur-sm hover:bg-white hover:text-black" onClick={() => window.location.href = '/booking'}>
                 رزرو آنلاین
               </Button>
             </div>
@@ -202,27 +199,26 @@ export default function NoraStudio() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-              <Card key={index} className="glass-card">
-                <CardContent className="p-8">
-                  <div className="flex items-center mb-4">
-                    <img 
-                      src={testimonial.image}
-                      alt={testimonial.name}
-                      className="w-14 h-14 rounded-full ml-4"
-                    />
-                    <div>
-                      <h4 className="font-semibold text-lg">{testimonial.name}</h4>
-                      <div className="flex">
-                        {[...Array(testimonial.rating)].map((_, i) => (
-                          <Star key={i} className="w-4 h-4 fill-gold text-gold" />
-                        ))}
-                      </div>
+              <Card key={index} className="glass-card overflow-hidden">
+                <div className="relative">
+                  <img 
+                    src={testimonial.image}
+                    alt={`نمونه کار ${testimonial.name}`}
+                    className="w-full h-64 object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                    <div className="flex mb-2">
+                      {[...Array(testimonial.rating)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 fill-gold text-gold" />
+                      ))}
                     </div>
+                    <h4 className="font-semibold text-lg mb-2">{testimonial.name}</h4>
+                    <p className="text-gray-200 leading-relaxed">
+                      "{testimonial.review}"
+                    </p>
                   </div>
-                  <p className="text-muted-foreground leading-relaxed">
-                    "{testimonial.review}"
-                  </p>
-                </CardContent>
+                </div>
               </Card>
             ))}
           </div>
@@ -262,10 +258,10 @@ export default function NoraStudio() {
                     ))}
                   </ul>
                   <div className="space-y-3">
-                    <p className="text-sm text-primary font-medium bg-primary/10 rounded-lg p-3 text-center">
+                    <p className="text-sm text-white font-medium bg-primary rounded-lg p-3 text-center">
                       تخفیف ویژه به دلیل رزرو از سایت
                     </p>
-                    <Button className="w-full btn-primary">
+                    <Button className="w-full btn-primary" onClick={() => window.location.href = '/booking'}>
                       رزرو آنلاین
                     </Button>
                   </div>
@@ -284,7 +280,7 @@ export default function NoraStudio() {
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <a 
                 href="tel:09999999999"
-                className="flex items-center bg-primary text-primary-foreground rounded-xl px-8 py-4 hover:shadow-lg transition-all duration-300"
+                className="flex items-center bg-primary text-white rounded-xl px-8 py-4 hover:shadow-lg transition-all duration-300"
               >
                 <Phone className="ml-3 h-6 w-6" />
                 <span className="text-lg font-medium">۰۹۹۹۹۹۹۹۹۹۹</span>
@@ -293,7 +289,7 @@ export default function NoraStudio() {
                 href="https://instagram.com/Nora_Stu"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl px-8 py-4 hover:shadow-lg transition-all duration-300"
+                className="flex items-center bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl px-8 py-4 hover:shadow-lg transition-all duration-300"
               >
                 <Instagram className="ml-3 h-6 w-6" />
                 <span className="text-lg font-medium">Nora_Stu</span>

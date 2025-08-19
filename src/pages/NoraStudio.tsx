@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Camera, Instagram, Phone, Star, Users, Award, Heart } from "lucide-react";
+import { Camera, Instagram, Phone, Star, Users, Award, Heart, ChevronLeft, ChevronRight, MapPin, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -8,10 +8,25 @@ import heroImage from "@/assets/hero-model.jpg";
 
 export default function NoraStudio() {
   const [activeTab, setActiveTab] = useState("children");
+  const [currentSlide, setCurrentSlide] = useState(0);
   
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const nextSlide = () => {
+    const currentCategory = portfolioCategories[activeTab as keyof typeof portfolioCategories];
+    setCurrentSlide((prev) => (prev + 1) % currentCategory.images.length);
+  };
+
+  const prevSlide = () => {
+    const currentCategory = portfolioCategories[activeTab as keyof typeof portfolioCategories];
+    setCurrentSlide((prev) => (prev - 1 + currentCategory.images.length) % currentCategory.images.length);
+  };
+
+  useEffect(() => {
+    setCurrentSlide(0);
+  }, [activeTab]);
 
   const portfolioCategories = {
     children: {
@@ -167,19 +182,46 @@ export default function NoraStudio() {
 
             {Object.entries(portfolioCategories).map(([key, category]) => (
               <TabsContent key={key} value={key}>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                  {category.images.map((image, index) => (
-                    <div 
-                      key={index}
-                      className="aspect-square rounded-2xl overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300 persian-shadow"
-                    >
-                      <img 
-                        src={image}
-                        alt={`${category.title} ${index + 1}`}
-                        className="w-full h-full object-cover"
+                <div className="relative max-w-2xl mx-auto">
+                  <div className="aspect-square rounded-2xl overflow-hidden shadow-lg persian-shadow">
+                    <img 
+                      src={category.images[currentSlide]}
+                      alt={`${category.title} ${currentSlide + 1}`}
+                      className="w-full h-full object-cover transition-opacity duration-500"
+                    />
+                  </div>
+                  
+                  {/* Navigation Buttons */}
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 backdrop-blur-sm border-white/20 hover:bg-white/90"
+                    onClick={prevSlide}
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </Button>
+                  
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 backdrop-blur-sm border-white/20 hover:bg-white/90"
+                    onClick={nextSlide}
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                  
+                  {/* Slide Indicators */}
+                  <div className="flex justify-center mt-6 space-x-2 space-x-reverse">
+                    {category.images.map((_, index) => (
+                      <button
+                        key={index}
+                        className={`w-3 h-3 rounded-full transition-colors duration-200 ${
+                          index === currentSlide ? 'bg-primary' : 'bg-gray-300'
+                        }`}
+                        onClick={() => setCurrentSlide(index)}
                       />
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </TabsContent>
             ))}
@@ -258,7 +300,7 @@ export default function NoraStudio() {
                     ))}
                   </ul>
                   <div className="space-y-3">
-                    <p className="text-sm text-white font-medium bg-primary rounded-lg p-3 text-center">
+                    <p className="text-sm text-primary font-medium bg-primary/10 border border-primary/20 rounded-lg p-3 text-center">
                       تخفیف ویژه به دلیل رزرو از سایت
                     </p>
                     <Button className="w-full btn-primary" onClick={() => window.location.href = '/booking'}>
@@ -275,25 +317,52 @@ export default function NoraStudio() {
       {/* Contact Section */}
       <section className="section">
         <div className="container">
-          <div className="text-center">
-            <h2 className="text-4xl md:text-5xl font-bold mb-8">تماس با ما</h2>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">تماس با ما</h2>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {/* Phone & Address */}
+            <div className="bg-gradient-to-br from-primary/20 to-primary/10 rounded-2xl p-8 text-center">
+              <Phone className="w-12 h-12 text-primary mx-auto mb-4" />
+              <h3 className="text-2xl font-bold mb-4">تماس تلفنی</h3>
               <a 
                 href="tel:09999999999"
-                className="flex items-center bg-primary text-white rounded-xl px-8 py-4 hover:shadow-lg transition-all duration-300"
+                className="inline-flex items-center bg-primary text-white rounded-xl px-6 py-3 hover:shadow-lg transition-all duration-300 mb-6"
               >
-                <Phone className="ml-3 h-6 w-6" />
+                <Phone className="ml-2 h-5 w-5" />
                 <span className="text-lg font-medium">۰۹۹۹۹۹۹۹۹۹۹</span>
               </a>
+              
+              <div className="space-y-3 text-muted-foreground">
+                <div className="flex items-center justify-center">
+                  <MapPin className="w-5 h-5 ml-2 text-primary" />
+                  <span>تهران، خیابان مثال، پلاک ۱۲</span>
+                </div>
+                <div className="flex items-center justify-center">
+                  <Clock className="w-5 h-5 ml-2 text-primary" />
+                  <span>همه روزه از ۱۰ صبح تا ۱۹</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Instagram */}
+            <div className="bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl p-8 text-center">
+              <Instagram className="w-12 h-12 text-purple-600 mx-auto mb-4" />
+              <h3 className="text-2xl font-bold mb-4">شبکه‌های اجتماعی</h3>
               <a 
                 href="https://instagram.com/Nora_Stu"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl px-8 py-4 hover:shadow-lg transition-all duration-300"
+                className="inline-flex items-center bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl px-6 py-3 hover:shadow-lg transition-all duration-300 mb-6"
               >
-                <Instagram className="ml-3 h-6 w-6" />
+                <Instagram className="ml-2 h-5 w-5" />
                 <span className="text-lg font-medium">Nora_Stu</span>
               </a>
+              
+              <p className="text-muted-foreground">
+                نمونه‌کارهای روزانه و آخرین اخبار آتلیه را در اینستاگرام ما دنبال کنید
+              </p>
             </div>
           </div>
         </div>

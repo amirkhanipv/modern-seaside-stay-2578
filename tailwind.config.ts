@@ -53,16 +53,18 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				sea: {
-					light: '#E0F2F7',
-					DEFAULT: '#1E88E5',
-					dark: '#0D47A1'
+				gold: {
+					DEFAULT: 'hsl(var(--gold))',
+					light: 'hsl(var(--gold-light))'
 				},
-				sand: {
-					light: '#F5F5DC',
-					DEFAULT: '#E6D2B5',
-					dark: '#D2B48C'
-				}
+				cream: 'hsl(var(--cream))',
+				lavender: 'hsl(var(--lavender))',
+				charcoal: 'hsl(var(--charcoal))',
+				'warm-gray': 'hsl(var(--warm-gray))'
+			},
+			fontFamily: {
+				sans: ['Vazirmatn', 'sans-serif'],
+				persian: ['Vazirmatn', 'sans-serif']
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

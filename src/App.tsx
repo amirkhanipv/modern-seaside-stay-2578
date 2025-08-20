@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NoraStudio from "./pages/NoraStudio";
 import BookingForm from "./pages/BookingForm";
-import AdminDashboard from "./pages/AdminDashboard";
+import BookingStatus from "./pages/BookingStatus";
 import NotFound from "./pages/NotFound";
 
 // Create a react-query client
@@ -21,7 +21,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<NoraStudio />} />
           <Route path="/booking" element={<BookingForm />} />
-          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/booking-status" element={<BookingStatus />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

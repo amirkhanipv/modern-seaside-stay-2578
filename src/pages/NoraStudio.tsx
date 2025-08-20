@@ -152,6 +152,9 @@ export default function NoraStudio() {
               <Button variant="outline" className="text-lg px-8 py-4 border-white/80 text-white bg-black/20 backdrop-blur-sm hover:bg-white hover:text-black" onClick={() => window.location.href = '/booking'}>
                 رزرو آنلاین
               </Button>
+              <Button variant="outline" className="text-lg px-8 py-4 border-white/80 text-white bg-black/20 backdrop-blur-sm hover:bg-white hover:text-black" onClick={() => window.location.href = '/booking-status'}>
+                پیگیری رزرو
+              </Button>
             </div>
           </div>
         </div>

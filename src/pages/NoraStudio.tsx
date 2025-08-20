@@ -408,6 +408,18 @@ export default function NoraStudio() {
           </div>
         </div>
       </section>
+
+      {/* Admin Access - Hidden Link */}
+      <div className="fixed bottom-4 left-4 opacity-30 hover:opacity-100 transition-opacity">
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          onClick={() => window.location.href = '/admin'}
+          className="text-xs"
+        >
+          Admin
+        </Button>
+      </div>
     </div>
   );
 }

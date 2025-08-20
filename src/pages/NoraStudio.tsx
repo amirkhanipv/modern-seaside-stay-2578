@@ -145,7 +145,7 @@ export default function NoraStudio() {
               لحظه‌های خاص شما در قاب هنر
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button className="btn-primary text-lg px-8 py-4" onClick={() => window.location.href = '#portfolio'}>
+              <Button className="btn-primary text-lg px-8 py-4" onClick={() => document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' })}>
                 <Camera className="ml-2 h-5 w-5" />
                 مشاهده نمونه‌کارها
               </Button>
@@ -158,7 +158,7 @@ export default function NoraStudio() {
       </section>
 
       {/* Portfolio Gallery */}
-      <section className="section bg-secondary/30">
+      <section id="portfolio" className="section bg-secondary/30">
         <div className="container">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">نمونه کارها</h2>
@@ -323,12 +323,12 @@ export default function NoraStudio() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* Phone & Address */}
-            <div className="bg-gradient-to-br from-primary/20 to-primary/10 rounded-2xl p-8 text-center">
-              <Phone className="w-12 h-12 text-primary mx-auto mb-4" />
+            <div className="bg-gradient-to-br from-emerald-100 to-green-100 rounded-2xl p-8 text-center">
+              <Phone className="w-12 h-12 text-emerald-600 mx-auto mb-4" />
               <h3 className="text-2xl font-bold mb-4">تماس تلفنی</h3>
               <a 
                 href="tel:09999999999"
-                className="inline-flex items-center bg-primary text-white rounded-xl px-6 py-3 hover:shadow-lg transition-all duration-300 mb-6"
+                className="inline-flex items-center bg-emerald-600 text-white rounded-xl px-6 py-3 hover:bg-emerald-700 hover:shadow-lg transition-all duration-300 mb-6"
               >
                 <Phone className="ml-2 h-5 w-5" />
                 <span className="text-lg font-medium">۰۹۹۹۹۹۹۹۹۹۹</span>
@@ -336,11 +336,11 @@ export default function NoraStudio() {
               
               <div className="space-y-3 text-muted-foreground">
                 <div className="flex items-center justify-center">
-                  <MapPin className="w-5 h-5 ml-2 text-primary" />
+                  <MapPin className="w-5 h-5 ml-2 text-emerald-600" />
                   <span>تهران، خیابان مثال، پلاک ۱۲</span>
                 </div>
                 <div className="flex items-center justify-center">
-                  <Clock className="w-5 h-5 ml-2 text-primary" />
+                  <Clock className="w-5 h-5 ml-2 text-emerald-600" />
                   <span>همه روزه از ۱۰ صبح تا ۱۹</span>
                 </div>
               </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Camera, Instagram, Phone, Star, Users, Award, Heart, ChevronLeft, ChevronRight, MapPin, Clock, MessageCircle, Send } from "lucide-react";
+import { Camera, Instagram, Phone, Star, Users, Award, Heart, ChevronLeft, ChevronRight, MapPin, Clock, MessageCircle, Send, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -9,6 +9,7 @@ import heroImage from "@/assets/hero-model.jpg";
 export default function NoraStudio() {
   const [activeTab, setActiveTab] = useState("children");
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -176,7 +177,7 @@ export default function NoraStudio() {
                 <TabsTrigger 
                   key={key} 
                   value={key}
-                  className="text-lg font-medium data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                  className="text-lg font-medium data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300 hover:bg-primary/10"
                 >
                   {category.title}
                 </TabsTrigger>
@@ -184,14 +185,20 @@ export default function NoraStudio() {
             </TabsList>
 
             {Object.entries(portfolioCategories).map(([key, category]) => (
-              <TabsContent key={key} value={key}>
+              <TabsContent key={key} value={key} className="animate-fade-in">
                 <div className="relative max-w-2xl mx-auto">
-                  <div className="aspect-square rounded-2xl overflow-hidden shadow-lg persian-shadow">
+                  <div className="aspect-square rounded-2xl overflow-hidden shadow-lg persian-shadow cursor-pointer group">
                     <img 
                       src={category.images[currentSlide]}
                       alt={`${category.title} ${currentSlide + 1}`}
-                      className="w-full h-full object-cover transition-opacity duration-500"
+                      className="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
+                      onClick={() => setSelectedImage(category.images[currentSlide])}
                     />
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
+                      <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 backdrop-blur-sm rounded-full p-3">
+                        <Camera className="w-6 h-6 text-gray-800" />
+                      </div>
+                    </div>
                   </div>
                   
                   {/* Navigation Buttons */}
@@ -214,12 +221,14 @@ export default function NoraStudio() {
                   </Button>
                   
                   {/* Slide Indicators */}
-                  <div className="flex justify-center mt-6 space-x-2 space-x-reverse">
+                  <div className="flex justify-center mt-6 gap-3">
                     {category.images.map((_, index) => (
                       <button
                         key={index}
-                        className={`w-3 h-3 rounded-full transition-colors duration-200 ${
-                          index === currentSlide ? 'bg-primary' : 'bg-gray-300'
+                        className={`w-4 h-4 rounded-full transition-all duration-300 transform hover:scale-110 ${
+                          index === currentSlide 
+                            ? 'bg-primary shadow-lg shadow-primary/30 scale-110' 
+                            : 'bg-gray-300 hover:bg-gray-400'
                         }`}
                         onClick={() => setCurrentSlide(index)}
                       />
@@ -229,8 +238,40 @@ export default function NoraStudio() {
               </TabsContent>
             ))}
           </Tabs>
+          
+          {/* View All Works Button */}
+          <div className="text-center mt-12">
+            <Button 
+              onClick={() => window.location.href = '/gallery'} 
+              className="btn-primary text-lg px-8 py-4"
+            >
+              <Camera className="ml-2 h-5 w-5" />
+              مشاهده همه آثار
+            </Button>
+          </div>
         </div>
       </section>
+
+      {/* Lightbox */}
+      {selectedImage && (
+        <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 animate-fade-in">
+          <button 
+            className="absolute top-4 right-4 text-white p-2 rounded-full hover:bg-white/10 transition-colors"
+            onClick={() => setSelectedImage(null)}
+          >
+            <X className="h-6 w-6" />
+            <span className="sr-only">بستن</span>
+          </button>
+          
+          <div className="max-w-5xl max-h-[80vh] overflow-hidden animate-scale-in">
+            <img 
+              src={selectedImage} 
+              alt="نمایش بزرگ"
+              className="max-w-full max-h-[80vh] object-contain"
+            />
+          </div>
+        </div>
+      )}
 
       {/* Testimonials */}
       <section className="section">

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -28,6 +28,38 @@ export default function BookingStatus() {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  // Real-time updates for booking status
+  useEffect(() => {
+    if (!booking) return;
+
+    const channel = supabase
+      .channel('booking-updates')
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'bookings',
+          filter: `id=eq.${booking.id}`
+        },
+        (payload) => {
+          console.log('Booking updated:', payload);
+          if (payload.new) {
+            setBooking(payload.new as Booking);
+            toast({
+              title: "وضعیت رزرو به‌روزرسانی شد",
+              description: "اطلاعات جدید رزرو دریافت شد"
+            });
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [booking, toast]);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();

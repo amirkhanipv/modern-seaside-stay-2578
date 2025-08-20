@@ -224,7 +224,10 @@ export default function BookingStatus() {
               {/* Actions */}
               <div className="flex justify-center">
                 <Button 
-                  onClick={() => navigate("/")} 
+                  onClick={() => {
+                    navigate("/");
+                    window.location.reload();
+                  }} 
                   variant="outline" 
                   className="w-full max-w-xs"
                 >

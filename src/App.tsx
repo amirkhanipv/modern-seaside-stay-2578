@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NoraStudio from "./pages/NoraStudio";
 import BookingForm from "./pages/BookingForm";
 import BookingStatus from "./pages/BookingStatus";
+import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
 
 // Create a react-query client
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/" element={<NoraStudio />} />
           <Route path="/booking" element={<BookingForm />} />
           <Route path="/booking-status" element={<BookingStatus />} />
+          <Route path="/admin" element={<AdminDashboard />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

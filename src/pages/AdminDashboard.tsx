@@ -65,6 +65,35 @@ export default function AdminDashboard() {
     }
   };
 
+  const deleteBooking = async (id: string) => {
+    if (!confirm('آیا از حذف این رزرو اطمینان دارید؟')) {
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('bookings')
+        .delete()
+        .eq('id', id);
+      
+      if (error) {
+        console.error('Error deleting booking:', error);
+        alert('خطا در حذف رزرو: ' + error.message);
+        return;
+      }
+      
+      // Update local state immediately for better UX
+      setBookings(prevBookings => 
+        prevBookings.filter(booking => booking.id !== id)
+      );
+      
+      alert('رزرو با موفقیت حذف شد');
+    } catch (error) {
+      console.error('Error:', error);
+      alert('خطا در حذف رزرو');
+    }
+  };
+
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -103,23 +132,32 @@ export default function AdminDashboard() {
                   <p>پکیج: {booking.plan_type}</p>
                   <p>کد: {booking.tracking_code}</p>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex flex-col gap-2">
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={() => updateStatus(booking.id, !booking.called)}
+                      size="sm"
+                      variant={booking.called ? "destructive" : "default"}
+                    >
+                      {booking.called ? "علامت‌گذاری نشده" : "علامت‌گذاری شده"}
+                    </Button>
+                    <Button
+                      onClick={() => deleteBooking(booking.id)}
+                      size="sm"
+                      variant="destructive"
+                    >
+                      حذف
+                    </Button>
+                  </div>
                   <Badge 
                     className={`${
                       booking.called 
                         ? "bg-green-100 text-green-800 border-green-300" 
                         : "bg-red-100 text-red-800 border-red-300"
-                    }`}
+                    } text-center`}
                   >
                     {booking.called ? "✅ تماس گرفته شد" : "❌ در انتظار تماس"}
                   </Badge>
-                  <Button
-                    onClick={() => updateStatus(booking.id, !booking.called)}
-                    size="sm"
-                    variant={booking.called ? "destructive" : "default"}
-                  >
-                    {booking.called ? "علامت‌گذاری نشده" : "علامت‌گذاری شده"}
-                  </Button>
                 </div>
               </div>
             </CardContent>

@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 import { Search, Calendar, Phone, User, Package, CheckCircle, Clock } from "lucide-react";
 
 interface Booking {
@@ -26,6 +27,7 @@ export default function BookingStatus() {
   const [booking, setBooking] = useState<Booking | null>(null);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -220,19 +222,13 @@ export default function BookingStatus() {
               </div>
 
               {/* Actions */}
-              <div className="flex gap-4">
+              <div className="flex justify-center">
                 <Button 
-                  onClick={() => window.location.href = "/"} 
+                  onClick={() => navigate("/")} 
                   variant="outline" 
-                  className="flex-1"
+                  className="w-full max-w-xs"
                 >
                   بازگشت به صفحه اصلی
-                </Button>
-                <Button 
-                  onClick={() => window.location.href = "/booking"} 
-                  className="flex-1"
-                >
-                  رزرو جدید
                 </Button>
               </div>
             </CardContent>

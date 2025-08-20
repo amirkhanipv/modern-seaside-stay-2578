@@ -19,21 +19,50 @@ export default function AdminDashboard() {
   };
 
   const fetchBookings = async () => {
-    const { data } = await supabase
-      .from('bookings')
-      .select('*')
-      .order('created_at', { ascending: false });
-    
-    setBookings(data || []);
+    try {
+      const { data, error } = await supabase
+        .from('bookings')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (error) {
+        console.error('Error fetching bookings:', error);
+        alert('خطا در بارگیری رزروها: ' + error.message);
+        return;
+      }
+      
+      setBookings(data || []);
+    } catch (error) {
+      console.error('Error:', error);
+      alert('خطا در بارگیری رزروها');
+    }
   };
 
   const updateStatus = async (id: string, called: boolean) => {
-    await supabase
-      .from('bookings')
-      .update({ called })
-      .eq('id', id);
-    
-    fetchBookings();
+    try {
+      const { error } = await supabase
+        .from('bookings')
+        .update({ called })
+        .eq('id', id);
+      
+      if (error) {
+        console.error('Error updating status:', error);
+        alert('خطا در تغییر وضعیت: ' + error.message);
+        return;
+      }
+      
+      // Update local state immediately for better UX
+      setBookings(prevBookings => 
+        prevBookings.map(booking => 
+          booking.id === id ? { ...booking, called } : booking
+        )
+      );
+      
+      alert('وضعیت با موفقیت تغییر کرد');
+    } catch (error) {
+      console.error('Error:', error);
+      alert('خطا در تغییر وضعیت');
+    }
   };
 
   if (!isAuthenticated) {
@@ -75,14 +104,21 @@ export default function AdminDashboard() {
                   <p>کد: {booking.tracking_code}</p>
                 </div>
                 <div className="flex gap-2">
-                  <Badge variant={booking.called ? "default" : "secondary"}>
-                    {booking.called ? "تماس گرفته شد" : "در انتظار تماس"}
+                  <Badge 
+                    className={`${
+                      booking.called 
+                        ? "bg-green-100 text-green-800 border-green-300" 
+                        : "bg-red-100 text-red-800 border-red-300"
+                    }`}
+                  >
+                    {booking.called ? "✅ تماس گرفته شد" : "❌ در انتظار تماس"}
                   </Badge>
                   <Button
                     onClick={() => updateStatus(booking.id, !booking.called)}
                     size="sm"
+                    variant={booking.called ? "destructive" : "default"}
                   >
-                    تغییر وضعیت
+                    {booking.called ? "علامت‌گذاری نشده" : "علامت‌گذاری شده"}
                   </Button>
                 </div>
               </div>

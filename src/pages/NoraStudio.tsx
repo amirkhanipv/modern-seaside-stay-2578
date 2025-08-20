@@ -177,7 +177,7 @@ export default function NoraStudio() {
                 <TabsTrigger 
                   key={key} 
                   value={key}
-                  className="text-lg font-medium data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300 hover:bg-primary/10"
+                  className="text-lg font-medium data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-500 ease-in-out hover:bg-primary/10 transform hover:scale-105"
                 >
                   {category.title}
                 </TabsTrigger>
@@ -185,15 +185,16 @@ export default function NoraStudio() {
             </TabsList>
 
             {Object.entries(portfolioCategories).map(([key, category]) => (
-              <TabsContent key={key} value={key} className="animate-fade-in">
+              <TabsContent key={key} value={key} className="animate-fade-in transition-all duration-500 ease-in-out">
                 <div className="relative max-w-2xl mx-auto">
-                  <div className="aspect-square rounded-2xl overflow-hidden shadow-lg persian-shadow cursor-pointer group">
-                    <img 
-                      src={category.images[currentSlide]}
-                      alt={`${category.title} ${currentSlide + 1}`}
-                      className="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
-                      onClick={() => setSelectedImage(category.images[currentSlide])}
-                    />
+                   <div className="aspect-square rounded-2xl overflow-hidden shadow-lg persian-shadow cursor-pointer group">
+                     <img 
+                       src={category.images[currentSlide]}
+                       alt={`${category.title} ${currentSlide + 1}`}
+                       className="w-full h-full object-cover transition-all duration-700 ease-in-out group-hover:scale-105"
+                       onClick={() => setSelectedImage(category.images[currentSlide])}
+                       key={`${activeTab}-${currentSlide}`}
+                     />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
                       <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 backdrop-blur-sm rounded-full p-3">
                         <Camera className="w-6 h-6 text-gray-800" />
@@ -220,20 +221,20 @@ export default function NoraStudio() {
                     <ChevronRight className="h-4 w-4" />
                   </Button>
                   
-                  {/* Slide Indicators */}
-                  <div className="flex justify-center mt-6 gap-3">
-                    {category.images.map((_, index) => (
-                      <button
-                        key={index}
-                        className={`w-4 h-4 rounded-full transition-all duration-300 transform hover:scale-110 ${
-                          index === currentSlide 
-                            ? 'bg-primary shadow-lg shadow-primary/30 scale-110' 
-                            : 'bg-gray-300 hover:bg-gray-400'
-                        }`}
-                        onClick={() => setCurrentSlide(index)}
-                      />
-                    ))}
-                  </div>
+                   {/* Slide Indicators */}
+                   <div className="flex justify-center mt-6 gap-4">
+                     {category.images.map((_, index) => (
+                       <button
+                         key={index}
+                         className={`w-3 h-3 rounded-full transition-all duration-300 transform hover:scale-125 ${
+                           index === currentSlide 
+                             ? 'bg-primary shadow-lg shadow-primary/40 scale-125' 
+                             : 'bg-gray-300 hover:bg-primary/50'
+                         }`}
+                         onClick={() => setCurrentSlide(index)}
+                       />
+                     ))}
+                   </div>
                 </div>
               </TabsContent>
             ))}

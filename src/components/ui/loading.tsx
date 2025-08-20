@@ -38,7 +38,7 @@ export function LoadingPage() {
           </div>
           
           {/* Loading Circles */}
-          <div className="flex justify-center space-x-2 mb-6">
+          <div className="flex justify-center gap-2 mb-6">
             <div className="w-3 h-3 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
             <div className="w-3 h-3 bg-primary rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
             <div className="w-3 h-3 bg-primary rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>

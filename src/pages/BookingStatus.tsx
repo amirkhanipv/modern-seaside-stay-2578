@@ -46,11 +46,28 @@ export default function BookingStatus() {
         (payload) => {
           console.log('Booking updated:', payload);
           if (payload.new) {
-            setBooking(payload.new as Booking);
-            toast({
-              title: "وضعیت رزرو به‌روزرسانی شد",
-              description: "اطلاعات جدید رزرو دریافت شد"
-            });
+            const updatedBooking = payload.new as Booking;
+            setBooking(updatedBooking);
+            
+            // Show specific notification based on what changed
+            if (updatedBooking.called !== booking.called) {
+              toast({
+                title: updatedBooking.called ? "تماس گرفته شد!" : "وضعیت تماس تغییر کرد",
+                description: updatedBooking.called 
+                  ? "با شما تماس گرفته شده است. منتظر دیدار شما هستیم!" 
+                  : "وضعیت تماس به‌روزرسانی شد"
+              });
+            } else if (updatedBooking.status !== booking.status) {
+              toast({
+                title: "وضعیت رزرو تغییر کرد",
+                description: `وضعیت جدید: ${updatedBooking.status === 'confirmed' ? 'تایید شده' : 'در انتظار'}`
+              });
+            } else {
+              toast({
+                title: "وضعیت رزرو به‌روزرسانی شد",
+                description: "اطلاعات جدید رزرو دریافت شد"
+              });
+            }
           }
         }
       )

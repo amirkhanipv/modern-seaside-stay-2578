@@ -19,11 +19,15 @@ export default function AdminDashboard() {
   };
 
   const fetchBookings = async () => {
+    console.log('Fetching bookings...');
+    
     try {
       const { data, error } = await supabase
         .from('bookings')
         .select('*')
         .order('created_at', { ascending: false });
+      
+      console.log('Fetch result:', { data, error });
       
       if (error) {
         console.error('Error fetching bookings:', error);
@@ -32,6 +36,7 @@ export default function AdminDashboard() {
       }
       
       setBookings(data || []);
+      console.log('Bookings loaded:', data?.length || 0);
     } catch (error) {
       console.error('Error:', error);
       alert('خطا در بارگیری رزروها');
@@ -39,11 +44,16 @@ export default function AdminDashboard() {
   };
 
   const updateStatus = async (id: string, called: boolean) => {
+    console.log('Attempting to update booking:', id, 'called:', called);
+    
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('bookings')
         .update({ called })
-        .eq('id', id);
+        .eq('id', id)
+        .select();
+      
+      console.log('Update result:', { data, error });
       
       if (error) {
         console.error('Error updating status:', error);
@@ -51,14 +61,19 @@ export default function AdminDashboard() {
         return;
       }
       
-      // Update local state immediately for better UX
-      setBookings(prevBookings => 
-        prevBookings.map(booking => 
-          booking.id === id ? { ...booking, called } : booking
-        )
-      );
-      
-      alert('وضعیت با موفقیت تغییر کرد');
+      if (data && data.length > 0) {
+        // Update local state with the actual returned data
+        setBookings(prevBookings => 
+          prevBookings.map(booking => 
+            booking.id === id ? { ...booking, ...data[0] } : booking
+          )
+        );
+        
+        alert('وضعیت با موفقیت تغییر کرد');
+      } else {
+        console.warn('No data returned from update');
+        alert('تغییر وضعیت انجام شد اما داده‌ای بازگردانده نشد');
+      }
     } catch (error) {
       console.error('Error:', error);
       alert('خطا در تغییر وضعیت');

@@ -380,7 +380,7 @@ export default function NoraStudio() {
               </a>
               
               <p className="text-muted-foreground text-sm">
-                کانال تلگرام ما را دنبال کنید و از تخفیف‌های ویژه باخبر شوید
+                برای چت و مشاوره سریع در تلگرام با ما در ارتباط باشید
               </p>
             </div>
 

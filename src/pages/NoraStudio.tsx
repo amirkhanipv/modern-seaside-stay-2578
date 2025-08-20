@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Camera, Instagram, Phone, Star, Users, Award, Heart, ChevronLeft, ChevronRight, MapPin, Clock } from "lucide-react";
+import { Camera, Instagram, Phone, Star, Users, Award, Heart, ChevronLeft, ChevronRight, MapPin, Clock, MessageCircle, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -321,47 +321,85 @@ export default function NoraStudio() {
             <h2 className="text-4xl md:text-5xl font-bold mb-6">تماس با ما</h2>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
             {/* Phone & Address */}
-            <div className="bg-gradient-to-br from-emerald-100 to-green-100 rounded-2xl p-8 text-center">
-              <Phone className="w-12 h-12 text-emerald-600 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold mb-4">تماس تلفنی</h3>
+            <div className="bg-gradient-to-br from-teal-100 to-teal-50 rounded-2xl p-6 text-center">
+              <Phone className="w-10 h-10 text-teal-600 mx-auto mb-3" />
+              <h3 className="text-xl font-bold mb-3">تماس تلفنی</h3>
               <a 
                 href="tel:09999999999"
-                className="inline-flex items-center bg-emerald-600 text-white rounded-xl px-6 py-3 hover:bg-emerald-700 hover:shadow-lg transition-all duration-300 mb-6"
+                className="inline-flex items-center bg-teal-600 text-white rounded-xl px-4 py-2 hover:bg-teal-700 hover:shadow-lg transition-all duration-300 mb-4 text-sm"
               >
-                <Phone className="ml-2 h-5 w-5" />
-                <span className="text-lg font-medium">۰۹۹۹۹۹۹۹۹۹۹</span>
+                <Phone className="ml-1 h-4 w-4" />
+                <span className="font-medium">۰۹۹۹۹۹۹۹۹۹۹</span>
               </a>
               
-              <div className="space-y-3 text-muted-foreground">
+              <div className="space-y-2 text-muted-foreground text-sm">
                 <div className="flex items-center justify-center">
-                  <MapPin className="w-5 h-5 ml-2 text-emerald-600" />
+                  <MapPin className="w-4 h-4 ml-1 text-teal-600" />
                   <span>تهران، خیابان مثال، پلاک ۱۲</span>
                 </div>
                 <div className="flex items-center justify-center">
-                  <Clock className="w-5 h-5 ml-2 text-emerald-600" />
+                  <Clock className="w-4 h-4 ml-1 text-teal-600" />
                   <span>همه روزه از ۱۰ صبح تا ۱۹</span>
                 </div>
               </div>
             </div>
 
+            {/* WhatsApp */}
+            <div className="bg-gradient-to-br from-green-100 to-green-50 rounded-2xl p-6 text-center">
+              <MessageCircle className="w-10 h-10 text-green-600 mx-auto mb-3" />
+              <h3 className="text-xl font-bold mb-3">واتساپ</h3>
+              <a 
+                href="https://wa.me/989999999999"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center bg-green-600 text-white rounded-xl px-4 py-2 hover:bg-green-700 hover:shadow-lg transition-all duration-300 mb-4 text-sm"
+              >
+                <MessageCircle className="ml-1 h-4 w-4" />
+                <span className="font-medium">پیام واتساپ</span>
+              </a>
+              
+              <p className="text-muted-foreground text-sm">
+                برای مشاوره سریع و رزرو آنلاین در واتساپ با ما در تماس باشید
+              </p>
+            </div>
+
+            {/* Telegram */}
+            <div className="bg-gradient-to-br from-blue-100 to-blue-50 rounded-2xl p-6 text-center">
+              <Send className="w-10 h-10 text-blue-600 mx-auto mb-3" />
+              <h3 className="text-xl font-bold mb-3">تلگرام</h3>
+              <a 
+                href="https://t.me/NoraStudio"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center bg-blue-600 text-white rounded-xl px-4 py-2 hover:bg-blue-700 hover:shadow-lg transition-all duration-300 mb-4 text-sm"
+              >
+                <Send className="ml-1 h-4 w-4" />
+                <span className="font-medium">@NoraStudio</span>
+              </a>
+              
+              <p className="text-muted-foreground text-sm">
+                کانال تلگرام ما را دنبال کنید و از تخفیف‌های ویژه باخبر شوید
+              </p>
+            </div>
+
             {/* Instagram */}
-            <div className="bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl p-8 text-center">
-              <Instagram className="w-12 h-12 text-purple-600 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold mb-4">شبکه‌های اجتماعی</h3>
+            <div className="bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl p-6 text-center">
+              <Instagram className="w-10 h-10 text-purple-600 mx-auto mb-3" />
+              <h3 className="text-xl font-bold mb-3">اینستاگرام</h3>
               <a 
                 href="https://instagram.com/Nora_Stu"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl px-6 py-3 hover:shadow-lg transition-all duration-300 mb-6"
+                className="inline-flex items-center bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl px-4 py-2 hover:shadow-lg transition-all duration-300 mb-4 text-sm"
               >
-                <Instagram className="ml-2 h-5 w-5" />
-                <span className="text-lg font-medium">Nora_Stu</span>
+                <Instagram className="ml-1 h-4 w-4" />
+                <span className="font-medium">Nora_Stu</span>
               </a>
               
-              <p className="text-muted-foreground">
-                نمونه‌کارهای روزانه و آخرین اخبار آتلیه را در اینستاگرام ما دنبال کنید
+              <p className="text-muted-foreground text-sm">
+                نمونه‌کارهای روزانه و آخرین اخبار آتلیه را دنبال کنید
               </p>
             </div>
           </div>

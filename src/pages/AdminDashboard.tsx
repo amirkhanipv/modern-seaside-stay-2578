@@ -70,9 +70,11 @@ export default function AdminDashboard() {
         );
         
         alert('وضعیت با موفقیت تغییر کرد');
+        console.log('Status updated successfully:', data[0]);
       } else {
         console.warn('No data returned from update');
-        alert('تغییر وضعیت انجام شد اما داده‌ای بازگردانده نشد');
+        // Refresh bookings to get latest state
+        fetchBookings();
       }
     } catch (error) {
       console.error('Error:', error);
@@ -146,6 +148,7 @@ export default function AdminDashboard() {
                   <p>تلفن: {booking.phone}</p>
                   <p>پکیج: {booking.plan_type}</p>
                   <p>کد: {booking.tracking_code}</p>
+                  <p className="text-sm text-gray-500">ID: {booking.id}</p>
                 </div>
                 <div className="flex flex-col gap-2">
                   <div className="flex gap-2">

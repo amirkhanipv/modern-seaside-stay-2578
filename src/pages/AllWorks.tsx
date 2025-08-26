@@ -165,7 +165,7 @@ export default function AllWorks() {
                       <img 
                         src={image}
                         alt={`${category.title} ${index + 1}`}
-                        className="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
+                        className="w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-110"
                       />
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 flex items-center justify-center">
                         <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 backdrop-blur-sm rounded-full p-4">

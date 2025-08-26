@@ -83,7 +83,7 @@ const galleryImages = [
 ];
 
 export default function Gallery() {
-  const { t } = useLanguage();
+  const { t, isRTL } = useLanguage();
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const [filteredImages, setFilteredImages] = useState(galleryImages);
   const [activeFilter, setActiveFilter] = useState("all");
@@ -128,15 +128,17 @@ export default function Gallery() {
       if (e.key === "Escape") {
         setSelectedImage(null);
       } else if (e.key === "ArrowLeft") {
-        navigateGallery("prev");
+        // In RTL, left arrow should go next, in LTR it goes prev
+        navigateGallery(isRTL ? "next" : "prev");
       } else if (e.key === "ArrowRight") {
-        navigateGallery("next");
+        // In RTL, right arrow should go prev, in LTR it goes next
+        navigateGallery(isRTL ? "prev" : "next");
       }
     };
     
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedImage, filteredImages]);
+  }, [selectedImage, filteredImages, isRTL]);
   
   return (
     <div className="min-h-screen flex flex-col">
@@ -224,12 +226,15 @@ export default function Gallery() {
             </button>
             
             <button 
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-white p-4 rounded-full hover:bg-white/10 transition-colors"
+              className={cn(
+                "absolute top-1/2 -translate-y-1/2 text-white p-4 rounded-full hover:bg-white/10 transition-colors",
+                isRTL ? "right-4" : "left-4"
+              )}
               onClick={() => navigateGallery("prev")}
             >
               <span className="sr-only">Previous</span>
               <svg className="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isRTL ? "M9 5l7 7-7 7" : "M15 19l-7-7 7-7"} />
               </svg>
             </button>
             
@@ -244,12 +249,15 @@ export default function Gallery() {
             </div>
             
             <button 
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-white p-4 rounded-full hover:bg-white/10 transition-colors"
+              className={cn(
+                "absolute top-1/2 -translate-y-1/2 text-white p-4 rounded-full hover:bg-white/10 transition-colors",
+                isRTL ? "left-4" : "right-4"
+              )}
               onClick={() => navigateGallery("next")}
             >
               <span className="sr-only">Next</span>
               <svg className="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={isRTL ? "M15 19l-7-7 7-7" : "M9 5l7 7-7 7"} />
               </svg>
             </button>
           </div>

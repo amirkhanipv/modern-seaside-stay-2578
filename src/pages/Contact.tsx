@@ -84,7 +84,7 @@ export default function Contact() {
               <div className="animate-fade-in anim-delay-100">
                 <h2 className="text-2xl font-bold mb-6">{t.contact.getInTouch}</h2>
                 
-                <div className="glass-card p-6 space-y-6 mb-8">
+                <div className="glass-card p-6 space-y-6 mb-8 bg-white/90 dark:bg-charcoal/90">
                   <div className="flex items-start">
                     <div className="flex-shrink-0 h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mr-4">
                       <MapPin className="h-5 w-5 text-primary" />
@@ -153,7 +153,7 @@ export default function Contact() {
               <div className="animate-fade-in anim-delay-300">
                 <h2 className="text-2xl font-bold mb-6">{t.contact.sendMessage}</h2>
                 
-                <div className="glass-card p-6">
+                <div className="glass-card p-6 bg-white/90 dark:bg-charcoal/90">
                   {!isSubmitted ? (
                     <form onSubmit={handleSubmit} className="space-y-6">
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -247,7 +247,7 @@ export default function Contact() {
         </section>
         
         {/* FAQ Section */}
-        <section className="section bg-muted">
+        <section className="section bg-secondary/30">
           <div className="container">
             <div className="max-w-3xl mx-auto text-center mb-12 animate-fade-in">
               <h2 className="text-3xl font-bold mb-4">{t.contact.faq}</h2>
@@ -283,7 +283,7 @@ export default function Contact() {
                   icon: <MapPin className="h-5 w-5 text-primary" />
                 },
               ].map((faq, index) => (
-                <div key={index} className="glass-card p-6">
+                <div key={index} className="glass-card p-6 bg-white/90 dark:bg-charcoal/90">
                   <h3 className="font-semibold text-lg mb-2">
                     {t.contact.questions[faq.questionKey].question}
                   </h3>

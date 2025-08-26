@@ -146,7 +146,7 @@ export default function Gallery() {
         {/* Header Section */}
         <section className="relative py-20 bg-gradient-to-r from-sea-light to-white dark:from-sea-dark dark:to-background overflow-hidden">
           <div className="container relative z-10">
-            <div className="max-w-3xl mx-auto text-center animate-fade-in">
+            <div className="max-w-3xl mx-auto text-center animate-fade-in anim-delay-80">
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
                 {t.gallery.title}
               </h1>
@@ -166,7 +166,7 @@ export default function Gallery() {
         {/* Gallery Filters */}
         <section className="py-8">
           <div className="container">
-            <div className="flex flex-wrap justify-center gap-2 mb-8 animate-fade-in">
+            <div className="flex flex-wrap justify-center gap-2 mb-8 animate-fade-in anim-delay-100">
               {["all", "exterior", "rooms", "amenities"].map((category) => (
                 <button
                   key={category}
@@ -238,7 +238,7 @@ export default function Gallery() {
                 <img 
                   src={filteredImages.find(img => img.id === selectedImage)?.src} 
                   alt={filteredImages.find(img => img.id === selectedImage)?.alt}
-                  className="max-w-full max-h-[80vh] object-contain"
+                  className="max-w-full max-h-[80vh] object-contain animate-fade-in anim-delay-60"
                 />
               )}
             </div>

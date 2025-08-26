@@ -137,3 +137,31 @@
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.6) 100%);
   }
 }
+
+@layer utilities {
+  /* Fine-grained animation delay utilities */
+  .anim-delay-60 { animation-delay: 60ms; animation-fill-mode: both; }
+  .anim-delay-80 { animation-delay: 80ms; animation-fill-mode: both; }
+  .anim-delay-100 { animation-delay: 100ms; animation-fill-mode: both; }
+  .anim-delay-120 { animation-delay: 120ms; animation-fill-mode: both; }
+  .anim-delay-160 { animation-delay: 160ms; animation-fill-mode: both; }
+  .anim-delay-180 { animation-delay: 180ms; animation-fill-mode: both; }
+  .anim-delay-240 { animation-delay: 240ms; animation-fill-mode: both; }
+  .anim-delay-300 { animation-delay: 300ms; animation-fill-mode: both; }
+
+  /* Reduced motion accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-fade-in,
+    .animate-fade-in-right,
+    .animate-fade-in-left,
+    .animate-slide-up,
+    .animate-slide-down,
+    .animate-float,
+    .animate-wave,
+    .animate-button-glow,
+    .animate-orbit,
+    .animate-spin-3d {
+      animation: none !important;
+    }
+  }
+}

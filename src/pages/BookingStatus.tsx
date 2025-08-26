@@ -163,7 +163,7 @@ export default function BookingStatus() {
   return (
     <div className="min-h-screen bg-background py-12 px-4">
       <div className="max-w-2xl mx-auto">
-        <div className="text-center mb-8">
+        <div className="text-center mb-8 animate-fade-in anim-delay-80">
           <h1 className="text-3xl font-bold mb-4">پیگیری رزرو</h1>
           <p className="text-muted-foreground">
             برای مشاهده وضعیت رزرو خود، کد پیگیری را وارد کنید
@@ -171,7 +171,7 @@ export default function BookingStatus() {
         </div>
 
         {/* Search Form */}
-        <Card className="mb-8">
+        <Card className="mb-8 animate-fade-in anim-delay-120">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Search className="w-5 h-5" />
@@ -199,7 +199,7 @@ export default function BookingStatus() {
 
         {/* Booking Details */}
         {booking && (
-          <Card>
+          <Card className="animate-fade_in anim-delay-160">
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
                 <span>جزئیات رزرو</span>

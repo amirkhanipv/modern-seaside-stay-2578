@@ -2,83 +2,69 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/components/ui/use-toast";
+import { fetchBookings as apiFetchBookings, updateBookingCalled, deleteBookingById, type Booking } from "@/services/bookings";
+
+const ADMIN_REMEMBER_KEY = "admin_remembered";
 
 export default function AdminDashboard() {
-  const [bookings, setBookings] = useState<any[]>([]);
+  const [bookings, setBookings] = useState<Booking[]>([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState<boolean>(false);
 
-  const handleLogin = () => {
+  useEffect(() => {
+    const remembered = localStorage.getItem(ADMIN_REMEMBER_KEY);
+    if (remembered === "true") {
+      setIsAuthenticated(true);
+      loadBookings();
+    }
+  }, []);
+
+  const handleLogin = async () => {
     if (password === "dorsa") {
       setIsAuthenticated(true);
-      fetchBookings();
+      if (rememberMe) localStorage.setItem(ADMIN_REMEMBER_KEY, "true");
+      await loadBookings();
     } else {
-      alert("رمز عبور اشتباه است");
+      toast({
+        title: "ورود ناموفق",
+        description: "رمز عبور اشتباه است",
+        variant: "destructive",
+      });
     }
   };
 
-  const fetchBookings = async () => {
-    console.log('Fetching bookings...');
-    
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    setPassword("");
+    localStorage.removeItem(ADMIN_REMEMBER_KEY);
+  };
+
+  const loadBookings = async () => {
     try {
-      const { data, error } = await supabase
-        .from('bookings')
-        .select('*')
-        .order('created_at', { ascending: false });
-      
-      console.log('Fetch result:', { data, error });
-      
-      if (error) {
-        console.error('Error fetching bookings:', error);
-        alert('خطا در بارگیری رزروها: ' + error.message);
-        return;
-      }
-      
-      setBookings(data || []);
-      console.log('Bookings loaded:', data?.length || 0);
-    } catch (error) {
-      console.error('Error:', error);
-      alert('خطا در بارگیری رزروها');
+      const data = await apiFetchBookings();
+      setBookings(data);
+    } catch (error: any) {
+      toast({
+        title: "خطا در بارگیری رزروها",
+        description: error?.message ?? "مشکلی پیش آمد",
+        variant: "destructive",
+      });
     }
   };
 
-  const updateStatus = async (id: string, called: boolean) => {
-    console.log('Attempting to update booking:', id, 'called:', called);
-    
+  const toggleCalled = async (id: string, called: boolean) => {
     try {
-      const { data, error } = await supabase
-        .from('bookings')
-        .update({ called })
-        .eq('id', id)
-        .select();
-      
-      console.log('Update result:', { data, error });
-      
-      if (error) {
-        console.error('Error updating status:', error);
-        alert('خطا در تغییر وضعیت: ' + error.message);
-        return;
-      }
-      
-      if (data && data.length > 0) {
-        // Update local state with the actual returned data
-        setBookings(prevBookings => 
-          prevBookings.map(booking => 
-            booking.id === id ? { ...booking, ...data[0] } : booking
-          )
-        );
-        
-        alert('وضعیت با موفقیت تغییر کرد');
-        console.log('Status updated successfully:', data[0]);
-      } else {
-        console.warn('No data returned from update');
-        // Refresh bookings to get latest state
-        fetchBookings();
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('خطا در تغییر وضعیت');
+      const updated = await updateBookingCalled(id, called);
+      setBookings(prev => prev.map(b => (b.id === id ? { ...b, ...updated } : b)));
+      toast({ title: "وضعیت بروزرسانی شد" });
+    } catch (error: any) {
+      toast({
+        title: "خطا در تغییر وضعیت",
+        description: error?.message ?? "مشکلی پیش آمد",
+        variant: "destructive",
+      });
     }
   };
 
@@ -88,39 +74,28 @@ export default function AdminDashboard() {
     }
 
     try {
-      const { data, error } = await supabase
-        .from('bookings')
-        .delete()
-        .eq('id', id)
-        .select();
-      
-      if (error) {
-        console.error('Error deleting booking:', error);
-        alert('خطا در حذف رزرو: ' + error.message);
-        return;
-      }
-      
-      // If deletion returned the deleted row, data will have length 1
-      if (data && data.length > 0) {
-        setBookings(prevBookings => 
-          prevBookings.filter(booking => booking.id !== id)
-        );
-        alert('رزرو با موفقیت حذف شد');
-      } else {
-        // If no data returned (policy may prevent returning rows), refetch
-        await fetchBookings();
-        alert('رزرو با موفقیت حذف شد');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('خطا در حذف رزرو');
+      await deleteBookingById(id);
+      setBookings(prev => prev.filter(b => b.id !== id));
+      toast({ title: "رزرو حذف شد" });
+    } catch (error: any) {
+      toast({
+        title: "خطا در حذف رزرو",
+        description: error?.message ?? "مشکلی پیش آمد",
+        variant: "destructive",
+      });
     }
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      loadBookings();
+    }
+  }, [isAuthenticated]);
 
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
+        <Card className="w-full max-w-md animate-fade-in anim-delay-80">
           <CardHeader>
             <CardTitle>ورود ادمین</CardTitle>
           </CardHeader>
@@ -132,6 +107,14 @@ export default function AdminDashboard() {
               placeholder="رمز عبور"
               className="w-full p-2 border rounded mb-4"
             />
+            <label className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+              />
+              مرا به‌خاطر بسپار
+            </label>
             <Button onClick={handleLogin} className="w-full">
               ورود
             </Button>
@@ -142,11 +125,18 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen p-4">
-      <h1 className="text-3xl font-bold mb-8 text-center">داشبورد ادمین</h1>
+    <div className="min-h-screen p-4 animate-fade-in">
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-3xl font-bold text-center animate-fade-in anim-delay-80">داشبورد ادمین</h1>
+        <Button variant="outline" onClick={handleLogout}>خروج</Button>
+      </div>
       <div className="grid gap-4">
-        {bookings.map((booking) => (
-          <Card key={booking.id}>
+        {bookings.map((booking, index) => (
+          <Card 
+            key={booking.id}
+            className="animate-fade-in"
+            style={{ animationDelay: `${index * 60}ms`, animationFillMode: 'both' }}
+          >
             <CardContent className="p-6">
               <div className="flex justify-between items-center">
                 <div>
@@ -159,7 +149,7 @@ export default function AdminDashboard() {
                 <div className="flex flex-col gap-2">
                   <div className="flex gap-2">
                     <Button
-                      onClick={() => updateStatus(booking.id, !booking.called)}
+                      onClick={() => toggleCalled(booking.id, !booking.called)}
                       size="sm"
                       variant={booking.called ? "destructive" : "default"}
                     >

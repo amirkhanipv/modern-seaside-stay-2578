@@ -112,7 +112,7 @@ export default function AllWorks() {
       {/* Header */}
       <section className="relative py-20 bg-gradient-to-r from-primary/10 to-secondary/20 overflow-hidden">
         <div className="container relative z-10">
-          <div className="max-w-3xl mx-auto text-center animate-fade-in">
+          <div className="max-w-3xl mx-auto text-center animate-fade-in anim-delay-80">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
               مجموعه کامل آثار
             </h1>

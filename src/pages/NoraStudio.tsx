@@ -137,24 +137,21 @@ export default function NoraStudio() {
         />
         <div className="absolute inset-0 hero-overlay" />
         
-        <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
+        <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4 animate-fade-in">
           <div className="animate-fade-in">
-            <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-tight">
+            <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-tight animate-fade-in anim-delay-60">
               آتلیه نورا
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-gray-200">
+            <p className="text-xl md:text-2xl mb-8 text-white/90 animate-fade-in anim-delay-120">
               لحظه‌های خاص شما در قاب هنر
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in anim-delay-180">
               <Button className="btn-primary text-lg px-8 py-4" onClick={() => document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' })}>
                 <Camera className="ml-2 h-5 w-5" />
-                مشاهده نمونه‌کارها
+                مشاهده نمونه کارها
               </Button>
-              <Button variant="outline" className="text-lg px-8 py-4 border-white/80 text-white bg-black/20 backdrop-blur-sm hover:bg-white hover:text-black" onClick={() => window.location.href = '/booking'}>
-                رزرو آنلاین
-              </Button>
-              <Button variant="outline" className="text-lg px-8 py-4 border-white/80 text-white bg-black/20 backdrop-blur-sm hover:bg-white hover:text-black" onClick={() => window.location.href = '/booking-status'}>
-                پیگیری رزرو
+              <Button variant="outline" className="text-lg px-8 py-4">
+                رزرو نوبت
               </Button>
             </div>
           </div>
@@ -164,35 +161,29 @@ export default function NoraStudio() {
       {/* Portfolio Gallery */}
       <section id="portfolio" className="section bg-secondary/30">
         <div className="container">
-          <div className="text-center mb-16">
+          <div className="text-center mb-16 animate-fade-in anim-delay-80">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">نمونه کارها</h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              مجموعه‌ای از بهترین عکس‌های ما در زمینه‌های مختلف عکاسی
+              مجموعه‌ای از بهترین لحظه‌ها در آتلیه نورا
             </p>
           </div>
 
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-4 max-w-2xl mx-auto mb-12 bg-white/50 backdrop-blur-sm">
+          {/* Tabs */}
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="animate-fade-in anim-delay-140">
+            <TabsList className="grid grid-cols-2 md:grid-cols-4 gap-2">
               {Object.entries(portfolioCategories).map(([key, category]) => (
-                <TabsTrigger 
-                  key={key} 
-                  value={key}
-                  className="text-lg font-medium data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-500 ease-in-out hover:bg-primary/10 transform hover:scale-105"
-                >
-                  {category.title}
-                </TabsTrigger>
+                <TabsTrigger key={key} value={key}>{category.title}</TabsTrigger>
               ))}
             </TabsList>
 
             {Object.entries(portfolioCategories).map(([key, category]) => (
-              <TabsContent key={key} value={key} className="animate-fade-in transition-all duration-500 ease-in-out">
-                <div className="relative max-w-2xl mx-auto">
+              <TabsContent key={key} value={key} className="transition-all duration-500 ease-in-out">
+                <div className="relative max-w-2xl mx-auto animate-fade-in anim-delay-100">
                    <div className="aspect-square rounded-2xl overflow-hidden shadow-lg persian-shadow cursor-pointer group">
                      <img 
                        src={category.images[currentSlide]}
-                       alt={`${category.title} ${currentSlide + 1}`}
-                       className="w-full h-full object-cover transition-all duration-700 ease-in-out group-hover:scale-105"
-                       onClick={() => setSelectedImage(category.images[currentSlide])}
+                       alt={category.title}
+                       className="w-full h-full object-cover transition-all duration-500 ease-out scale-105 group-hover:scale-110"
                        key={`${activeTab}-${currentSlide}`}
                      />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
@@ -201,53 +192,31 @@ export default function NoraStudio() {
                       </div>
                     </div>
                   </div>
-                  
-                  {/* Navigation Buttons */}
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 backdrop-blur-sm border-white/20 hover:bg-white/90"
-                    onClick={prevSlide}
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                  </Button>
-                  
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 backdrop-blur-sm border-white/20 hover:bg-white/90"
-                    onClick={nextSlide}
-                  >
-                    <ChevronRight className="h-4 w-4" />
-                  </Button>
-                  
-                   {/* Slide Indicators */}
-                   <div className="flex justify-center mt-6 gap-4">
-                     {category.images.map((_, index) => (
-                       <button
-                         key={index}
-                         className={`w-3 h-3 rounded-full transition-all duration-300 transform hover:scale-125 ${
-                           index === currentSlide 
-                             ? 'bg-primary shadow-lg shadow-primary/40 scale-125' 
-                             : 'bg-gray-300 hover:bg-primary/50'
-                         }`}
-                         onClick={() => setCurrentSlide(index)}
-                       />
-                     ))}
-                   </div>
+
+                  {/* Controls */}
+                  <div className="flex justify-center gap-4 mt-6 animate-fade-in anim-delay-160">
+                    {category.images.map((_, index) => (
+                      <button
+                        key={index}
+                        className={`w-3 h-3 rounded-full ${index === currentSlide ? 'bg-primary' : 'bg-primary/30'} transition-colors`}
+                        onClick={() => setCurrentSlide(index)}
+                        aria-label={`Go to slide ${index + 1}`}
+                      />
+                    ))}
+                  </div>
                 </div>
               </TabsContent>
             ))}
           </Tabs>
-          
+
           {/* View All Works Button */}
-          <div className="text-center mt-12">
+          <div className="text-center mt-12 animate-fade-in anim-delay-120">
             <Button 
               onClick={() => window.location.href = '/gallery'} 
-              className="btn-primary text-lg px-8 py-4"
+              size="lg"
+              className="px-8"
             >
-              <Camera className="ml-2 h-5 w-5" />
-              مشاهده همه آثار
+              مشاهده همه نمونه کارها
             </Button>
           </div>
         </div>
@@ -259,16 +228,16 @@ export default function NoraStudio() {
           <button 
             className="absolute top-4 right-4 text-white p-2 rounded-full hover:bg-white/10 transition-colors"
             onClick={() => setSelectedImage(null)}
+            aria-label="Close"
           >
-            <X className="h-6 w-6" />
-            <span className="sr-only">بستن</span>
+            <X className="w-6 h-6" />
           </button>
           
-          <div className="max-w-5xl max-h-[80vh] overflow-hidden animate-scale-in">
+          <div className="max-w-5xl max-h-[80vh] overflow-hidden animate-fade-in anim-delay-60">
             <img 
               src={selectedImage} 
-              alt="نمایش بزرگ"
-              className="max-w-full max-h-[80vh] object-contain"
+              alt="Selected"
+              className="w-full h-full object-contain"
             />
           </div>
         </div>
@@ -277,20 +246,20 @@ export default function NoraStudio() {
       {/* Testimonials */}
       <section className="section">
         <div className="container">
-          <div className="text-center mb-16">
+          <div className="text-center mb-16 animate-fade-in anim-delay-80">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">نظرات مشتریان</h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              تجربه مشتریان ما از کار با آتلیه نورا
+              تجربه‌های واقعی از مشتریان ما
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-              <Card key={index} className="glass-card overflow-hidden">
+              <Card key={index} className="glass-card overflow-hidden animate-fade-in" style={{ animationDelay: `${80 + index * 80}ms`, animationFillMode: 'both' }}>
                 <div className="relative">
                   <img 
                     src={testimonial.image}
-                    alt={`نمونه کار ${testimonial.name}`}
+                    alt={testimonial.name}
                     className="w-full h-64 object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
@@ -300,10 +269,8 @@ export default function NoraStudio() {
                         <Star key={i} className="w-4 h-4 fill-gold text-gold" />
                       ))}
                     </div>
-                    <h4 className="font-semibold text-lg mb-2">{testimonial.name}</h4>
-                    <p className="text-gray-200 leading-relaxed">
-                      "{testimonial.review}"
-                    </p>
+                    <h3 className="text-xl font-bold">{testimonial.name}</h3>
+                    <p className="text-white/80">{testimonial.review}</p>
                   </div>
                 </div>
               </Card>
@@ -315,31 +282,29 @@ export default function NoraStudio() {
       {/* Pricing Plans */}
       <section className="section bg-secondary/30">
         <div className="container">
-          <div className="text-center mb-16">
+          <div className="text-center mb-16 animate-fade-in anim-delay-80">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">پکیج‌های عکاسی</h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              پکیج‌های متنوع برای تمام نیازهای عکاسی شما
+              انتخاب مناسب برای سلیقه و بودجه شما
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {pricingPlans.map((plan, index) => (
-              <Card key={index} className={`glass-card relative ${plan.popular ? 'border-primary border-2' : ''}`}>
-                {plan.popular && (
-                  <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground">
-                    محبوب‌ترین
-                  </Badge>
-                )}
+              <Card key={index} className={`glass-card relative ${plan.popular ? 'border-primary border-2' : ''} animate-fade-in`} style={{ animationDelay: `${100 + index * 80}ms`, animationFillMode: 'both' }}>
+                <CardHeader>
+                  <CardTitle className="text-2xl">{plan.title}</CardTitle>
+                </CardHeader>
                 <CardContent className="p-8">
                   <h3 className="text-2xl font-bold mb-2">{plan.title}</h3>
                   <div className="mb-6">
                     <span className="text-3xl font-bold text-primary">{plan.price}</span>
                     <span className="text-muted-foreground mr-2">تومان</span>
                   </div>
-                  <ul className="space-y-3 mb-8">
-                    {plan.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-center">
-                        <Heart className="w-5 h-5 text-primary ml-3" />
+                  <ul className="space-y-2 mb-6">
+                    {plan.features.map((feature, i) => (
+                      <li key={i} className="flex items-center gap-2">
+                        <Heart className="w-4 h-4 text-primary" />
                         <span>{feature}</span>
                       </li>
                     ))}
@@ -348,9 +313,7 @@ export default function NoraStudio() {
                     <p className="text-sm text-primary font-medium bg-primary/10 border border-primary/20 rounded-lg p-3 text-center">
                       تخفیف ویژه به دلیل رزرو از سایت
                     </p>
-                    <Button className="w-full btn-primary" onClick={() => window.location.href = '/booking'}>
-                      رزرو آنلاین
-                    </Button>
+                    <Button className="w-full">رزرو این پکیج</Button>
                   </div>
                 </CardContent>
               </Card>
@@ -362,7 +325,7 @@ export default function NoraStudio() {
       {/* Contact Section */}
       <section className="section">
         <div className="container">
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 animate-fade-in anim-delay-80">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">تماس با ما</h2>
           </div>
           

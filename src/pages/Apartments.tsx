@@ -128,7 +128,7 @@ export default function Apartments() {
         {/* Header Section */}
         <section className="relative py-20 bg-gradient-to-r from-sea-light to-white dark:from-sea-dark dark:to-background overflow-hidden">
           <div className="container relative z-10">
-            <div className="max-w-3xl mx-auto text-center animate-fade-in">
+            <div className="max-w-3xl mx-auto text-center animate-fade-in anim-delay-80">
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
                 {t.apartments.title}
               </h1>
@@ -203,7 +203,7 @@ export default function Apartments() {
               </div>
             </div>
             
-            <div className="flex justify-between items-center mt-6 animate-fade-in [animation-delay:200ms]">
+            <div className="flex justify-between items-center mt-6 animate-fade-in anim-delay-180">
               <p className="text-muted-foreground">
                 {t.apartments.filters.showing} {filteredApartments.length} {t.apartments.filters.of} {allApartments.length} {t.apartments.filters.accommodations}
               </p>

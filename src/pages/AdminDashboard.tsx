@@ -5,14 +5,26 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "@/components/ui/use-toast";
 import { fetchBookings as apiFetchBookings, updateBookingCalled, deleteBookingById, type Booking } from "@/services/bookings";
 
+const ADMIN_REMEMBER_KEY = "admin_remembered";
+
 export default function AdminDashboard() {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState<boolean>(false);
+
+  useEffect(() => {
+    const remembered = localStorage.getItem(ADMIN_REMEMBER_KEY);
+    if (remembered === "true") {
+      setIsAuthenticated(true);
+      loadBookings();
+    }
+  }, []);
 
   const handleLogin = async () => {
     if (password === "dorsa") {
       setIsAuthenticated(true);
+      if (rememberMe) localStorage.setItem(ADMIN_REMEMBER_KEY, "true");
       await loadBookings();
     } else {
       toast({
@@ -21,6 +33,12 @@ export default function AdminDashboard() {
         variant: "destructive",
       });
     }
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    setPassword("");
+    localStorage.removeItem(ADMIN_REMEMBER_KEY);
   };
 
   const loadBookings = async () => {
@@ -89,6 +107,14 @@ export default function AdminDashboard() {
               placeholder="رمز عبور"
               className="w-full p-2 border rounded mb-4"
             />
+            <label className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+              />
+              مرا به‌خاطر بسپار
+            </label>
             <Button onClick={handleLogin} className="w-full">
               ورود
             </Button>
@@ -100,7 +126,10 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen p-4 animate-fade-in">
-      <h1 className="text-3xl font-bold mb-8 text-center animate-fade-in anim-delay-80">داشبورد ادمین</h1>
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-3xl font-bold text-center animate-fade-in anim-delay-80">داشبورد ادمین</h1>
+        <Button variant="outline" onClick={handleLogout}>خروج</Button>
+      </div>
       <div className="grid gap-4">
         {bookings.map((booking, index) => (
           <Card 

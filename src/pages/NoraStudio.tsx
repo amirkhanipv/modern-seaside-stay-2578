@@ -267,7 +267,7 @@ export default function NoraStudio() {
                       variant="outline"
                       size="icon"
                       aria-label="قبلی"
-                      onClick={goToPreviousSlide}
+                      onClick={goToNextSlide}
                     >
                       <ChevronLeft className="h-5 w-5" />
                     </Button>
@@ -287,7 +287,7 @@ export default function NoraStudio() {
                       variant="outline"
                       size="icon"
                       aria-label="بعدی"
-                      onClick={goToNextSlide}
+                      onClick={goToPreviousSlide}
                     >
                       <ChevronRight className="h-5 w-5" />
                     </Button>
@@ -427,7 +427,7 @@ export default function NoraStudio() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
             {/* Phone & Address */}
-            <div className="bg-gradient-to-br from-teal-100 to-teal-50 rounded-2xl p-6 text-center">
+            <div className="bg-gradient-to-br from-teal-900/20 to-teal-800/10 rounded-2xl p-6 text-center border border-teal-700/20">
               <Phone className="w-10 h-10 text-teal-600 mx-auto mb-3" />
               <h3 className="text-xl font-bold mb-3">تماس تلفنی</h3>
               <a
@@ -451,7 +451,7 @@ export default function NoraStudio() {
             </div>
 
             {/* WhatsApp */}
-            <div className="bg-gradient-to-br from-green-100 to-green-50 rounded-2xl p-6 text-center">
+            <div className="bg-gradient-to-br from-green-900/20 to-green-800/10 rounded-2xl p-6 text-center border border-green-700/20">
               <MessageCircle className="w-10 h-10 text-green-600 mx-auto mb-3" />
               <h3 className="text-xl font-bold mb-3">واتساپ</h3>
               <a
@@ -469,7 +469,7 @@ export default function NoraStudio() {
             </div>
 
             {/* Telegram */}
-            <div className="bg-gradient-to-br from-blue-100 to-blue-50 rounded-2xl p-6 text-center">
+            <div className="bg-gradient-to-br from-blue-900/20 to-blue-800/10 rounded-2xl p-6 text-center border border-blue-700/20">
               <Send className="w-10 h-10 text-blue-600 mx-auto mb-3" />
               <h3 className="text-xl font-bold mb-3">تلگرام</h3>
               <a
@@ -487,7 +487,7 @@ export default function NoraStudio() {
             </div>
 
             {/* Instagram */}
-            <div className="bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl p-6 text-center">
+            <div className="bg-gradient-to-br from-purple-900/20 to-pink-900/20 rounded-2xl p-6 text-center border border-purple-700/20">
               <Instagram className="w-10 h-10 text-purple-600 mx-auto mb-3" />
               <h3 className="text-xl font-bold mb-3">اینستاگرام</h3>
               <a

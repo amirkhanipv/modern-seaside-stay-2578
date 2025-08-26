@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useCallback } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Camera,
   Instagram,
@@ -18,7 +18,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import heroImage from "@/assets/hero-model.jpg";
 
-// Category and content definitions kept equivalent to previous page
+// ----- Types -----
 type PortfolioCategoryKey = "children" | "wedding" | "sport" | "family";
 
 type PortfolioCategory = {
@@ -41,133 +41,129 @@ type PricingPlan = {
   popular?: boolean;
 };
 
+// ----- Static Content (same data, structured more clearly) -----
+const PORTFOLIO_CATEGORIES: Record<PortfolioCategoryKey, PortfolioCategory> = {
+  children: {
+    title: "کودک",
+    images: [
+      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1587393855524-087f83d95bc9?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1503919005314-30d93d07d823?w=400&h=400&fit=crop",
+    ],
+  },
+  wedding: {
+    title: "عروس",
+    images: [
+      "https://images.unsplash.com/photo-1519741497674-611481863552?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1465495976277-4387d4b0e4a6?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=400&h=400&fit=crop",
+    ],
+  },
+  sport: {
+    title: "اسپرت",
+    images: [
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1594736797933-d0ed94ac1274?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1566754219187-f30ba1c0bd5f?w=400&h=400&fit=crop",
+    ],
+  },
+  family: {
+    title: "خانوادگی",
+    images: [
+      "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1609220136736-443140cffec6?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
+      "https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?w=400&h=400&fit=crop",
+    ],
+  },
+};
+
+const TESTIMONIALS: Testimonial[] = [
+  {
+    name: "فاطمه احمدی",
+    image: "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&h=600&fit=crop",
+    review:
+      "آتلیه نورا بهترین تجربه عکاسی که داشتم. عکس‌های عروسی‌ام فوق‌العاده زیبا شد.",
+    rating: 5,
+  },
+  {
+    name: "علی رضایی",
+    image: "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=800&h=600&fit=crop",
+    review: "عکس‌های خانوادگی ما خیلی طبیعی و زیبا شد. کیفیت کار عالی بود.",
+    rating: 5,
+  },
+  {
+    name: "مریم کریمی",
+    image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&h=600&fit=crop",
+    review:
+      "برای عکس‌های بچه‌ام به آتلیه نورا رفتم و خیلی راضی بودم. حرفه‌ای و دقیق.",
+    rating: 5,
+  },
+];
+
+const PRICING_PLANS: PricingPlan[] = [
+  {
+    title: "پکیج کودک",
+    price: "۲,۵۰۰,۰۰۰",
+    features: ["۳۰ عکس ویرایش شده", "۲ ست لباس", "آتلیه لوکس", "چاپ ۱۰ عکس"],
+    category: "children",
+  },
+  {
+    title: "پکیج عروس",
+    price: "۸,۰۰۰,۰۰۰",
+    features: [
+      "۱۰۰ عکس ویرایش شده",
+      "عکاسی در آتلیه و بیرون",
+      "آلبوم لوکس",
+      "فیلم کوتاه",
+      "لوازم جانبی کامل",
+    ],
+    category: "wedding",
+    popular: true,
+  },
+  {
+    title: "پکیج خانوادگی",
+    price: "۴,۰۰۰,۰۰۰",
+    features: ["۵۰ عکس ویرایش شده", "عکاسی در آتلیه", "چاپ ۲۰ عکس", "فایل‌های دیجیتال"],
+    category: "family",
+  },
+];
+
+// ----- Component -----
 export default function NoraStudio() {
-  const [activeTab, setActiveTab] = useState<PortfolioCategoryKey>("children");
-  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const [activeCategoryKey, setActiveCategoryKey] = useState<PortfolioCategoryKey>(
+    "children"
+  );
+  const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const [lightboxImageSrc, setLightboxImageSrc] = useState<string | null>(null);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
-  const portfolioCategories: Record<PortfolioCategoryKey, PortfolioCategory> = useMemo(
-    () => ({
-      children: {
-        title: "کودک",
-        images: [
-          "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop",
-          "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=400&h=400&fit=crop",
-          "https://images.unsplash.com/photo-1587393855524-087f83d95bc9?w=400&h=400&fit=crop",
-          "https://images.unsplash.com/photo-1503919005314-30d93d07d823?w=400&h=400&fit=crop",
-        ],
-      },
-      wedding: {
-        title: "عروس",
-        images: [
-          "https://images.unsplash.com/photo-1519741497674-611481863552?w=400&h=400&fit=crop",
-          "https://images.unsplash.com/photo-1465495976277-4387d4b0e4a6?w=400&h=400&fit=crop",
-          "https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=400&h=400&fit=crop",
-          "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=400&h=400&fit=crop",
-        ],
-      },
-      sport: {
-        title: "اسپرت",
-        images: [
-          "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop",
-          "https://images.unsplash.com/photo-1594736797933-d0ed94ac1274?w=400&h=400&fit=crop",
-          "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop",
-          "https://images.unsplash.com/photo-1566754219187-f30ba1c0bd5f?w=400&h=400&fit=crop",
-        ],
-      },
-      family: {
-        title: "خانوادگی",
-        images: [
-          "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=400&h=400&fit=crop",
-          "https://images.unsplash.com/photo-1609220136736-443140cffec6?w=400&h=400&fit=crop",
-          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
-          "https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?w=400&h=400&fit=crop",
-        ],
-      },
-    }),
-    []
-  );
-
-  // Reset slide index when tab changes
+  // Reset slide index on tab change
   useEffect(() => {
-    setCurrentSlideIndex(0);
-  }, [activeTab]);
+    setActiveSlideIndex(0);
+  }, [activeCategoryKey]);
 
-  const currentCategory = portfolioCategories[activeTab];
-  const numSlides = currentCategory.images.length;
+  const activeCategory = useMemo(
+    () => PORTFOLIO_CATEGORIES[activeCategoryKey],
+    [activeCategoryKey]
+  );
+  const activeCategoryImageCount = activeCategory.images.length;
 
   const goToNextSlide = useCallback(() => {
-    setCurrentSlideIndex((prev) => (prev + 1) % numSlides);
-  }, [numSlides]);
+    setActiveSlideIndex((prev) => (prev + 1) % activeCategoryImageCount);
+  }, [activeCategoryImageCount]);
 
   const goToPreviousSlide = useCallback(() => {
-    setCurrentSlideIndex((prev) => (prev - 1 + numSlides) % numSlides);
-  }, [numSlides]);
-
-  const testimonials: Testimonial[] = useMemo(
-    () => [
-      {
-        name: "فاطمه احمدی",
-        image:
-          "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&h=600&fit=crop",
-        review:
-          "آتلیه نورا بهترین تجربه عکاسی که داشتم. عکس‌های عروسی‌ام فوق‌العاده زیبا شد.",
-        rating: 5,
-      },
-      {
-        name: "علی رضایی",
-        image:
-          "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=800&h=600&fit=crop",
-        review:
-          "عکس‌های خانوادگی ما خیلی طبیعی و زیبا شد. کیفیت کار عالی بود.",
-        rating: 5,
-      },
-      {
-        name: "مریم کریمی",
-        image:
-          "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&h=600&fit=crop",
-        review:
-          "برای عکس‌های بچه‌ام به آتلیه نورا رفتم و خیلی راضی بودم. حرفه‌ای و دقیق.",
-        rating: 5,
-      },
-    ],
-    []
-  );
-
-  const pricingPlans: PricingPlan[] = useMemo(
-    () => [
-      {
-        title: "پکیج کودک",
-        price: "۲,۵۰۰,۰۰۰",
-        features: ["۳۰ عکس ویرایش شده", "۲ ست لباس", "آتلیه لوکس", "چاپ ۱۰ عکس"],
-        category: "children",
-      },
-      {
-        title: "پکیج عروس",
-        price: "۸,۰۰۰,۰۰۰",
-        features: [
-          "۱۰۰ عکس ویرایش شده",
-          "عکاسی در آتلیه و بیرون",
-          "آلبوم لوکس",
-          "فیلم کوتاه",
-          "لوازم جانبی کامل",
-        ],
-        category: "wedding",
-        popular: true,
-      },
-      {
-        title: "پکیج خانوادگی",
-        price: "۴,۰۰۰,۰۰۰",
-        features: ["۵۰ عکس ویرایش شده", "عکاسی در آتلیه", "چاپ ۲۰ عکس", "فایل‌های دیجیتال"],
-        category: "family",
-      },
-    ],
-    []
-  );
+    setActiveSlideIndex(
+      (prev) => (prev - 1 + activeCategoryImageCount) % activeCategoryImageCount
+    );
+  }, [activeCategoryImageCount]);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -189,12 +185,22 @@ export default function NoraStudio() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in anim-delay-180">
             <Button
               className="btn-primary text-lg px-8 py-4"
-              onClick={() => document.getElementById("portfolio")?.scrollIntoView({ behavior: "smooth" })}
+              onClick={() =>
+                document
+                  .getElementById("portfolio")
+                  ?.scrollIntoView({ behavior: "smooth" })
+              }
             >
               <Camera className="ml-2 h-5 w-5" />
               مشاهده نمونه کارها
             </Button>
-            <Button variant="outline" className="text-lg px-8 py-4" onClick={() => (window.location.href = "/booking")}>رزرو نوبت</Button>
+            <Button
+              variant="outline"
+              className="text-lg px-8 py-4"
+              onClick={() => (window.location.href = "/booking")}
+            >
+              رزرو نوبت
+            </Button>
           </div>
         </div>
       </section>
@@ -204,35 +210,47 @@ export default function NoraStudio() {
         <div className="container">
           <div className="text-center mb-16 animate-fade-in anim-delay-80">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">نمونه کارها</h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">مجموعه‌ای از بهترین لحظه‌ها در آتلیه نورا</p>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              مجموعه‌ای از بهترین لحظه‌ها در آتلیه نورا
+            </p>
           </div>
 
-          <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as PortfolioCategoryKey)} className="animate-fade-in anim-delay-140">
+          <Tabs
+            value={activeCategoryKey}
+            onValueChange={(value) =>
+              setActiveCategoryKey(value as PortfolioCategoryKey)
+            }
+            className="animate-fade-in anim-delay-140"
+          >
             <TabsList className="grid grid-cols-2 md:grid-cols-4 gap-2">
-              {Object.entries(portfolioCategories).map(([key, category]) => (
+              {Object.entries(PORTFOLIO_CATEGORIES).map(([key, category]) => (
                 <TabsTrigger key={key} value={key} className="text-sm md:text-base">
                   {category.title}
                 </TabsTrigger>
               ))}
             </TabsList>
 
-            {Object.entries(portfolioCategories).map(([key, category]) => (
-              <TabsContent key={key} value={key} className="transition-all duration-500 ease-in-out">
+            {Object.entries(PORTFOLIO_CATEGORIES).map(([key, category]) => (
+              <TabsContent
+                key={key}
+                value={key}
+                className="transition-all duration-500 ease-in-out"
+              >
                 <div className="relative max-w-2xl mx-auto animate-fade-in anim-delay-100">
                   <div
                     className="aspect-square rounded-2xl overflow-hidden shadow-lg persian-shadow cursor-pointer group relative"
-                    onClick={() => setLightboxImageSrc(category.images[currentSlideIndex])}
+                    onClick={() => setLightboxImageSrc(category.images[activeSlideIndex])}
                     role="button"
                     aria-label={`${category.title} - مشاهده تصویر در اندازه بزرگ`}
                     tabIndex={0}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        setLightboxImageSrc(category.images[currentSlideIndex]);
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter" || event.key === " ") {
+                        setLightboxImageSrc(category.images[activeSlideIndex]);
                       }
                     }}
                   >
                     <img
-                      src={category.images[currentSlideIndex]}
+                      src={category.images[activeSlideIndex]}
                       alt={category.title}
                       className="w-full h-full object-cover transition-all duration-500 ease-out scale-105 group-hover:scale-110"
                     />
@@ -245,26 +263,42 @@ export default function NoraStudio() {
 
                   {/* Controls */}
                   <div className="flex items-center justify-between mt-4">
-                    <Button variant="outline" size="icon" aria-label="قبلی" onClick={goToPreviousSlide}>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      aria-label="قبلی"
+                      onClick={goToPreviousSlide}
+                    >
                       <ChevronRight className="h-5 w-5" />
                     </Button>
                     <div className="flex justify-center gap-2">
                       {category.images.map((_, index) => (
                         <button
                           key={`${key}-dot-${index}`}
-                          className={`w-3 h-3 rounded-full ${index === currentSlideIndex ? "bg-primary" : "bg-primary/30"} transition-colors`}
-                          onClick={() => setCurrentSlideIndex(index)}
+                          className={`w-3 h-3 rounded-full ${
+                            index === activeSlideIndex ? "bg-primary" : "bg-primary/30"
+                          } transition-colors`}
+                          onClick={() => setActiveSlideIndex(index)}
                           aria-label={`رفتن به اسلاید ${index + 1}`}
                         />
                       ))}
                     </div>
-                    <Button variant="outline" size="icon" aria-label="بعدی" onClick={goToNextSlide}>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      aria-label="بعدی"
+                      onClick={goToNextSlide}
+                    >
                       <ChevronLeft className="h-5 w-5" />
                     </Button>
                   </div>
 
                   <div className="text-center mt-8 animate-fade-in anim-delay-120">
-                    <Button onClick={() => (window.location.href = "/gallery")} size="lg" className="px-8">
+                    <Button
+                      onClick={() => (window.location.href = "/gallery")}
+                      size="lg"
+                      className="px-8"
+                    >
                       مشاهده همه نمونه کارها
                     </Button>
                   </div>
@@ -296,23 +330,32 @@ export default function NoraStudio() {
         <div className="container">
           <div className="text-center mb-16 animate-fade-in anim-delay-80">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">نظرات مشتریان</h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">تجربه‌های واقعی از مشتریان ما</p>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              تجربه‌های واقعی از مشتریان ما
+            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
+            {TESTIMONIALS.map((testimonial, index) => (
               <Card
                 key={`testimonial-${index}`}
                 className="glass-card overflow-hidden animate-fade-in"
                 style={{ animationDelay: `${80 + index * 80}ms`, animationFillMode: "both" }}
               >
                 <div className="relative">
-                  <img src={testimonial.image} alt={testimonial.name} className="w-full h-64 object-cover" />
+                  <img
+                    src={testimonial.image}
+                    alt={testimonial.name}
+                    className="w-full h-64 object-cover"
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
                     <div className="flex mb-2">
                       {Array.from({ length: testimonial.rating }).map((_, i) => (
-                        <Star key={`star-${index}-${i}`} className="w-4 h-4 fill-gold text-gold" />
+                        <Star
+                          key={`star-${index}-${i}`}
+                          className="w-4 h-4 fill-gold text-gold"
+                        />
                       ))}
                     </div>
                     <h3 className="text-xl font-bold">{testimonial.name}</h3>
@@ -330,14 +373,18 @@ export default function NoraStudio() {
         <div className="container">
           <div className="text-center mb-16 animate-fade-in anim-delay-80">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">پکیج‌های عکاسی</h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">انتخاب مناسب برای سلیقه و بودجه شما</p>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              انتخاب مناسب برای سلیقه و بودجه شما
+            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {pricingPlans.map((plan, index) => (
+            {PRICING_PLANS.map((plan, index) => (
               <Card
                 key={`plan-${index}`}
-                className={`glass-card relative ${plan.popular ? "border-primary border-2" : ""} animate-fade-in`}
+                className={`glass-card relative ${
+                  plan.popular ? "border-primary border-2" : ""
+                } animate-fade-in`}
                 style={{ animationDelay: `${100 + index * 80}ms`, animationFillMode: "both" }}
               >
                 <CardHeader>
@@ -416,12 +463,14 @@ export default function NoraStudio() {
                 <MessageCircle className="ml-1 h-4 w-4" />
                 <span className="font-medium">پیام واتساپ</span>
               </a>
-              <p className="text-muted-foreground text-sm">برای مشاوره سریع و رزرو آنلاین در واتساپ با ما در تماس باشید</p>
+              <p className="text-muted-foreground text-sm">
+                برای مشاوره سریع و رزرو آنلاین در واتساپ با ما در تماس باشید
+              </p>
             </div>
 
             {/* Telegram */}
             <div className="bg-gradient-to-br from-blue-100 to-blue-50 rounded-2xl p-6 text-center">
-              <Send className="w-10 ه-10 text-blue-600 mx-auto mb-3" />
+              <Send className="w-10 h-10 text-blue-600 mx-auto mb-3" />
               <h3 className="text-xl font-bold mb-3">تلگرام</h3>
               <a
                 href="https://t.me/NoraStudio"
@@ -432,7 +481,9 @@ export default function NoraStudio() {
                 <Send className="ml-1 h-4 w-4" />
                 <span className="font-medium">@NoraStudio</span>
               </a>
-              <p className="text-muted-foreground text-sm">برای چت و مشاوره سریع در تلگرام با ما در ارتباط باشید</p>
+              <p className="text-muted-foreground text-sm">
+                برای چت و مشاوره سریع در تلگرام با ما در ارتباط باشید
+              </p>
             </div>
 
             {/* Instagram */}
@@ -448,7 +499,9 @@ export default function NoraStudio() {
                 <Instagram className="ml-1 h-4 w-4" />
                 <span className="font-medium">Nora_Stu</span>
               </a>
-              <p className="text-muted-foreground text-sm">نمونه‌کارهای روزانه و آخرین اخبار آتلیه را دنبال کنید</p>
+              <p className="text-muted-foreground text-sm">
+                نمونه‌کارهای روزانه و آخرین اخبار آتلیه را دنبال کنید
+              </p>
             </div>
           </div>
         </div>

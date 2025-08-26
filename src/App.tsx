@@ -12,6 +12,7 @@ import BookingStatus from "./pages/BookingStatus";
 import AdminDashboard from "./pages/AdminDashboard";
 import AllWorks from "./pages/AllWorks";
 import NotFound from "./pages/NotFound";
+import { ThemeProvider } from "next-themes";
 
 // Create a react-query client
 const queryClient = new QueryClient();
@@ -34,21 +35,23 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<NoraStudio />} />
-            <Route path="/booking" element={<BookingForm />} />
-            <Route path="/booking-status" element={<BookingStatus />} />
-            <Route path="/gallery" element={<AllWorks />} />
-            <Route path="/admin" element={<AdminDashboard />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<NoraStudio />} />
+              <Route path="/booking" element={<BookingForm />} />
+              <Route path="/booking-status" element={<BookingStatus />} />
+              <Route path="/gallery" element={<AllWorks />} />
+              <Route path="/admin" element={<AdminDashboard />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 };

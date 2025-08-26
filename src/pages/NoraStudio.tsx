@@ -139,13 +139,13 @@ export default function NoraStudio() {
         
         <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4 animate-fade-in">
           <div className="animate-fade-in">
-            <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-tight animate-fade-in" style={{ animationDelay: '60ms', animationFillMode: 'both' }}>
+            <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-tight animate-fade-in anim-delay-60">
               آتلیه نورا
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-white/90 animate-fade-in" style={{ animationDelay: '120ms', animationFillMode: 'both' }}>
+            <p className="text-xl md:text-2xl mb-8 text-white/90 animate-fade-in anim-delay-120">
               لحظه‌های خاص شما در قاب هنر
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in" style={{ animationDelay: '180ms', animationFillMode: 'both' }}>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in anim-delay-180">
               <Button className="btn-primary text-lg px-8 py-4" onClick={() => document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' })}>
                 <Camera className="ml-2 h-5 w-5" />
                 مشاهده نمونه کارها
@@ -161,7 +161,7 @@ export default function NoraStudio() {
       {/* Portfolio Gallery */}
       <section id="portfolio" className="section bg-secondary/30">
         <div className="container">
-          <div className="text-center mb-16 animate-fade-in" style={{ animationDelay: '80ms', animationFillMode: 'both' }}>
+          <div className="text-center mb-16 animate-fade-in anim-delay-80">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">نمونه کارها</h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               مجموعه‌ای از بهترین لحظه‌ها در آتلیه نورا
@@ -169,7 +169,7 @@ export default function NoraStudio() {
           </div>
 
           {/* Tabs */}
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="animate-fade-in" style={{ animationDelay: '140ms', animationFillMode: 'both' }}>
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="animate-fade-in anim-delay-140">
             <TabsList className="grid grid-cols-2 md:grid-cols-4 gap-2">
               {Object.entries(portfolioCategories).map(([key, category]) => (
                 <TabsTrigger key={key} value={key}>{category.title}</TabsTrigger>
@@ -178,7 +178,7 @@ export default function NoraStudio() {
 
             {Object.entries(portfolioCategories).map(([key, category]) => (
               <TabsContent key={key} value={key} className="transition-all duration-500 ease-in-out">
-                <div className="relative max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: '100ms', animationFillMode: 'both' }}>
+                <div className="relative max-w-2xl mx-auto animate-fade-in anim-delay-100">
                    <div className="aspect-square rounded-2xl overflow-hidden shadow-lg persian-shadow cursor-pointer group">
                      <img 
                        src={category.images[currentSlide]}
@@ -194,7 +194,7 @@ export default function NoraStudio() {
                   </div>
 
                   {/* Controls */}
-                  <div className="flex justify-center gap-4 mt-6 animate-fade-in" style={{ animationDelay: '160ms', animationFillMode: 'both' }}>
+                  <div className="flex justify-center gap-4 mt-6 animate-fade-in anim-delay-160">
                     {category.images.map((_, index) => (
                       <button
                         key={index}
@@ -210,7 +210,7 @@ export default function NoraStudio() {
           </Tabs>
 
           {/* View All Works Button */}
-          <div className="text-center mt-12 animate-fade-in" style={{ animationDelay: '120ms', animationFillMode: 'both' }}>
+          <div className="text-center mt-12 animate-fade-in anim-delay-120">
             <Button 
               onClick={() => window.location.href = '/gallery'} 
               size="lg"
@@ -233,7 +233,7 @@ export default function NoraStudio() {
             <X className="w-6 h-6" />
           </button>
           
-          <div className="max-w-5xl max-h-[80vh] overflow-hidden animate-fade-in" style={{ animationDelay: '60ms', animationFillMode: 'both' }}>
+          <div className="max-w-5xl max-h-[80vh] overflow-hidden animate-fade-in anim-delay-60">
             <img 
               src={selectedImage} 
               alt="Selected"
@@ -246,7 +246,7 @@ export default function NoraStudio() {
       {/* Testimonials */}
       <section className="section">
         <div className="container">
-          <div className="text-center mb-16 animate-fade-in" style={{ animationDelay: '80ms', animationFillMode: 'both' }}>
+          <div className="text-center mb-16 animate-fade-in anim-delay-80">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">نظرات مشتریان</h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               تجربه‌های واقعی از مشتریان ما
@@ -282,7 +282,7 @@ export default function NoraStudio() {
       {/* Pricing Plans */}
       <section className="section bg-secondary/30">
         <div className="container">
-          <div className="text-center mb-16 animate-fade-in" style={{ animationDelay: '80ms', animationFillMode: 'both' }}>
+          <div className="text-center mb-16 animate-fade-in anim-delay-80">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">پکیج‌های عکاسی</h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               انتخاب مناسب برای سلیقه و بودجه شما
@@ -292,11 +292,9 @@ export default function NoraStudio() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {pricingPlans.map((plan, index) => (
               <Card key={index} className={`glass-card relative ${plan.popular ? 'border-primary border-2' : ''} animate-fade-in`} style={{ animationDelay: `${100 + index * 80}ms`, animationFillMode: 'both' }}>
-                {plan.popular && (
-                  <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground">
-                    محبوب‌ترین
-                  </Badge>
-                )}
+                <CardHeader>
+                  <CardTitle className="text-2xl">{plan.title}</CardTitle>
+                </CardHeader>
                 <CardContent className="p-8">
                   <h3 className="text-2xl font-bold mb-2">{plan.title}</h3>
                   <div className="mb-6">
@@ -327,7 +325,7 @@ export default function NoraStudio() {
       {/* Contact Section */}
       <section className="section">
         <div className="container">
-          <div className="text-center mb-12 animate-fade-in" style={{ animationDelay: '80ms', animationFillMode: 'both' }}>
+          <div className="text-center mb-12 animate-fade-in anim-delay-80">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">تماس با ما</h2>
           </div>
           

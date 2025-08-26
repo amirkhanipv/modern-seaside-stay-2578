@@ -247,7 +247,7 @@ export default function Contact() {
         </section>
         
         {/* FAQ Section */}
-        <section className="section bg-muted">
+        <section className="section bg-secondary/50 dark:bg-secondary/20">
           <div className="container">
             <div className="max-w-3xl mx-auto text-center mb-12 animate-fade-in">
               <h2 className="text-3xl font-bold mb-4">{t.contact.faq}</h2>

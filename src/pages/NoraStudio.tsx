@@ -269,7 +269,7 @@ export default function NoraStudio() {
                       aria-label="قبلی"
                       onClick={goToPreviousSlide}
                     >
-                      <ChevronLeft className="h-5 w-5" />
+                      <ChevronRight className="h-5 w-5" />
                     </Button>
                     <div className="flex justify-center gap-2">
                       {category.images.map((_, index) => (
@@ -289,7 +289,7 @@ export default function NoraStudio() {
                       aria-label="بعدی"
                       onClick={goToNextSlide}
                     >
-                      <ChevronRight className="h-5 w-5" />
+                      <ChevronLeft className="h-5 w-5" />
                     </Button>
                   </div>
 

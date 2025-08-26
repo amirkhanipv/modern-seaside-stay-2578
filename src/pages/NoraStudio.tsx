@@ -252,7 +252,7 @@ export default function NoraStudio() {
                     <img
                       src={category.images[activeSlideIndex]}
                       alt={category.title}
-                      className="w-full h-full object-cover transition-all duration-500 ease-out scale-105 group-hover:scale-110"
+                      className="w-full h-full object-cover object-center transition-all duration-500 ease-out scale-105 group-hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
                       <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 backdrop-blur-sm rounded-full p-3">

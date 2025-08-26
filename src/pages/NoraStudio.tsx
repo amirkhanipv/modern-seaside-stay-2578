@@ -266,10 +266,10 @@ export default function NoraStudio() {
                     <Button
                       variant="outline"
                       size="icon"
-                      aria-label="بعدی"
-                      onClick={goToNextSlide}
+                      aria-label="قبلی"
+                      onClick={goToPreviousSlide}
                     >
-                      <ChevronRight className="h-5 w-5" />
+                      <ChevronLeft className="h-5 w-5" />
                     </Button>
                     <div className="flex justify-center gap-2">
                       {category.images.map((_, index) => (
@@ -286,10 +286,10 @@ export default function NoraStudio() {
                     <Button
                       variant="outline"
                       size="icon"
-                      aria-label="قبلی"
-                      onClick={goToPreviousSlide}
+                      aria-label="بعدی"
+                      onClick={goToNextSlide}
                     >
-                      <ChevronLeft className="h-5 w-5" />
+                      <ChevronRight className="h-5 w-5" />
                     </Button>
                   </div>
 

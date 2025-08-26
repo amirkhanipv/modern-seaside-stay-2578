@@ -62,7 +62,7 @@ export default function BookingForm() {
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4">
+      <div className="min-h-screen flex items-center justify-center p-4 animate-fade-in anim-delay-80">
         <Card className="w-full max-w-md">
           <CardHeader>
             <CardTitle className="text-center text-2xl">رزرو تکمیل شد!</CardTitle>
@@ -80,7 +80,7 @@ export default function BookingForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4 animate-fade-in anim-delay-80">
       <Card className="w-full max-w-lg">
         <CardHeader>
           <CardTitle className="text-2xl text-center">فرم رزرو آنلاین</CardTitle>

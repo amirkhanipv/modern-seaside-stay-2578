@@ -101,7 +101,7 @@ export default function Index() {
         <section id="welcome" className="section">
           <div className="container">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div className="animate-fade-in [animation-delay:100ms]">
+              <div className="animate-fade-in anim-delay-100">
                 <span className="text-sm text-primary font-medium uppercase tracking-wider">
                   {t.home.welcome.subtitle}
                 </span>
@@ -121,7 +121,7 @@ export default function Index() {
                 </Button>
               </div>
               
-              <div className="relative animate-fade-in [animation-delay:300ms]">
+              <div className="relative animate-fade-in anim-delay-300">
                 <div className="aspect-[4/3] rounded-2xl overflow-hidden">
                   <img 
                     src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&h=600&fit=crop"
@@ -202,7 +202,7 @@ export default function Index() {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {featuredApartments.map((apartment, index) => (
-                <div key={apartment.id} className="animate-fade-in" style={{ animationDelay: `${(index + 1) * 100}ms` }}>
+                <div key={apartment.id} className="animate-fade-in" style={{ animationDelay: `${(index + 1) * 100}ms`, animationFillMode: 'both' }}>
                   <ApartmentCard apartment={apartment} />
                 </div>
               ))}

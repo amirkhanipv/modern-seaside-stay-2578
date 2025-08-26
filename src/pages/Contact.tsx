@@ -59,7 +59,7 @@ export default function Contact() {
         {/* Header Section */}
         <section className="relative py-20 bg-gradient-to-r from-sea-light to-white dark:from-sea-dark dark:to-background overflow-hidden">
           <div className="container relative z-10">
-            <div className="max-w-3xl mx-auto text-center animate-fade-in">
+            <div className="max-w-3xl mx-auto text-center animate-fade-in anim-delay-80">
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
                 {t.contact.title}
               </h1>
@@ -81,7 +81,7 @@ export default function Contact() {
           <div className="container">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               {/* Contact Information */}
-              <div className="animate-fade-in [animation-delay:100ms]">
+              <div className="animate-fade-in anim-delay-100">
                 <h2 className="text-2xl font-bold mb-6">{t.contact.getInTouch}</h2>
                 
                 <div className="glass-card p-6 space-y-6 mb-8">
@@ -150,7 +150,7 @@ export default function Contact() {
               </div>
               
               {/* Contact Form */}
-              <div className="animate-fade-in [animation-delay:300ms]">
+              <div className="animate-fade-in anim-delay-300">
                 <h2 className="text-2xl font-bold mb-6">{t.contact.sendMessage}</h2>
                 
                 <div className="glass-card p-6">
@@ -221,20 +221,23 @@ export default function Contact() {
                         />
                       </div>
                       
-                      <Button type="submit" className="w-full btn-primary">
-                        <Send className="mr-2 h-4 w-4" />
-                        {t.contact.send}
-                      </Button>
+                      <div className="flex justify-end">
+                        <Button type="submit" className="btn-primary">
+                          {isSubmitted ? (
+                            <>
+                              <Check className="h-4 w-4 ml-2" /> {t.contact.success}
+                            </>
+                          ) : (
+                            <>
+                              <Send className="h-4 w-4 ml-2" /> {t.contact.send}
+                            </>
+                          )}
+                        </Button>
+                      </div>
                     </form>
                   ) : (
-                    <div className="text-center py-12">
-                      <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <Check className="h-8 w-8 text-green-600 dark:text-green-400" />
-                      </div>
-                      <h3 className="text-xl font-semibold mb-2">{t.contact.messageSent}</h3>
-                      <p className="text-muted-foreground mb-6">
-                        {t.contact.thankYou}
-                      </p>
+                    <div className="text-center py-8">
+                      <p className="text-primary font-medium">{t.contact.success}</p>
                     </div>
                   )}
                 </div>

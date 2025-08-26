@@ -18,7 +18,7 @@ const NotFound = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background">
-      <div className="glass-card p-10 max-w-md text-center animate-fade-in">
+      <div className="glass-card p-10 max-w-md text-center animate-fade-in anim-delay-80">
         <h1 className="text-9xl font-bold text-primary mb-4">404</h1>
         <h2 className="text-2xl font-semibold mb-4">{t.notFound.title}</h2>
         <p className="text-muted-foreground mb-8">

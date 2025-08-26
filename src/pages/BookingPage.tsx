@@ -156,9 +156,9 @@ export default function BookingPage() {
       
       <main className="flex-1 pt-20">
         {/* Header Section */}
-        <section className="relative py-16 bg-gradient-to-r from-sea-light to-white dark:from-sea-dark dark:to-background overflow-hidden">
+        <section className="relative py-16 bg-gradient-to-r from-sea-light to_white dark:from-sea-dark dark:to-background overflow-hidden">
           <div className="container relative z-10">
-            <div className="max-w-3xl mx-auto text-center animate-fade-in">
+            <div className="max-w-3xl mx-auto text-center animate-fade-in anim-delay-80">
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
                 Book Your Stay
               </h1>
@@ -177,13 +177,13 @@ export default function BookingPage() {
         
         {/* Booking Steps */}
         <section className="container py-8">
-          <div className="relative animate-fade-in [animation-delay:200ms]">
-            <div className="flex justify-between items-center mb-8">
+          <div className="relative animate-fade-in anim-delay-180">
+            <div className="flex justify_between items-center mb-8">
               {[1, 2, 3].map((step) => (
                 <div key={step} className="flex flex-col items-center relative z-10">
                   <div
                     className={cn(
-                      "w-10 h-10 rounded-full flex items-center justify-center mb-2 transition-colors",
+                      "w-10 h-10 rounded-full flex items-center justify_center mb-2 transition-colors",
                       currentStep >= step
                         ? "bg-primary text-white"
                         : "bg-muted text-muted-foreground"
@@ -220,12 +220,12 @@ export default function BookingPage() {
           
           {/* Step 1: Choose Room */}
           {currentStep === 1 && (
-            <div className="animate-fade-in [animation-delay:300ms]">
+            <div className="animate-fade-in anim-delay-300">
               <div className="max-w-4xl mx-auto">
                 {/* Date and Guests Selection */}
                 <div className="glass-card p-6 mb-8">
                   <h2 className="text-xl font-semibold mb-4">Select Dates and Guests</h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="grid grid-cols-1 md:grid_cols-2 lg:grid-cols-4 gap-4">
                     {/* Check-in Date */}
                     <div className="space-y-2">
                       <label htmlFor="check-in" className="block text-sm font-medium">
@@ -242,7 +242,7 @@ export default function BookingPage() {
                             )}
                           >
                             <CalendarIcon className="mr-2 h-4 w-4" />
-                            {startDate ? format(startDate, "PPP") : <span>Select date</span>}
+                            {startDate ? format(startDate, "PPP") : "Pick a date"}
                           </Button>
                         </PopoverTrigger>
                         <PopoverContent className="w-auto p-0" align="start">

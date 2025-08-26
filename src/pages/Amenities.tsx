@@ -33,7 +33,7 @@ export default function Amenities() {
         {/* Hero Section */}
         <section className="relative py-20 bg-gradient-to-r from-sea-light to-white dark:from-sea-dark dark:to-background">
           <div className="container relative z-10 pt-20">
-            <div className="text-center max-w-3xl mx-auto">
+            <div className="text-center max-w-3xl mx-auto animate-fade-in anim-delay-80">
               <span className="text-sm text-primary font-medium uppercase tracking-wider">
                 MareSereno
               </span>
@@ -56,7 +56,7 @@ export default function Amenities() {
         {/* Description Section */}
         <section className="py-16">
           <div className="container">
-            <div className="max-w-3xl mx-auto text-center">
+            <div className="max-w-3xl mx-auto text-center animate-fade-in anim-delay-120">
               <p className="text-lg text-muted-foreground">
                 {t.amenitiesPage.description}
               </p>
@@ -72,7 +72,7 @@ export default function Amenities() {
           return (
             <section key={category} className={`py-16 ${isEven ? 'bg-card' : ''}`}>
               <div className="container">
-                <div className="text-center max-w-3xl mx-auto mb-12">
+                <div className="text-center max-w-3xl mx-auto mb-12 animate-fade-in" style={{ animationDelay: `${80 + categoryIndex * 60}ms`, animationFillMode: 'both' }}>
                   <h2 className="text-3xl font-bold mb-4">
                     {categoryData.title}
                   </h2>
@@ -104,7 +104,7 @@ export default function Amenities() {
         {/* Gallery Section */}
         <section className="py-16">
           <div className="container">
-            <div className="text-center max-w-3xl mx-auto mb-12">
+            <div className="text-center max-w-3xl mx-auto mb-12 animate-fade-in anim-delay-80">
               <h2 className="text-3xl font-bold mb-4">
                 {t.gallery.title}
               </h2>

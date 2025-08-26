@@ -77,7 +77,7 @@ export default function AdminDashboard() {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Card className="w-full max-w-md">
+        <Card className="w-full max-w-md animate-fade-in anim-delay-80">
           <CardHeader>
             <CardTitle>ورود ادمین</CardTitle>
           </CardHeader>
@@ -99,11 +99,15 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen p-4">
-      <h1 className="text-3xl font-bold mb-8 text-center">داشبورد ادمین</h1>
+    <div className="min-h-screen p-4 animate-fade-in">
+      <h1 className="text-3xl font-bold mb-8 text-center animate-fade-in anim-delay-80">داشبورد ادمین</h1>
       <div className="grid gap-4">
-        {bookings.map((booking) => (
-          <Card key={booking.id}>
+        {bookings.map((booking, index) => (
+          <Card 
+            key={booking.id}
+            className="animate-fade-in"
+            style={{ animationDelay: `${index * 60}ms`, animationFillMode: 'both' }}
+          >
             <CardContent className="p-6">
               <div className="flex justify-between items-center">
                 <div>

@@ -95,7 +95,6 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Vazirmatn', sans-serif;
-    direction: rtl;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -148,6 +147,34 @@
   .anim-delay-180 { animation-delay: 180ms; animation-fill-mode: both; }
   .anim-delay-240 { animation-delay: 240ms; animation-fill-mode: both; }
   .anim-delay-300 { animation-delay: 300ms; animation-fill-mode: both; }
+
+  /* RTL-specific utilities */
+  [dir="rtl"] .rtl\:space-x-reverse > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-x-reverse: 1;
+  }
+  
+  [dir="rtl"] .rtl\:flex-row-reverse {
+    flex-direction: row-reverse;
+  }
+  
+  [dir="rtl"] .rtl\:text-right {
+    text-align: right;
+  }
+  
+  [dir="rtl"] .rtl\:text-left {
+    text-align: left;
+  }
+  
+  /* Arrow and navigation fixes for RTL */
+  [dir="rtl"] .carousel-arrow-prev {
+    right: -3rem;
+    left: auto;
+  }
+  
+  [dir="rtl"] .carousel-arrow-next {
+    left: -3rem;
+    right: auto;
+  }
 
   /* Reduced motion accessibility */
   @media (prefers-reduced-motion: reduce) {

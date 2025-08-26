@@ -19,6 +19,7 @@ type Language = {
 const languages: Language[] = [
   { code: "en", name: "English", flag: "🇬🇧" },
   { code: "it", name: "Italiano", flag: "🇮🇹" },
+  { code: "fa", name: "فارسی", flag: "🇮🇷" },
 ];
 
 export default function LanguageSelector() {
@@ -45,7 +46,7 @@ export default function LanguageSelector() {
           className="w-[80px] h-10 border-none bg-transparent focus:ring-0" 
           aria-label="Select Language"
         >
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 rtl:space-x-reverse">
             <Globe className="h-4 w-4" />
             <SelectValue placeholder="Select language" />
           </div>
@@ -53,7 +54,7 @@ export default function LanguageSelector() {
         <SelectContent align="start" className="w-[160px]">
           {languages.map((language) => (
             <SelectItem key={language.code} value={language.code} className="cursor-pointer">
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 rtl:space-x-reverse">
                 <span>{language.flag}</span>
                 <span>{language.name}</span>
               </div>

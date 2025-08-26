@@ -88,10 +88,11 @@ export default function AdminDashboard() {
     }
 
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('bookings')
         .delete()
-        .eq('id', id);
+        .eq('id', id)
+        .select();
       
       if (error) {
         console.error('Error deleting booking:', error);
@@ -99,12 +100,17 @@ export default function AdminDashboard() {
         return;
       }
       
-      // Update local state immediately for better UX
-      setBookings(prevBookings => 
-        prevBookings.filter(booking => booking.id !== id)
-      );
-      
-      alert('رزرو با موفقیت حذف شد');
+      // If deletion returned the deleted row, data will have length 1
+      if (data && data.length > 0) {
+        setBookings(prevBookings => 
+          prevBookings.filter(booking => booking.id !== id)
+        );
+        alert('رزرو با موفقیت حذف شد');
+      } else {
+        // If no data returned (policy may prevent returning rows), refetch
+        await fetchBookings();
+        alert('رزرو با موفقیت حذف شد');
+      }
     } catch (error) {
       console.error('Error:', error);
       alert('خطا در حذف رزرو');

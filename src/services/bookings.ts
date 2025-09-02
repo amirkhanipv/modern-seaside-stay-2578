@@ -19,7 +19,22 @@ export async function fetchBookings(): Promise<Booking[]> {
 export async function updateBookingCalled(id: string, called: boolean): Promise<Booking> {
   const { data, error } = await supabase
     .from("bookings")
-    .update({ called })
+    .update({ called, updated_at: new Date().toISOString() })
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data as Booking;
+}
+
+export async function updateBookingStatus(id: string, status: string): Promise<Booking> {
+  const { data, error } = await supabase
+    .from("bookings")
+    .update({ status, updated_at: new Date().toISOString() })
     .eq("id", id)
     .select()
     .single();
@@ -38,6 +53,7 @@ export async function deleteBookingById(id: string): Promise<void> {
     .eq("id", id);
 
   if (error) {
+    console.error('Delete error:', error);
     throw new Error(error.message);
   }
 }

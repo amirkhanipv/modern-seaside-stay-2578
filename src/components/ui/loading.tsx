@@ -9,7 +9,7 @@ export function Loading({ className }: LoadingProps) {
 		<div className={cn("flex items-center justify-center", className)}>
 			<div className="relative">
 				<div className="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin"></div>
-				<div className="absolute inset-0 w-16 h-16 border-4 border-transparent border-r-secondary rounded-full animate-spin animate-reverse" style={{ animationDuration: '0.8s' }}></div>
+				<div className="absolute inset-0 w-16 h-16 border-4 border-transparent border-r-secondary rounded-full animate-spin" style={{ animationDuration: '0.8s', animationDirection: 'reverse' }}></div>
 			</div>
 		</div>
 	)
@@ -28,7 +28,7 @@ export function LoadingPage() {
 					<div className="absolute inset-0 rounded-full ring-2 ring-primary/30" />
 					{/* Orbiting dot */}
 					<div className="absolute top-1/2 left-1/2 -ml-[2px] -mt-[2px]">
-						<div className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_12px_rgba(0,0,0,0.3)] animate-orbit" />
+						<div className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_12px_rgba(0,0,0,0.3)] animate-spin" style={{ animationDuration: '2s' }} />
 					</div>
 					{/* Camera icon spinning softly */}
 					<div className="absolute inset-0 flex items-center justify-center">
@@ -37,7 +37,8 @@ export function LoadingPage() {
 							fill="none"
 							stroke="currentColor"
 							strokeWidth="2"
-							className="w-10 h-10 text-primary animate-spin-3d"
+							className="w-10 h-10 text-primary animate-spin"
+							style={{ animationDuration: '3s' }}
 						>
 							<path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
 							<circle cx="12" cy="13" r="3"/>

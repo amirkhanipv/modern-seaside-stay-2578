@@ -186,6 +186,7 @@ export const it = {
     howCanWeHelp: "Come possiamo aiutarti?",
     send: "Invia",
     messageSent: "Messaggio Inviato!",
+    success: "Successo!",
     thankYou: "Grazie per averci contattato. Risponderemo al tuo messaggio il prima possibile.",
     faq: "Domande Frequenti",
     faqSubtitle: "Trova risposte rapide alle domande più comuni sui nostri alloggi e servizi.",

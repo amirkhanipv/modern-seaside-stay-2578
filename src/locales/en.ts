@@ -243,6 +243,7 @@ export const en = {
     howCanWeHelp: "How can we help you?",
     send: "Send Message",
     messageSent: "Message Sent!",
+    success: "Success!",
     thankYou: "Thank you for reaching out. We'll respond to your message as soon as possible.",
     faq: "Frequently Asked Questions",
     faqSubtitle: "Find quick answers to commonly asked questions about our accommodations and services.",

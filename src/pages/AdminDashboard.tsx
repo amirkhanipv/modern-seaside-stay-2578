@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/components/ui/use-toast";
-import { fetchBookings as apiFetchBookings, updateBookingCalled, deleteBookingById, type Booking } from "@/services/bookings";
+import { fetchBookings as apiFetchBookings, updateBookingCalled, updateBookingStatus, deleteBookingById, type Booking } from "@/services/bookings";
 
 const ADMIN_REMEMBER_KEY = "admin_remembered";
 
@@ -74,10 +74,13 @@ export default function AdminDashboard() {
     }
 
     try {
+      console.log('Deleting booking with ID:', id);
       await deleteBookingById(id);
       setBookings(prev => prev.filter(b => b.id !== id));
       toast({ title: "رزرو حذف شد" });
+      console.log('Booking deleted successfully');
     } catch (error: any) {
+      console.error('Delete booking error:', error);
       toast({
         title: "خطا در حذف رزرو",
         description: error?.message ?? "مشکلی پیش آمد",

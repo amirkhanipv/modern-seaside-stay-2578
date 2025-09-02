@@ -16,6 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import GallerySection from "@/components/GallerySection";
 import heroImage from "@/assets/hero-model.jpg";
 
 // ----- Types -----
@@ -176,7 +177,7 @@ export default function NoraStudio() {
         <div className="absolute inset-0 hero-overlay" />
 
         <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4 animate-fade-in">
-          <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-tight animate-fade-in anim-delay-60">
+          <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-tight animate-fade-in anim-delay-60 font-nofer">
             آتلیه نورا
           </h1>
           <p className="text-xl md:text-2xl mb-8 text-white/90 animate-fade-in anim-delay-120">
@@ -206,124 +207,7 @@ export default function NoraStudio() {
       </section>
 
       {/* Portfolio Gallery */}
-      <section id="portfolio" className="section bg-secondary/30">
-        <div className="container">
-          <div className="text-center mb-16 animate-fade-in anim-delay-80">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">نمونه کارها</h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              مجموعه‌ای از بهترین لحظه‌ها در آتلیه نورا
-            </p>
-          </div>
-
-          <Tabs
-            value={activeCategoryKey}
-            onValueChange={(value) =>
-              setActiveCategoryKey(value as PortfolioCategoryKey)
-            }
-            className="animate-fade-in anim-delay-140"
-          >
-            <TabsList className="grid grid-cols-2 md:grid-cols-4 gap-2">
-              {Object.entries(PORTFOLIO_CATEGORIES).map(([key, category]) => (
-                <TabsTrigger key={key} value={key} className="text-sm md:text-base">
-                  {category.title}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-
-            {Object.entries(PORTFOLIO_CATEGORIES).map(([key, category]) => (
-              <TabsContent
-                key={key}
-                value={key}
-                className="transition-all duration-500 ease-in-out"
-              >
-                <div className="relative max-w-2xl mx-auto animate-fade-in anim-delay-100">
-                  <div
-                    className="aspect-square rounded-2xl overflow-hidden shadow-lg persian-shadow cursor-pointer group relative"
-                    onClick={() => setLightboxImageSrc(category.images[activeSlideIndex])}
-                    role="button"
-                    aria-label={`${category.title} - مشاهده تصویر در اندازه بزرگ`}
-                    tabIndex={0}
-                    onKeyDown={(event) => {
-                      if (event.key === "Enter" || event.key === " ") {
-                        setLightboxImageSrc(category.images[activeSlideIndex]);
-                      }
-                    }}
-                  >
-                    <img
-                      src={category.images[activeSlideIndex]}
-                      alt={category.title}
-                      className="w-full h-full object-cover object-center transition-all duration-500 ease-out scale-105 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
-                      <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 backdrop-blur-sm rounded-full p-3">
-                        <Camera className="w-6 h-6 text-gray-800" />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Controls */}
-                  <div className="flex items-center justify-between mt-4">
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      aria-label="قبلی"
-                      onClick={goToPreviousSlide}
-                    >
-                      <ChevronLeft className="h-5 w-5" />
-                    </Button>
-                    <div className="flex justify-center gap-2">
-                      {category.images.map((_, index) => (
-                        <button
-                          key={`${key}-dot-${index}`}
-                          className={`w-3 h-3 rounded-full ${
-                            index === activeSlideIndex ? "bg-primary" : "bg-primary/30"
-                          } transition-colors`}
-                          onClick={() => setActiveSlideIndex(index)}
-                          aria-label={`رفتن به اسلاید ${index + 1}`}
-                        />
-                      ))}
-                    </div>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      aria-label="بعدی"
-                      onClick={goToNextSlide}
-                    >
-                      <ChevronRight className="h-5 w-5" />
-                    </Button>
-                  </div>
-
-                  <div className="text-center mt-8 animate-fade-in anim-delay-120">
-                    <Button
-                      onClick={() => (window.location.href = "/gallery")}
-                      size="lg"
-                      className="px-8"
-                    >
-                      مشاهده همه نمونه کارها
-                    </Button>
-                  </div>
-                </div>
-              </TabsContent>
-            ))}
-          </Tabs>
-        </div>
-      </section>
-
-      {/* Lightbox */}
-      {lightboxImageSrc && (
-        <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 animate-fade-in">
-          <button
-            className="absolute top-4 right-4 text-white p-2 rounded-full hover:bg-white/10 transition-colors"
-            onClick={() => setLightboxImageSrc(null)}
-            aria-label="Close"
-          >
-            <X className="w-6 h-6" />
-          </button>
-          <div className="max-w-5xl max-h-[80vh] overflow-hidden animate-fade-in anim-delay-60">
-            <img src={lightboxImageSrc} alt="Selected" className="w-full h-full object-contain" />
-          </div>
-        </div>
-      )}
+      <GallerySection />
 
       {/* Testimonials */}
       <section className="section">

@@ -17,15 +17,15 @@ export default function Footer() {
               {t.footer.description}
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              <a href="#" className="bg-primary/10 hover:bg-primary/20 p-3 rounded-full text-primary hover:text-primary transition-all duration-300 hover:scale-110">
                 <Facebook size={20} />
                 <span className="sr-only">Facebook</span>
               </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              <a href="#" className="bg-primary/10 hover:bg-primary/20 p-3 rounded-full text-primary hover:text-primary transition-all duration-300 hover:scale-110">
                 <Instagram size={20} />
                 <span className="sr-only">Instagram</span>
               </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              <a href="#" className="bg-primary/10 hover:bg-primary/20 p-3 rounded-full text-primary hover:text-primary transition-all duration-300 hover:scale-110">
                 <Twitter size={20} />
                 <span className="sr-only">Twitter</span>
               </a>

@@ -110,14 +110,15 @@ export default function GallerySection({ showViewAllButton = true }: GallerySect
           </div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-4 max-w-2xl mx-auto mb-12 bg-card shadow-lg">
+            <TabsList className="grid w-full grid-cols-4 max-w-2xl mx-auto mb-12 bg-card shadow-lg h-16">
               {Object.entries(galleryCategories).map(([key, category]) => (
                 <TabsTrigger 
                   key={key} 
                   value={key}
-                  className="text-lg font-medium data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-500 hover:bg-primary/10"
+                  className="text-lg font-medium h-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-500 hover:bg-primary/10 relative overflow-hidden"
                 >
-                  {category.title}
+                  <span className="relative z-10">{category.title}</span>
+                  <div className="absolute inset-x-0 bottom-0 h-1 bg-primary transform scale-x-0 data-[state=active]:scale-x-100 transition-transform duration-300 origin-center" />
                 </TabsTrigger>
               ))}
             </TabsList>
@@ -153,14 +154,14 @@ export default function GallerySection({ showViewAllButton = true }: GallerySect
 
                     {/* Navigation arrows */}
                     <button 
-                      className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
+                      className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10"
                       onClick={goToPreviousSlide}
                       aria-label="قبلی"
                     >
                       <ChevronLeft className="w-6 h-6" />
                     </button>
                     <button 
-                      className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10"
                       onClick={goToNextSlide}
                       aria-label="بعدی"
                     >

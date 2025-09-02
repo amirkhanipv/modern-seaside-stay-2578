@@ -131,7 +131,12 @@ export default function AdminDashboard() {
     <div className="min-h-screen p-4 animate-fade-in">
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-3xl font-bold text-center animate-fade-in anim-delay-80">داشبورد ادمین</h1>
-        <Button variant="outline" onClick={handleLogout}>خروج</Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={() => window.location.href = '/admin/portfolio'}>
+            مدیریت نمونه کارها
+          </Button>
+          <Button variant="outline" onClick={handleLogout}>خروج</Button>
+        </div>
       </div>
       <div className="grid gap-4">
         {bookings.map((booking, index) => (

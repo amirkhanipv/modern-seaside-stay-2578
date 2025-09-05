@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/components/ui/use-toast";
 import { fetchBookings as apiFetchBookings, updateBookingCalled, updateBookingStatus, deleteBookingById, type Booking } from "@/services/bookings";
+import { supabase } from "@/integrations/supabase/client";
 
 const ADMIN_REMEMBER_KEY = "admin_remembered";
 
@@ -92,6 +93,35 @@ export default function AdminDashboard() {
   useEffect(() => {
     if (isAuthenticated) {
       loadBookings();
+      
+      // Set up real-time subscription for bookings
+      const channel = supabase
+        .channel('admin-bookings')
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'bookings'
+          },
+          (payload) => {
+            console.log('Real-time booking change:', payload);
+            if (payload.eventType === 'DELETE') {
+              setBookings(prev => prev.filter(b => b.id !== payload.old.id));
+            } else if (payload.eventType === 'UPDATE') {
+              setBookings(prev => prev.map(b => 
+                b.id === payload.new.id ? { ...b, ...payload.new } : b
+              ));
+            } else if (payload.eventType === 'INSERT') {
+              setBookings(prev => [payload.new as Booking, ...prev]);
+            }
+          }
+        )
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(channel);
+      };
     }
   }, [isAuthenticated]);
 

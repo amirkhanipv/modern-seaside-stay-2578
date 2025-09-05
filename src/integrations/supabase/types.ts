@@ -56,6 +56,133 @@ export type Database = {
         }
         Relationships: []
       }
+      categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      discount_plans: {
+        Row: {
+          active: boolean | null
+          category_id: string | null
+          conditions: string | null
+          created_at: string
+          description: string
+          discounted_price: number | null
+          display_order: number | null
+          duration_days: number | null
+          features: string[] | null
+          id: string
+          name: string
+          original_price: number
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean | null
+          category_id?: string | null
+          conditions?: string | null
+          created_at?: string
+          description: string
+          discounted_price?: number | null
+          display_order?: number | null
+          duration_days?: number | null
+          features?: string[] | null
+          id?: string
+          name: string
+          original_price: number
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean | null
+          category_id?: string | null
+          conditions?: string | null
+          created_at?: string
+          description?: string
+          discounted_price?: number | null
+          display_order?: number | null
+          duration_days?: number | null
+          features?: string[] | null
+          id?: string
+          name?: string
+          original_price?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "discount_plans_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      portfolio_images: {
+        Row: {
+          category_id: string | null
+          created_at: string
+          description: string | null
+          display_order: number | null
+          featured: boolean | null
+          id: string
+          title: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          category_id?: string | null
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          featured?: boolean | null
+          id?: string
+          title: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          category_id?: string | null
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          featured?: boolean | null
+          id?: string
+          title?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "portfolio_images_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

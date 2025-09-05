@@ -109,15 +109,15 @@ export default function GallerySection({ showViewAllButton = true }: GallerySect
             <p className="text-muted-foreground">نمونه‌ای از بهترین کارهای ما در دسته‌بندی‌های مختلف</p>
           </div>
 
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-4 max-w-2xl mx-auto mb-12 bg-card shadow-lg h-16">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full" dir="rtl">
+            <TabsList className="grid w-full grid-cols-4 max-w-2xl mx-auto mb-12 bg-card shadow-lg h-16 rounded-2xl">
               {Object.entries(galleryCategories).map(([key, category]) => (
                 <TabsTrigger 
                   key={key} 
                   value={key}
-                  className="text-lg font-medium h-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-500 hover:bg-primary/10 relative overflow-hidden"
+                  className="text-lg font-medium h-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-500 hover:bg-primary/10 relative overflow-hidden rounded-xl mx-1 my-1"
                 >
-                  <span className="relative z-10">{category.title}</span>
+                  <span className="relative z-10 px-2">{category.title}</span>
                   <div className="absolute inset-x-0 bottom-0 h-1 bg-primary transform scale-x-0 data-[state=active]:scale-x-100 transition-transform duration-300 origin-center" />
                 </TabsTrigger>
               ))}
@@ -152,33 +152,33 @@ export default function GallerySection({ showViewAllButton = true }: GallerySect
                       ))}
                     </div>
 
-                    {/* Navigation arrows */}
+                    {/* Navigation arrows - Fixed for RTL */}
                     <button 
-                      className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10"
+                      className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10"
                       onClick={goToPreviousSlide}
                       aria-label="قبلی"
                     >
-                      <ChevronLeft className="w-6 h-6" />
+                      <ChevronRight className="w-6 h-6" />
                     </button>
                     <button 
-                      className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10"
+                      className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10"
                       onClick={goToNextSlide}
                       aria-label="بعدی"
                     >
-                      <ChevronRight className="w-6 h-6" />
+                      <ChevronLeft className="w-6 h-6" />
                     </button>
                   </div>
 
                   {/* Indicators */}
-                  <div className="flex justify-center gap-3 mb-8">
+                  <div className="flex justify-center gap-4 mb-8">
                     {category.images.map((_, index) => (
                       <button
                         key={`${key}-dot-${index}`}
                         className={cn(
-                          "transition-all duration-300",
+                          "transition-all duration-500 hover:scale-110",
                           index === activeSlideIndex 
-                            ? "w-8 h-3 bg-primary rounded-full" 
-                            : "w-3 h-3 bg-primary/30 rounded-full hover:bg-primary/50"
+                            ? "w-10 h-3 bg-primary rounded-full shadow-md" 
+                            : "w-3 h-3 bg-primary/30 rounded-full hover:bg-primary/60"
                         )}
                         onClick={() => setActiveSlideIndex(index)}
                         aria-label={`رفتن به اسلاید ${index + 1}`}
@@ -241,11 +241,11 @@ export default function GallerySection({ showViewAllButton = true }: GallerySect
           </button>
           
           <button 
-            className="absolute left-6 top-1/2 -translate-y-1/2 text-white p-4 rounded-full hover:bg-white/10 transition-colors z-10"
+            className="absolute right-6 top-1/2 -translate-y-1/2 text-white p-4 rounded-full hover:bg-white/10 transition-colors z-10"
             onClick={() => navigateLightbox("prev")}
           >
             <span className="sr-only">قبلی</span>
-            <ChevronLeft className="h-10 w-10" />
+            <ChevronRight className="h-10 w-10" />
           </button>
           
           <div className="max-w-6xl max-h-[85vh] overflow-hidden animate-scale-in">
@@ -257,11 +257,11 @@ export default function GallerySection({ showViewAllButton = true }: GallerySect
           </div>
           
           <button 
-            className="absolute right-6 top-1/2 -translate-y-1/2 text-white p-4 rounded-full hover:bg-white/10 transition-colors z-10"
+            className="absolute left-6 top-1/2 -translate-y-1/2 text-white p-4 rounded-full hover:bg-white/10 transition-colors z-10"
             onClick={() => navigateLightbox("next")}
           >
             <span className="sr-only">بعدی</span>
-            <ChevronRight className="h-10 w-10" />
+            <ChevronLeft className="h-10 w-10" />
           </button>
         </div>
       )}

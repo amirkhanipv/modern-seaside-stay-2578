@@ -16,16 +16,16 @@ export default function Footer() {
             <p className="text-muted-foreground mb-4">
               {t.footer.description}
             </p>
-            <div className="flex space-x-4">
-              <a href="#" className="bg-primary/10 hover:bg-primary/20 p-3 rounded-full text-primary hover:text-primary transition-all duration-300 hover:scale-110">
+            <div className="flex space-x-4 rtl:space-x-reverse">
+              <a href="#" className="bg-card hover:bg-primary/20 p-3 rounded-full text-card-foreground hover:text-primary transition-all duration-300 hover:scale-110 border border-border">
                 <Facebook size={20} />
                 <span className="sr-only">Facebook</span>
               </a>
-              <a href="#" className="bg-primary/10 hover:bg-primary/20 p-3 rounded-full text-primary hover:text-primary transition-all duration-300 hover:scale-110">
+              <a href="#" className="bg-card hover:bg-primary/20 p-3 rounded-full text-card-foreground hover:text-primary transition-all duration-300 hover:scale-110 border border-border">
                 <Instagram size={20} />
                 <span className="sr-only">Instagram</span>
               </a>
-              <a href="#" className="bg-primary/10 hover:bg-primary/20 p-3 rounded-full text-primary hover:text-primary transition-all duration-300 hover:scale-110">
+              <a href="#" className="bg-card hover:bg-primary/20 p-3 rounded-full text-card-foreground hover:text-primary transition-all duration-300 hover:scale-110 border border-border">
                 <Twitter size={20} />
                 <span className="sr-only">Twitter</span>
               </a>
@@ -86,7 +86,7 @@ export default function Footer() {
               <input 
                 type="email" 
                 placeholder={t.footer.yourEmail} 
-                className="rounded-md px-4 py-2 bg-muted text-foreground"
+                className="rounded-md px-4 py-2 bg-card border border-border text-card-foreground placeholder:text-muted-foreground"
                 required 
               />
               <button 

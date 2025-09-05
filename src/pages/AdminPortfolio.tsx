@@ -7,40 +7,36 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "@/components/ui/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { X, Upload, Eye, Trash2 } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { X, Upload, Eye, Trash2, Plus, Edit } from "lucide-react";
+import {
+  fetchCategories,
+  fetchPortfolioImages,
+  fetchDiscountPlans,
+  createCategory,
+  createPortfolioImage,
+  createDiscountPlan,
+  deleteCategory,
+  deletePortfolioImage,
+  deleteDiscountPlan,
+  type Category,
+  type PortfolioImage,
+  type DiscountPlan
+} from "@/services/portfolio";
 
-interface PortfolioImage {
-  id: string;
-  url: string;
-  category: string;
-  title: string;
-  description?: string;
-  featured: boolean;
-}
-
-interface PricingPlan {
-  id: string;
-  name: string;
-  originalPrice: number;
-  discountedPrice?: number;
-  category: string;
-  description: string;
-  features: string[];
-  active: boolean;
-}
-
-const categories = [
-  { value: "wedding", label: "عروس" },
-  { value: "children", label: "کودک" },
-  { value: "sport", label: "اسپرت" },
-  { value: "family", label: "خانوادگی" }
-];
 
 export default function AdminPortfolio() {
+  const [categories, setCategories] = useState<Category[]>([]);
   const [images, setImages] = useState<PortfolioImage[]>([]);
-  const [plans, setPlans] = useState<PricingPlan[]>([]);
+  const [plans, setPlans] = useState<DiscountPlan[]>([]);
   const [activeTab, setActiveTab] = useState("portfolio");
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [loading, setLoading] = useState(true);
+  
+  // Category form states
+  const [categoryName, setCategoryName] = useState("");
+  const [categorySlug, setCategorySlug] = useState("");
+  const [categoryDescription, setCategoryDescription] = useState("");
   
   // Portfolio form states
   const [imageUrl, setImageUrl] = useState("");
@@ -56,44 +52,94 @@ export default function AdminPortfolio() {
   const [planCategory, setPlanCategory] = useState("");
   const [planDescription, setPlanDescription] = useState("");
   const [planFeatures, setPlanFeatures] = useState("");
+  const [planDuration, setPlanDuration] = useState("");
+  const [planConditions, setPlanConditions] = useState("");
 
-  // Mock data initialization
+  // Load data from database
   useEffect(() => {
-    const mockImages: PortfolioImage[] = [
-      {
-        id: "1",
-        url: "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&h=600&fit=crop",
-        category: "wedding",
-        title: "عکس عروس کلاسیک",
-        featured: true
-      },
-      {
-        id: "2",
-        url: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&h=600&fit=crop",
-        category: "children",
-        title: "پرتره کودک",
-        featured: false
-      }
-    ];
-
-    const mockPlans: PricingPlan[] = [
-      {
-        id: "1",
-        name: "پکیج طلایی عروس",
-        originalPrice: 5000000,
-        discountedPrice: 4000000,
-        category: "wedding",
-        description: "پکیج کامل عکاسی عروس",
-        features: ["عکاسی 8 ساعته", "ویرایش تمام عکس‌ها", "آلبوم دیجیتال"],
-        active: true
-      }
-    ];
-
-    setImages(mockImages);
-    setPlans(mockPlans);
+    loadData();
   }, []);
 
-  const handleAddImage = () => {
+  const loadData = async () => {
+    try {
+      setLoading(true);
+      const [categoriesData, imagesData, plansData] = await Promise.all([
+        fetchCategories(),
+        fetchPortfolioImages(),
+        fetchDiscountPlans()
+      ]);
+      
+      setCategories(categoriesData);
+      setImages(imagesData);
+      setPlans(plansData);
+    } catch (error: any) {
+      toast({
+        title: "خطا در بارگیری داده‌ها",
+        description: error?.message ?? "مشکلی پیش آمد",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAddCategory = async () => {
+    if (!categoryName || !categorySlug) {
+      toast({
+        title: "خطا",
+        description: "لطفا نام و شناسه دسته‌بندی را پر کنید",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    try {
+      const newCategory = await createCategory({
+        name: categoryName,
+        slug: categorySlug,
+        description: categoryDescription
+      });
+
+      setCategories([...categories, newCategory]);
+      setCategoryName("");
+      setCategorySlug("");
+      setCategoryDescription("");
+      
+      toast({
+        title: "موفق",
+        description: "دسته‌بندی با موفقیت اضافه شد"
+      });
+    } catch (error: any) {
+      toast({
+        title: "خطا",
+        description: error?.message ?? "مشکلی پیش آمد",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleDeleteCategory = async (id: string) => {
+    if (!confirm('آیا از حذف این دسته‌بندی اطمینان دارید؟')) {
+      return;
+    }
+
+    try {
+      await deleteCategory(id);
+      setCategories(categories.filter(cat => cat.id !== id));
+      toast({
+        title: "حذف شد",
+        description: "دسته‌بندی با موفقیت حذف شد"
+      });
+    } catch (error: any) {
+      toast({
+        title: "خطا",
+        description: error?.message ?? "مشکلی پیش آمد",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleAddImage = async () => {
     if (!imageUrl || !imageTitle || !imageCategory) {
       toast({
         title: "خطا",
@@ -103,37 +149,58 @@ export default function AdminPortfolio() {
       return;
     }
 
-    const newImage: PortfolioImage = {
-      id: Date.now().toString(),
-      url: imageUrl,
-      title: imageTitle,
-      category: imageCategory,
-      description: imageDescription,
-      featured: imageFeatured
-    };
+    try {
+      const newImage = await createPortfolioImage({
+        url: imageUrl,
+        title: imageTitle,
+        category_id: imageCategory,
+        description: imageDescription,
+        featured: imageFeatured,
+        display_order: 0
+      });
 
-    setImages([...images, newImage]);
-    setImageUrl("");
-    setImageTitle("");
-    setImageCategory("");
-    setImageDescription("");
-    setImageFeatured(false);
-    
-    toast({
-      title: "موفق",
-      description: "عکس با موفقیت اضافه شد"
-    });
+      setImages([newImage, ...images]);
+      setImageUrl("");
+      setImageTitle("");
+      setImageCategory("");
+      setImageDescription("");
+      setImageFeatured(false);
+      
+      toast({
+        title: "موفق",
+        description: "عکس با موفقیت اضافه شد"
+      });
+    } catch (error: any) {
+      toast({
+        title: "خطا",
+        description: error?.message ?? "مشکلی پیش آمد",
+        variant: "destructive"
+      });
+    }
   };
 
-  const handleDeleteImage = (id: string) => {
-    setImages(images.filter(img => img.id !== id));
-    toast({
-      title: "حذف شد",
-      description: "عکس با موفقیت حذف شد"
-    });
+  const handleDeleteImage = async (id: string) => {
+    if (!confirm('آیا از حذف این عکس اطمینان دارید؟')) {
+      return;
+    }
+
+    try {
+      await deletePortfolioImage(id);
+      setImages(images.filter(img => img.id !== id));
+      toast({
+        title: "حذف شد",
+        description: "عکس با موفقیت حذف شد"
+      });
+    } catch (error: any) {
+      toast({
+        title: "خطا",
+        description: error?.message ?? "مشکلی پیش آمد",
+        variant: "destructive"
+      });
+    }
   };
 
-  const handleAddPlan = () => {
+  const handleAddPlan = async () => {
     if (!planName || !planOriginalPrice || !planCategory || !planDescription) {
       toast({
         title: "خطا",
@@ -143,57 +210,169 @@ export default function AdminPortfolio() {
       return;
     }
 
-    const newPlan: PricingPlan = {
-      id: Date.now().toString(),
-      name: planName,
-      originalPrice: parseInt(planOriginalPrice),
-      discountedPrice: planDiscountedPrice ? parseInt(planDiscountedPrice) : undefined,
-      category: planCategory,
-      description: planDescription,
-      features: planFeatures.split('\n').filter(f => f.trim()),
-      active: true
-    };
+    try {
+      const newPlan = await createDiscountPlan({
+        name: planName,
+        original_price: parseFloat(planOriginalPrice),
+        discounted_price: planDiscountedPrice ? parseFloat(planDiscountedPrice) : undefined,
+        category_id: planCategory,
+        description: planDescription,
+        features: planFeatures.split('\n').filter(f => f.trim()),
+        duration_days: planDuration ? parseInt(planDuration) : undefined,
+        conditions: planConditions || undefined,
+        active: true,
+        display_order: 0
+      });
 
-    setPlans([...plans, newPlan]);
-    setPlanName("");
-    setPlanOriginalPrice("");
-    setPlanDiscountedPrice("");
-    setPlanCategory("");
-    setPlanDescription("");
-    setPlanFeatures("");
-    
-    toast({
-      title: "موفق",
-      description: "پلن با موفقیت اضافه شد"
-    });
+      setPlans([newPlan, ...plans]);
+      setPlanName("");
+      setPlanOriginalPrice("");
+      setPlanDiscountedPrice("");
+      setPlanCategory("");
+      setPlanDescription("");
+      setPlanFeatures("");
+      setPlanDuration("");
+      setPlanConditions("");
+      
+      toast({
+        title: "موفق",
+        description: "پلن با موفقیت اضافه شد"
+      });
+    } catch (error: any) {
+      toast({
+        title: "خطا",
+        description: error?.message ?? "مشکلی پیش آمد",
+        variant: "destructive"
+      });
+    }
   };
 
-  const handleDeletePlan = (id: string) => {
-    setPlans(plans.filter(plan => plan.id !== id));
-    toast({
-      title: "حذف شد",
-      description: "پلن با موفقیت حذف شد"
-    });
+  const handleDeletePlan = async (id: string) => {
+    if (!confirm('آیا از حذف این پلن اطمینان دارید؟')) {
+      return;
+    }
+
+    try {
+      await deleteDiscountPlan(id);
+      setPlans(plans.filter(plan => plan.id !== id));
+      toast({
+        title: "حذف شد",
+        description: "پلن با موفقیت حذف شد"
+      });
+    } catch (error: any) {
+      toast({
+        title: "خطا",
+        description: error?.message ?? "مشکلی پیش آمد",
+        variant: "destructive"
+      });
+    }
   };
 
   const filteredImages = selectedCategory === "all" 
     ? images 
-    : images.filter(img => img.category === selectedCategory);
+    : images.filter(img => img.category_id === selectedCategory);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('fa-IR').format(price) + " تومان";
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen p-4 animate-fade-in flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p>در حال بارگیری...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen p-4 animate-fade-in">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8 text-center">مدیریت نمونه کارها و قیمت‌ها</h1>
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-3xl font-bold">مدیریت نمونه کارها و قیمت‌ها</h1>
+          <Button variant="outline" onClick={() => window.location.href = '/admin'}>
+            بازگشت به داشبورد
+          </Button>
+        </div>
         
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto mb-8">
+          <TabsList className="grid w-full grid-cols-3 max-w-lg mx-auto mb-8">
+            <TabsTrigger value="categories">دسته‌بندی‌ها</TabsTrigger>
             <TabsTrigger value="portfolio">نمونه کارها</TabsTrigger>
             <TabsTrigger value="pricing">قیمت‌ها</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="categories" className="space-y-6">
+            {/* Add Category Form */}
+            <Card>
+              <CardHeader>
+                <CardTitle>افزودن دسته‌بندی جدید</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="categoryName">نام دسته‌بندی *</Label>
+                    <Input
+                      id="categoryName"
+                      value={categoryName}
+                      onChange={(e) => setCategoryName(e.target.value)}
+                      placeholder="عروس"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="categorySlug">شناسه (انگلیسی) *</Label>
+                    <Input
+                      id="categorySlug"
+                      value={categorySlug}
+                      onChange={(e) => setCategorySlug(e.target.value)}
+                      placeholder="wedding"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor="categoryDescription">توضیحات</Label>
+                  <Input
+                    id="categoryDescription"
+                    value={categoryDescription}
+                    onChange={(e) => setCategoryDescription(e.target.value)}
+                    placeholder="توضیحات دسته‌بندی"
+                  />
+                </div>
+                <Button onClick={handleAddCategory} className="w-full">
+                  <Plus className="w-4 h-4 mr-2" />
+                  افزودن دسته‌بندی
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Categories List */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {categories.map((category) => (
+                <Card key={category.id}>
+                  <CardContent className="p-4">
+                    <div className="flex items-start justify-between mb-2">
+                      <div>
+                        <h3 className="font-semibold">{category.name}</h3>
+                        <p className="text-sm text-muted-foreground">شناسه: {category.slug}</p>
+                      </div>
+                      <Button 
+                        size="sm" 
+                        variant="destructive"
+                        onClick={() => handleDeleteCategory(category.id)}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                    {category.description && (
+                      <p className="text-sm">{category.description}</p>
+                    )}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
 
           <TabsContent value="portfolio" className="space-y-6">
             {/* Add Image Form */}
@@ -229,8 +408,8 @@ export default function AdminPortfolio() {
                       </SelectTrigger>
                       <SelectContent>
                         {categories.map(cat => (
-                          <SelectItem key={cat.value} value={cat.value}>
-                            {cat.label}
+                          <SelectItem key={cat.id} value={cat.id}>
+                            {cat.name}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -272,8 +451,8 @@ export default function AdminPortfolio() {
                 <SelectContent>
                   <SelectItem value="all">همه دسته‌ها</SelectItem>
                   {categories.map(cat => (
-                    <SelectItem key={cat.value} value={cat.value}>
-                      {cat.label}
+                    <SelectItem key={cat.id} value={cat.id}>
+                      {cat.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -299,7 +478,7 @@ export default function AdminPortfolio() {
                       )}
                     </div>
                     <p className="text-sm text-muted-foreground mb-2">
-                      {categories.find(cat => cat.value === image.category)?.label}
+                      {image.categories?.name || 'نامشخص'}
                     </p>
                     {image.description && (
                       <p className="text-sm mb-3">{image.description}</p>
@@ -347,8 +526,8 @@ export default function AdminPortfolio() {
                       </SelectTrigger>
                       <SelectContent>
                         {categories.map(cat => (
-                          <SelectItem key={cat.value} value={cat.value}>
-                            {cat.label}
+                          <SelectItem key={cat.id} value={cat.id}>
+                            {cat.name}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -384,14 +563,35 @@ export default function AdminPortfolio() {
                     placeholder="توضیحات پلن"
                   />
                 </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="planDuration">مدت اعتبار (روز)</Label>
+                    <Input
+                      id="planDuration"
+                      type="number"
+                      value={planDuration}
+                      onChange={(e) => setPlanDuration(e.target.value)}
+                      placeholder="30"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="planConditions">شرایط</Label>
+                    <Input
+                      id="planConditions"
+                      value={planConditions}
+                      onChange={(e) => setPlanConditions(e.target.value)}
+                      placeholder="قابل استفاده تا پایان ماه"
+                    />
+                  </div>
+                </div>
                 <div>
                   <Label htmlFor="planFeatures">ویژگی‌ها (هر خط یک ویژگی)</Label>
-                  <textarea
+                  <Textarea
                     id="planFeatures"
                     value={planFeatures}
                     onChange={(e) => setPlanFeatures(e.target.value)}
                     placeholder="عکاسی 8 ساعته&#10;ویرایش تمام عکس‌ها&#10;آلبوم دیجیتال"
-                    className="w-full h-24 p-2 border rounded-md"
+                    className="h-24"
                   />
                 </div>
                 <Button onClick={handleAddPlan} className="w-full">
@@ -414,29 +614,41 @@ export default function AdminPortfolio() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <p className="text-sm text-muted-foreground">
-                      {categories.find(cat => cat.value === plan.category)?.label}
+                      {plan.categories?.name || 'نامشخص'}
                     </p>
                     <p>{plan.description}</p>
                     
                     <div className="flex items-center gap-2">
-                      {plan.discountedPrice ? (
+                      {plan.discounted_price ? (
                         <>
                           <span className="text-2xl font-bold text-primary">
-                            {formatPrice(plan.discountedPrice)}
+                            {formatPrice(plan.discounted_price)}
                           </span>
                           <span className="text-lg line-through text-muted-foreground">
-                            {formatPrice(plan.originalPrice)}
+                            {formatPrice(plan.original_price)}
                           </span>
                           <Badge variant="destructive">
-                            {Math.round(((plan.originalPrice - plan.discountedPrice) / plan.originalPrice) * 100)}% تخفیف
+                            {Math.round(((plan.original_price - plan.discounted_price) / plan.original_price) * 100)}% تخفیف
                           </Badge>
                         </>
                       ) : (
                         <span className="text-2xl font-bold text-primary">
-                          {formatPrice(plan.originalPrice)}
+                          {formatPrice(plan.original_price)}
                         </span>
                       )}
                     </div>
+
+                    {/* Additional plan details */}
+                    {(plan.duration_days || plan.conditions) && (
+                      <div className="space-y-2 text-sm text-muted-foreground">
+                        {plan.duration_days && (
+                          <p>مدت اعتبار: {plan.duration_days} روز</p>
+                        )}
+                        {plan.conditions && (
+                          <p>شرایط: {plan.conditions}</p>
+                        )}
+                      </div>
+                    )}
 
                     {plan.features.length > 0 && (
                       <div>

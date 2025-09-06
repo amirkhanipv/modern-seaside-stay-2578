@@ -17,15 +17,15 @@ export default function Footer() {
               {t.footer.description}
             </p>
             <div className="flex space-x-4 rtl:space-x-reverse">
-              <a href="#" className="bg-card hover:bg-primary/20 p-3 rounded-full text-card-foreground hover:text-primary transition-all duration-300 hover:scale-110 border border-border">
+              <a href="#" className="bg-primary/10 hover:bg-primary/20 p-3 rounded-full text-primary hover:text-primary-foreground hover:bg-primary transition-all duration-300 hover:scale-110 border border-primary/20">
                 <Facebook size={20} />
                 <span className="sr-only">Facebook</span>
               </a>
-              <a href="#" className="bg-card hover:bg-primary/20 p-3 rounded-full text-card-foreground hover:text-primary transition-all duration-300 hover:scale-110 border border-border">
+              <a href="#" className="bg-primary/10 hover:bg-primary/20 p-3 rounded-full text-primary hover:text-primary-foreground hover:bg-primary transition-all duration-300 hover:scale-110 border border-primary/20">
                 <Instagram size={20} />
                 <span className="sr-only">Instagram</span>
               </a>
-              <a href="#" className="bg-card hover:bg-primary/20 p-3 rounded-full text-card-foreground hover:text-primary transition-all duration-300 hover:scale-110 border border-border">
+              <a href="#" className="bg-primary/10 hover:bg-primary/20 p-3 rounded-full text-primary hover:text-primary-foreground hover:bg-primary transition-all duration-300 hover:scale-110 border border-primary/20">
                 <Twitter size={20} />
                 <span className="sr-only">Twitter</span>
               </a>
@@ -86,7 +86,7 @@ export default function Footer() {
               <input 
                 type="email" 
                 placeholder={t.footer.yourEmail} 
-                className="rounded-md px-4 py-2 bg-card border border-border text-card-foreground placeholder:text-muted-foreground"
+                className="rounded-md px-4 py-2 bg-background border border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary"
                 required 
               />
               <button 

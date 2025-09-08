@@ -3,45 +3,10 @@ import type { Database } from "@/integrations/supabase/types";
 
 export type HomepagePortfolio = Database["public"]["Tables"]["homepage_portfolio"]["Row"];
 
-export interface HomepagePortfolioWithImage {
-  id: string;
-  portfolio_image_id: string;
-  display_order: number;
-  active: boolean;
-  created_at: string;
-  updated_at: string;
-  portfolio_image: {
-    id: string;
-    title: string;
-    description: string | null;
-    url: string;
-    featured: boolean;
-    category: {
-      id: string;
-      name: string;
-      slug: string;
-    } | null;
-  };
-}
-
-export async function fetchHomepagePortfolio(): Promise<HomepagePortfolioWithImage[]> {
+export async function fetchHomepagePortfolio() {
   const { data, error } = await supabase
     .from("homepage_portfolio")
-    .select(`
-      *,
-      portfolio_image:portfolio_images!inner(
-        id,
-        title,
-        description,
-        url,
-        featured,
-        category:categories(
-          id,
-          name,
-          slug
-        )
-      )
-    `)
+    .select("*")
     .eq("active", true)
     .order("display_order", { ascending: true });
 
@@ -49,7 +14,7 @@ export async function fetchHomepagePortfolio(): Promise<HomepagePortfolioWithIma
     throw new Error(error.message);
   }
 
-  return data as HomepagePortfolioWithImage[];
+  return data ?? [];
 }
 
 export async function addToHomepagePortfolio(portfolioImageId: string, displayOrder: number = 0): Promise<HomepagePortfolio> {
@@ -61,14 +26,14 @@ export async function addToHomepagePortfolio(portfolioImageId: string, displayOr
       active: true
     })
     .select()
-    .maybeSingle()
+    .single()
     .setHeader('x-admin-key', 'admin-access-2024');
 
   if (error) {
     throw new Error(error.message);
   }
 
-  return data as HomepagePortfolio;
+  return data;
 }
 
 export async function removeFromHomepagePortfolio(id: string): Promise<void> {
@@ -79,7 +44,6 @@ export async function removeFromHomepagePortfolio(id: string): Promise<void> {
     .setHeader('x-admin-key', 'admin-access-2024');
 
   if (error) {
-    console.error('Delete error:', error);
     throw new Error(error.message);
   }
 }
@@ -87,18 +51,15 @@ export async function removeFromHomepagePortfolio(id: string): Promise<void> {
 export async function updateHomepagePortfolioOrder(id: string, displayOrder: number): Promise<HomepagePortfolio> {
   const { data, error } = await supabase
     .from("homepage_portfolio")
-    .update({ 
-      display_order: displayOrder,
-      updated_at: new Date().toISOString() 
-    })
+    .update({ display_order: displayOrder, updated_at: new Date().toISOString() })
     .eq("id", id)
     .select()
-    .maybeSingle()
+    .single()
     .setHeader('x-admin-key', 'admin-access-2024');
 
   if (error) {
     throw new Error(error.message);
   }
 
-  return data as HomepagePortfolio;
+  return data;
 }

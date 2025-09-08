@@ -5,85 +5,85 @@
 
 @layer base {
   :root {
-    /* Elegant Persian Photography Theme */
-    --background: 35 45% 98%;
-    --foreground: 220 20% 15%;
+    /* Modern White Minimal Theme */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 15%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 220 20% 15%;
+    --card: 0 0% 98%;
+    --card-foreground: 0 0% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 20% 15%;
+    --popover-foreground: 0 0% 15%;
 
-    /* Luxurious gold primary */
-    --primary: 45 85% 55%;
-    --primary-foreground: 220 20% 15%;
+    /* Modern dark primary */
+    --primary: 222 47% 11%;
+    --primary-foreground: 0 0% 100%;
 
-    /* Warm cream secondary */
-    --secondary: 35 20% 95%;
-    --secondary-foreground: 220 20% 15%;
+    /* Light gray secondary */
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 15%;
 
-    --muted: 35 15% 92%;
-    --muted-foreground: 220 15% 45%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
 
-    /* Soft lavender accent */
-    --accent: 280 20% 90%;
-    --accent-foreground: 220 20% 15%;
+    /* Subtle accent */
+    --accent: 0 0% 92%;
+    --accent-foreground: 0 0% 15%;
 
-    --destructive: 0 85% 60%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 35 20% 88%;
-    --input: 35 20% 88%;
-    --ring: 45 85% 55%;
+    --border: 0 0% 88%;
+    --input: 0 0% 96%;
+    --ring: 222 47% 11%;
 
     --radius: 0.75rem;
 
-    /* Custom photography theme colors */
-    --gold: 45 85% 55%;
-    --gold-light: 45 85% 85%;
-    --cream: 35 25% 95%;
-    --lavender: 280 20% 90%;
-    --charcoal: 220 20% 15%;
-    --warm-gray: 35 10% 85%;
+    /* Custom minimal theme colors */
+    --gold: 45 93% 47%;
+    --gold-light: 48 100% 80%;
+    --cream: 0 0% 98%;
+    --lavender: 250 25% 90%;
+    --charcoal: 0 0% 15%;
+    --warm-gray: 0 0% 60%;
   }
 
   .dark {
-    --background: 220 25% 8%;
-    --foreground: 35 20% 95%;
+    --background: 0 0% 8%;
+    --foreground: 0 0% 95%;
 
-    --card: 220 25% 12%;
-    --card-foreground: 35 20% 95%;
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 95%;
 
-    --popover: 220 25% 12%;
-    --popover-foreground: 35 20% 95%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 95%;
 
-    --primary: 45 85% 65%;
-    --primary-foreground: 220 25% 8%;
+    --primary: 0 0% 95%;
+    --primary-foreground: 0 0% 8%;
 
-    --secondary: 220 20% 18%;
-    --secondary-foreground: 35 20% 95%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 95%;
 
-    --muted: 220 20% 18%;
-    --muted-foreground: 35 15% 65%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%;
 
-    --accent: 280 25% 25%;
-    --accent-foreground: 35 20% 95%;
+    --accent: 0 0% 20%;
+    --accent-foreground: 0 0% 95%;
 
-    --destructive: 0 70% 50%;
-    --destructive-foreground: 35 20% 95%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 220 20% 25%;
-    --input: 220 20% 25%;
-    --ring: 45 85% 65%;
+    --border: 0 0% 20%;
+    --input: 0 0% 15%;
+    --ring: 0 0% 95%;
 
-    /* Dark mode custom colors */
-    --gold: 45 85% 65%;
-    --gold-light: 45 85% 85%;
-    --cream: 35 15% 20%;
-    --lavender: 280 25% 25%;
-    --charcoal: 220 25% 8%;
-    --warm-gray: 220 15% 30%;
+    /* Dark mode minimal colors */
+    --gold: 45 93% 60%;
+    --gold-light: 48 100% 80%;
+    --cream: 0 0% 10%;
+    --lavender: 250 25% 25%;
+    --charcoal: 0 0% 95%;
+    --warm-gray: 0 0% 40%;
   }
 }
 
@@ -94,12 +94,12 @@
   
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Vazirmatn', sans-serif;
+    font-family: 'IRANSans', 'Vazirmatn', sans-serif;
     direction: rtl;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Vazirmatn', sans-serif;
+    font-family: 'IRANSans', 'Vazirmatn', sans-serif;
     font-weight: 600;
   }
 }

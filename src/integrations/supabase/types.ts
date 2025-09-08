@@ -83,6 +83,48 @@ export type Database = {
         }
         Relationships: []
       }
+      customer_reviews: {
+        Row: {
+          active: boolean | null
+          avatar_url: string | null
+          created_at: string
+          customer_location: string | null
+          customer_name: string
+          display_order: number | null
+          featured: boolean | null
+          id: string
+          rating: number
+          review_text: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean | null
+          avatar_url?: string | null
+          created_at?: string
+          customer_location?: string | null
+          customer_name: string
+          display_order?: number | null
+          featured?: boolean | null
+          id?: string
+          rating?: number
+          review_text: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean | null
+          avatar_url?: string | null
+          created_at?: string
+          customer_location?: string | null
+          customer_name?: string
+          display_order?: number | null
+          featured?: boolean | null
+          id?: string
+          rating?: number
+          review_text?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       discount_plans: {
         Row: {
           active: boolean | null
@@ -138,6 +180,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      homepage_portfolio: {
+        Row: {
+          active: boolean | null
+          created_at: string
+          display_order: number | null
+          id: string
+          portfolio_image_id: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean | null
+          created_at?: string
+          display_order?: number | null
+          id?: string
+          portfolio_image_id: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean | null
+          created_at?: string
+          display_order?: number | null
+          id?: string
+          portfolio_image_id?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       portfolio_images: {
         Row: {

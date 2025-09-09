@@ -206,7 +206,15 @@ export type Database = {
           portfolio_image_id?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "homepage_portfolio_portfolio_image_id_fkey"
+            columns: ["portfolio_image_id"]
+            isOneToOne: false
+            referencedRelation: "portfolio_images"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       portfolio_images: {
         Row: {

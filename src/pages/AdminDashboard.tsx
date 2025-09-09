@@ -165,6 +165,12 @@ export default function AdminDashboard() {
           <Button variant="outline" onClick={() => window.location.href = '/admin/portfolio'}>
             مدیریت نمونه کارها
           </Button>
+          <Button variant="outline" onClick={() => window.location.href = '/admin/reviews'}>
+            مدیریت نظرات
+          </Button>
+          <Button variant="outline" onClick={() => window.location.href = '/admin/homepage'}>
+            مدیریت صفحه اصلی
+          </Button>
           <Button variant="outline" onClick={handleLogout}>خروج</Button>
         </div>
       </div>

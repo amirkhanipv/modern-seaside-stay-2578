@@ -5,37 +5,26 @@
 
 @layer base {
   :root {
-    /* Modern White Minimal Theme */
-    --background: 0 0% 100%;
+    /* Color palette - White Minimal Theme */
+    --background: 0 0% 98%;
     --foreground: 0 0% 15%;
-
-    --card: 0 0% 98%;
+    --card: 0 0% 100%;
     --card-foreground: 0 0% 15%;
-
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 15%;
-
-    /* Modern dark primary */
-    --primary: 222 47% 11%;
-    --primary-foreground: 0 0% 100%;
-
-    /* Light gray secondary */
+    --primary: 220 100% 50%;
+    --primary-foreground: 0 0% 98%;
     --secondary: 0 0% 96%;
     --secondary-foreground: 0 0% 15%;
-
     --muted: 0 0% 96%;
     --muted-foreground: 0 0% 45%;
-
-    /* Subtle accent */
-    --accent: 0 0% 92%;
+    --accent: 0 0% 96%;
     --accent-foreground: 0 0% 15%;
-
     --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 0 0% 88%;
-    --input: 0 0% 96%;
-    --ring: 222 47% 11%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 90%;
+    --input: 0 0% 100%;
+    --ring: 220 100% 50%;
 
     --radius: 0.75rem;
 
@@ -49,33 +38,26 @@
   }
 
   .dark {
+    /* Dark theme colors - Adjusted for minimal design */
     --background: 0 0% 8%;
     --foreground: 0 0% 95%;
-
-    --card: 0 0% 10%;
+    --card: 0 0% 12%;
     --card-foreground: 0 0% 95%;
-
-    --popover: 0 0% 8%;
+    --popover: 0 0% 12%;
     --popover-foreground: 0 0% 95%;
-
-    --primary: 0 0% 95%;
-    --primary-foreground: 0 0% 8%;
-
-    --secondary: 0 0% 15%;
-    --secondary-foreground: 0 0% 95%;
-
-    --muted: 0 0% 15%;
+    --primary: 220 100% 60%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 18%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 18%;
     --muted-foreground: 0 0% 65%;
-
-    --accent: 0 0% 20%;
-    --accent-foreground: 0 0% 95%;
-
+    --accent: 0 0% 18%;
+    --accent-foreground: 0 0% 98%;
     --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 0 0% 20%;
-    --input: 0 0% 15%;
-    --ring: 0 0% 95%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 25%;
+    --input: 0 0% 25%;
+    --ring: 220 100% 60%;
 
     /* Dark mode minimal colors */
     --gold: 45 93% 60%;

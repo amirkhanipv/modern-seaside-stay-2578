@@ -16,7 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import GallerySection from "@/components/GallerySection";
+import HomepageGallery from "@/components/HomepageGallery";
 import heroImage from "@/assets/hero-model.jpg";
 
 // ----- Types -----
@@ -207,7 +207,7 @@ export default function NoraStudio() {
       </section>
 
       {/* Portfolio Gallery */}
-      <GallerySection />
+      <HomepageGallery />
 
       {/* Testimonials */}
       <section className="section">

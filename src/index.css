@@ -1,27 +1,26 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    /* Color palette - White Minimal Theme */
-    --background: 0 0% 98%;
-    --foreground: 0 0% 15%;
+    /* White Minimal Theme - Light Mode */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 10%;
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 15%;
+    --card-foreground: 0 0% 10%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 15%;
+    --popover-foreground: 0 0% 10%;
     --primary: 220 100% 50%;
-    --primary-foreground: 0 0% 98%;
+    --primary-foreground: 0 0% 100%;
     --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 15%;
+    --secondary-foreground: 0 0% 10%;
     --muted: 0 0% 96%;
     --muted-foreground: 0 0% 45%;
     --accent: 0 0% 96%;
-    --accent-foreground: 0 0% 15%;
+    --accent-foreground: 0 0% 10%;
     --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive-foreground: 0 0% 100%;
     --border: 0 0% 90%;
     --input: 0 0% 100%;
     --ring: 220 100% 50%;
@@ -31,39 +30,39 @@
     /* Custom minimal theme colors */
     --gold: 45 93% 47%;
     --gold-light: 48 100% 80%;
-    --cream: 0 0% 98%;
-    --lavender: 250 25% 90%;
-    --charcoal: 0 0% 15%;
+    --cream: 0 0% 100%;
+    --lavender: 250 25% 95%;
+    --charcoal: 0 0% 10%;
     --warm-gray: 0 0% 60%;
   }
 
   .dark {
-    /* Dark theme colors - Adjusted for minimal design */
-    --background: 0 0% 8%;
+    /* Dark theme colors - Minimal white-based */
+    --background: 0 0% 5%;
     --foreground: 0 0% 95%;
-    --card: 0 0% 12%;
+    --card: 0 0% 8%;
     --card-foreground: 0 0% 95%;
-    --popover: 0 0% 12%;
+    --popover: 0 0% 8%;
     --popover-foreground: 0 0% 95%;
     --primary: 220 100% 60%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 18%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 18%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 95%;
+    --muted: 0 0% 12%;
     --muted-foreground: 0 0% 65%;
-    --accent: 0 0% 18%;
-    --accent-foreground: 0 0% 98%;
+    --accent: 0 0% 12%;
+    --accent-foreground: 0 0% 95%;
     --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 25%;
-    --input: 0 0% 25%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 20%;
+    --input: 0 0% 15%;
     --ring: 220 100% 60%;
 
     /* Dark mode minimal colors */
     --gold: 45 93% 60%;
     --gold-light: 48 100% 80%;
-    --cream: 0 0% 10%;
-    --lavender: 250 25% 25%;
+    --cream: 0 0% 5%;
+    --lavender: 250 25% 15%;
     --charcoal: 0 0% 95%;
     --warm-gray: 0 0% 40%;
   }
@@ -76,12 +75,12 @@
   
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'IRANSans', 'Vazirmatn', sans-serif;
+    font-family: 'Vazirmatn', 'IRANSans', sans-serif;
     direction: rtl;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'IRANSans', 'Vazirmatn', sans-serif;
+    font-family: 'Vazirmatn', 'IRANSans', sans-serif;
     font-weight: 600;
   }
 }
@@ -92,11 +91,11 @@
   }
   
   .btn-primary {
-    @apply bg-primary text-primary-foreground rounded-xl px-8 py-3 font-medium transition-all duration-300 hover:shadow-lg hover:shadow-primary/30 active:scale-[0.98] border border-primary/20;
+    @apply bg-primary text-primary-foreground rounded-xl px-8 py-3 font-medium transition-all duration-300 hover:shadow-lg hover:shadow-primary/20 active:scale-[0.98] border border-primary/10 hover:bg-primary/90;
   }
   
   .btn-secondary {
-    @apply bg-secondary text-secondary-foreground rounded-xl px-8 py-3 font-medium transition-all duration-300 hover:bg-secondary/80 active:scale-[0.98] border border-secondary/20;
+    @apply bg-white text-foreground rounded-xl px-8 py-3 font-medium transition-all duration-300 hover:bg-gray-50 active:scale-[0.98] border border-gray-200 shadow-sm hover:shadow-md;
   }
   
   .section {
@@ -104,19 +103,19 @@
   }
   
   .glass-card {
-    @apply bg-white/80 dark:bg-charcoal/80 backdrop-blur-lg border border-gold/20 dark:border-gold/30 rounded-2xl shadow-2xl;
+    @apply bg-white/95 backdrop-blur-sm border border-gray-200/50 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300;
   }
   
-  .luxury-gradient {
-    background: linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(var(--primary)) 50%, hsl(var(--lavender)) 100%);
+  .minimal-gradient {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%);
   }
   
-  .persian-shadow {
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1), 0 0 30px rgba(200, 160, 80, 0.15);
+  .minimal-shadow {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
   }
   
   .hero-overlay {
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.6) 100%);
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.4) 100%);
   }
 }
 

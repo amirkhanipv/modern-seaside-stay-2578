@@ -161,7 +161,7 @@ export default function BookingStatus() {
   };
 
   return (
-    <div className="min-h-screen bg-background py-12 px-4">
+    <div className="min-h-screen bg-white py-12 px-4">
       <div className="max-w-2xl mx-auto">
         <div className="text-center mb-8 animate-fade-in anim-delay-80">
           <h1 className="text-3xl font-bold mb-4">پیگیری رزرو</h1>

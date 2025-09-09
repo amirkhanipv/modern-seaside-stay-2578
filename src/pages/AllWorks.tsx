@@ -108,9 +108,9 @@ export default function AllWorks() {
   }, [selectedImage, filteredImages]);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white">
       {/* Header */}
-      <section className="relative py-20 bg-gradient-to-r from-primary/10 to-secondary/20 overflow-hidden">
+      <section className="relative py-20 bg-gradient-to-r from-gray-50 to-white overflow-hidden">
         <div className="container relative z-10">
           <div className="max-w-3xl mx-auto text-center animate-fade-in anim-delay-80">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
@@ -131,8 +131,8 @@ export default function AllWorks() {
         
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-1/3 h-full opacity-10">
-          <div className="absolute top-10 right-10 w-64 h-64 rounded-full bg-primary/50 blur-3xl" />
-          <div className="absolute bottom-10 right-40 w-48 h-48 rounded-full bg-secondary/50 blur-3xl" />
+          <div className="absolute top-10 right-10 w-64 h-64 rounded-full bg-primary/20 blur-3xl" />
+          <div className="absolute bottom-10 right-40 w-48 h-48 rounded-full bg-gray-200 blur-3xl" />
         </div>
       </section>
 

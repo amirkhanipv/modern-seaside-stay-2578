@@ -68,12 +68,12 @@ export default function TestimonialsSection() {
         </div>
 
         <div className="relative max-w-4xl mx-auto">
-          <div className="glass-card p-8 md:p-12 rounded-3xl relative overflow-hidden">
+          <div className="bg-white border border-gray-200 shadow-lg p-8 md:p-12 rounded-3xl relative overflow-hidden">
             <Button
               variant="outline"
               size="icon"
               onClick={prevTestimonial}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/80 hover:bg-white border-gray-200"
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-white hover:bg-gray-50 border-gray-200 shadow-md"
             >
               <ChevronRight className="h-4 w-4" />
             </Button>
@@ -82,7 +82,7 @@ export default function TestimonialsSection() {
               variant="outline"
               size="icon"
               onClick={nextTestimonial}
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white/80 hover:bg-white border-gray-200"
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-white hover:bg-gray-50 border-gray-200 shadow-md"
             >
               <ChevronLeft className="h-4 w-4" />
             </Button>

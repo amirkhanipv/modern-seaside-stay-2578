@@ -196,11 +196,18 @@ export default function NoraStudio() {
               مشاهده نمونه کارها
             </Button>
             <Button
-              variant="outline"
+              variant="hero"
               className="text-lg px-8 py-4"
               onClick={() => (window.location.href = "/booking")}
             >
               رزرو نوبت
+            </Button>
+            <Button
+              variant="hero"
+              className="text-lg px-8 py-4"
+              onClick={() => (window.location.href = "/booking-status")}
+            >
+              پیگیری رزرو
             </Button>
           </div>
         </div>

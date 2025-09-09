@@ -63,9 +63,10 @@ export default {
 				'warm-gray': 'hsl(var(--warm-gray))'
 			},
 			fontFamily: {
-				sans: ['IRANSans', 'Vazirmatn', 'sans-serif'],
-				persian: ['IRANSans', 'Vazirmatn', 'sans-serif'],
-				modern: ['IRANSans', 'sans-serif']
+				sans: ['Vazirmatn', 'IRANSans', 'sans-serif'],
+				persian: ['Vazirmatn', 'IRANSans', 'sans-serif'],
+				modern: ['Vazirmatn', 'sans-serif'],
+				nofer: ['Nofer', 'Vazirmatn', 'sans-serif']
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

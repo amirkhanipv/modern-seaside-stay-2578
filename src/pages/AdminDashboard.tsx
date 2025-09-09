@@ -158,7 +158,7 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen p-4 animate-fade-in">
+    <div className="min-h-screen p-4 animate-fade-in bg-white">
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-3xl font-bold text-center animate-fade-in anim-delay-80">داشبورد ادمین</h1>
         <div className="flex gap-2">

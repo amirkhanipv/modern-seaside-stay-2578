@@ -288,7 +288,7 @@ export default function AdminPortfolio() {
   }
 
   return (
-    <div className="min-h-screen p-4 animate-fade-in">
+    <div className="min-h-screen p-4 animate-fade-in bg-white">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold">مدیریت نمونه کارها و قیمت‌ها</h1>

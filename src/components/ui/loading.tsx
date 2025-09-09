@@ -17,18 +17,18 @@ export function Loading({ className }: LoadingProps) {
 
 export function LoadingPage() {
 	return (
-		<div className="min-h-screen bg-charcoal text-cream flex flex-col items-center justify-center">
+		<div className="min-h-screen bg-white text-gray-800 flex flex-col items-center justify-center">
 			<div className="text-center space-y-10">
 				{/* Orbiting ring with camera icon */}
 				<div className="relative w-40 h-40 mx-auto">
 					{/* Core */}
-					<div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/10 to-secondary/10 blur-sm" />
-					<div className="absolute inset-3 rounded-full bg-charcoal/80 border border-primary/20" />
+					<div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/5 to-gray-100 blur-sm" />
+					<div className="absolute inset-3 rounded-full bg-white border border-primary/20 shadow-lg" />
 					{/* Orbit path */}
-					<div className="absolute inset-0 rounded-full ring-2 ring-primary/30" />
+					<div className="absolute inset-0 rounded-full ring-2 ring-primary/20" />
 					{/* Orbiting dot */}
 					<div className="absolute top-1/2 left-1/2 -ml-[2px] -mt-[2px]">
-						<div className="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_12px_rgba(0,0,0,0.3)] animate-spin" style={{ animationDuration: '2s' }} />
+						<div className="w-1.5 h-1.5 rounded-full bg-primary shadow-lg animate-spin" style={{ animationDuration: '2s' }} />
 					</div>
 					{/* Camera icon spinning softly */}
 					<div className="absolute inset-0 flex items-center justify-center">
@@ -48,8 +48,8 @@ export function LoadingPage() {
 
 				{/* Text */}
 				<div className="space-y-2">
-					<h2 className="text-2xl font-bold text-cream">در حال بارگذاری...</h2>
-					<p className="text-warm-gray">آتلیه نورا</p>
+					<h2 className="text-2xl font-bold text-gray-800">در حال بارگذاری...</h2>
+					<p className="text-gray-600">آتلیه نورا</p>
 				</div>
 			</div>
 		</div>

@@ -177,7 +177,7 @@ export default function NoraStudio() {
         <div className="absolute inset-0 hero-overlay" />
 
         <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4 animate-fade-in">
-          <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-tight animate-fade-in anim-delay-60 font-nofer">
+          <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-tight animate-fade-in anim-delay-60">
             آتلیه نورا
           </h1>
           <p className="text-xl md:text-2xl mb-8 text-white/90 animate-fade-in anim-delay-120">
@@ -185,7 +185,7 @@ export default function NoraStudio() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in anim-delay-180">
             <Button
-              className="btn-primary text-lg px-8 py-4"
+              className="btn-primary text-lg px-8 py-4 bg-white text-charcoal hover:bg-white/90"
               onClick={() =>
                 document
                   .getElementById("portfolio")
@@ -196,15 +196,13 @@ export default function NoraStudio() {
               مشاهده نمونه کارها
             </Button>
             <Button
-              variant="hero"
-              className="text-lg px-8 py-4"
+              className="text-lg px-8 py-4 bg-white/20 text-white border border-white/30 hover:bg-white/30 backdrop-blur-sm"
               onClick={() => (window.location.href = "/booking")}
             >
               رزرو نوبت
             </Button>
             <Button
-              variant="hero"
-              className="text-lg px-8 py-4"
+              className="text-lg px-8 py-4 bg-white/20 text-white border border-white/30 hover:bg-white/30 backdrop-blur-sm"
               onClick={() => (window.location.href = "/booking-status")}
             >
               پیگیری رزرو
@@ -217,10 +215,10 @@ export default function NoraStudio() {
       <HomepageGallery />
 
       {/* Testimonials */}
-      <section className="section">
+      <section className="section bg-white">
         <div className="container">
           <div className="text-center mb-16 animate-fade-in anim-delay-80">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">نظرات مشتریان</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">نظرات مشتریان</h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               تجربه‌های واقعی از مشتریان ما
             </p>
@@ -230,7 +228,7 @@ export default function NoraStudio() {
             {TESTIMONIALS.map((testimonial, index) => (
               <Card
                 key={`testimonial-${index}`}
-                className="glass-card overflow-hidden animate-fade-in"
+                className="bg-white border border-border shadow-sm hover:shadow-md transition-shadow overflow-hidden animate-fade-in"
                 style={{ animationDelay: `${80 + index * 80}ms`, animationFillMode: "both" }}
               >
                 <div className="relative">
@@ -245,12 +243,12 @@ export default function NoraStudio() {
                       {Array.from({ length: testimonial.rating }).map((_, i) => (
                         <Star
                           key={`star-${index}-${i}`}
-                          className="w-4 h-4 fill-gold text-gold"
+                          className="w-4 h-4 fill-yellow-400 text-yellow-400"
                         />
                       ))}
                     </div>
                     <h3 className="text-xl font-bold">{testimonial.name}</h3>
-                    <p className="text-white/80">{testimonial.review}</p>
+                    <p className="text-white/80 leading-relaxed">{testimonial.review}</p>
                   </div>
                 </div>
               </Card>
@@ -260,10 +258,10 @@ export default function NoraStudio() {
       </section>
 
       {/* Pricing Plans */}
-      <section className="section bg-secondary/30">
+      <section className="section bg-secondary/10">
         <div className="container">
           <div className="text-center mb-16 animate-fade-in anim-delay-80">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">پکیج‌های عکاسی</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">پکیج‌های عکاسی</h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               انتخاب مناسب برای سلیقه و بودجه شما
             </p>
@@ -273,24 +271,31 @@ export default function NoraStudio() {
             {PRICING_PLANS.map((plan, index) => (
               <Card
                 key={`plan-${index}`}
-                className={`glass-card relative ${
-                  plan.popular ? "border-primary border-2" : ""
+                className={`bg-white border shadow-sm hover:shadow-md transition-shadow relative ${
+                  plan.popular ? "border-primary border-2" : "border-border"
                 } animate-fade-in`}
                 style={{ animationDelay: `${100 + index * 80}ms`, animationFillMode: "both" }}
               >
+                {plan.popular && (
+                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                    <span className="bg-primary text-primary-foreground px-4 py-1 rounded-full text-sm font-medium">
+                      محبوب‌ترین
+                    </span>
+                  </div>
+                )}
                 <CardHeader>
-                  <CardTitle className="text-2xl">{plan.title}</CardTitle>
+                  <CardTitle className="text-2xl text-foreground">{plan.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="p-8">
                   <div className="mb-6">
                     <span className="text-3xl font-bold text-primary">{plan.price}</span>
                     <span className="text-muted-foreground mr-2">تومان</span>
                   </div>
-                  <ul className="space-y-2 mb-6">
+                  <ul className="space-y-3 mb-6">
                     {plan.features.map((feature, i) => (
                       <li key={`feature-${index}-${i}`} className="flex items-center gap-2">
-                        <Heart className="w-4 h-4 text-primary" />
-                        <span>{feature}</span>
+                        <Heart className="w-4 h-4 text-primary flex-shrink-0" />
+                        <span className="text-foreground">{feature}</span>
                       </li>
                     ))}
                   </ul>
@@ -298,7 +303,7 @@ export default function NoraStudio() {
                     <p className="text-sm text-primary font-medium bg-primary/10 border border-primary/20 rounded-lg p-3 text-center">
                       تخفیف ویژه به دلیل رزرو از سایت
                     </p>
-                    <Button className="w-full" onClick={() => (window.location.href = "/booking")}>
+                    <Button className="w-full btn-primary" onClick={() => (window.location.href = "/booking")}>
                       رزرو این پکیج
                     </Button>
                   </div>
@@ -310,20 +315,20 @@ export default function NoraStudio() {
       </section>
 
       {/* Contact Section */}
-      <section className="section">
+      <section className="section bg-white">
         <div className="container">
           <div className="text-center mb-12 animate-fade-in anim-delay-80">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">تماس با ما</h2>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">تماس با ما</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
             {/* Phone & Address */}
-            <div className="bg-gradient-to-br from-teal-100 to-teal-50 rounded-2xl p-6 text-center">
-              <Phone className="w-10 h-10 text-teal-600 mx-auto mb-3" />
-              <h3 className="text-xl font-bold mb-3">تماس تلفنی</h3>
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6 text-center border border-blue-200">
+              <Phone className="w-10 h-10 text-blue-600 mx-auto mb-3" />
+              <h3 className="text-xl font-bold mb-3 text-foreground">تماس تلفنی</h3>
               <a
                 href="tel:09999999999"
-                className="inline-flex items-center bg-teal-600 text-white rounded-xl px-4 py-2 hover:bg-teal-700 hover:shadow-lg transition-all duration-300 mb-4 text-sm"
+                className="inline-flex items-center bg-blue-600 text-white rounded-xl px-4 py-2 hover:bg-blue-700 hover:shadow-lg transition-all duration-300 mb-4 text-sm"
               >
                 <Phone className="ml-1 h-4 w-4" />
                 <span className="font-medium">۰۹۹۹۹۹۹۹۹۹۹</span>
@@ -331,20 +336,20 @@ export default function NoraStudio() {
 
               <div className="space-y-2 text-muted-foreground text-sm">
                 <div className="flex items-center justify-center">
-                  <MapPin className="w-4 h-4 ml-1 text-teal-600" />
+                  <MapPin className="w-4 h-4 ml-1 text-blue-600" />
                   <span>تهران، خیابان مثال، پلاک ۱۲</span>
                 </div>
                 <div className="flex items-center justify-center">
-                  <Clock className="w-4 h-4 ml-1 text-teal-600" />
+                  <Clock className="w-4 h-4 ml-1 text-blue-600" />
                   <span>همه روزه از ۱۰ صبح تا ۱۹</span>
                 </div>
               </div>
             </div>
 
             {/* WhatsApp */}
-            <div className="bg-gradient-to-br from-green-100 to-green-50 rounded-2xl p-6 text-center">
+            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6 text-center border border-green-200">
               <MessageCircle className="w-10 h-10 text-green-600 mx-auto mb-3" />
-              <h3 className="text-xl font-bold mb-3">واتساپ</h3>
+              <h3 className="text-xl font-bold mb-3 text-foreground">واتساپ</h3>
               <a
                 href="https://wa.me/989999999999"
                 target="_blank"
@@ -354,33 +359,33 @@ export default function NoraStudio() {
                 <MessageCircle className="ml-1 h-4 w-4" />
                 <span className="font-medium">پیام واتساپ</span>
               </a>
-              <p className="text-muted-foreground text-sm">
+              <p className="text-muted-foreground text-sm leading-relaxed">
                 برای مشاوره سریع و رزرو آنلاین در واتساپ با ما در تماس باشید
               </p>
             </div>
 
             {/* Telegram */}
-            <div className="bg-gradient-to-br from-blue-100 to-blue-50 rounded-2xl p-6 text-center">
-              <Send className="w-10 h-10 text-blue-600 mx-auto mb-3" />
-              <h3 className="text-xl font-bold mb-3">تلگرام</h3>
+            <div className="bg-gradient-to-br from-sky-50 to-sky-100 rounded-2xl p-6 text-center border border-sky-200">
+              <Send className="w-10 h-10 text-sky-600 mx-auto mb-3" />
+              <h3 className="text-xl font-bold mb-3 text-foreground">تلگرام</h3>
               <a
                 href="https://t.me/NoraStudio"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center bg-blue-600 text-white rounded-xl px-4 py-2 hover:bg-blue-700 hover:shadow-lg transition-all duration-300 mb-4 text-sm"
+                className="inline-flex items-center bg-sky-600 text-white rounded-xl px-4 py-2 hover:bg-sky-700 hover:shadow-lg transition-all duration-300 mb-4 text-sm"
               >
                 <Send className="ml-1 h-4 w-4" />
                 <span className="font-medium">@NoraStudio</span>
               </a>
-              <p className="text-muted-foreground text-sm">
+              <p className="text-muted-foreground text-sm leading-relaxed">
                 برای چت و مشاوره سریع در تلگرام با ما در ارتباط باشید
               </p>
             </div>
 
             {/* Instagram */}
-            <div className="bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl p-6 text-center">
+            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 text-center border border-purple-200">
               <Instagram className="w-10 h-10 text-purple-600 mx-auto mb-3" />
-              <h3 className="text-xl font-bold mb-3">اینستاگرام</h3>
+              <h3 className="text-xl font-bold mb-3 text-foreground">اینستاگرام</h3>
               <a
                 href="https://instagram.com/Nora_Stu"
                 target="_blank"
@@ -390,7 +395,7 @@ export default function NoraStudio() {
                 <Instagram className="ml-1 h-4 w-4" />
                 <span className="font-medium">Nora_Stu</span>
               </a>
-              <p className="text-muted-foreground text-sm">
+              <p className="text-muted-foreground text-sm leading-relaxed">
                 نمونه‌کارهای روزانه و آخرین اخبار آتلیه را دنبال کنید
               </p>
             </div>

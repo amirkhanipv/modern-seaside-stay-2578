@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -52,46 +51,46 @@ export default function Contact() {
   };
   
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen bg-background text-foreground">
       <Navbar />
       
       <main className="flex-1 pt-20">
         {/* Header Section */}
-        <section className="relative py-20 bg-gradient-to-r from-sea-light to-white dark:from-sea-dark dark:to-background overflow-hidden">
+        <section className="relative py-20 bg-secondary/10 overflow-hidden">
           <div className="container relative z-10">
             <div className="max-w-3xl mx-auto text-center animate-fade-in anim-delay-80">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-foreground">
                 {t.contact.title}
               </h1>
-              <p className="text-muted-foreground text-lg mb-6">
+              <p className="text-muted-foreground text-lg mb-6 leading-relaxed">
                 {t.contact.subtitle}
               </p>
             </div>
           </div>
           
           {/* Decorative elements */}
-          <div className="absolute top-0 right-0 w-1/3 h-full opacity-10">
-            <div className="absolute top-10 right-10 w-64 h-64 rounded-full bg-primary/50 blur-3xl" />
-            <div className="absolute bottom-10 right-40 w-48 h-48 rounded-full bg-sea-light blur-3xl" />
+          <div className="absolute top-0 right-0 w-1/3 h-full opacity-5">
+            <div className="absolute top-10 right-10 w-64 h-64 rounded-full bg-primary/30 blur-3xl" />
+            <div className="absolute bottom-10 right-40 w-48 h-48 rounded-full bg-primary/20 blur-3xl" />
           </div>
         </section>
         
         {/* Contact Information & Form */}
-        <section className="section">
+        <section className="section bg-white">
           <div className="container">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               {/* Contact Information */}
               <div className="animate-fade-in anim-delay-100">
-                <h2 className="text-2xl font-bold mb-6">{t.contact.getInTouch}</h2>
+                <h2 className="text-2xl font-bold mb-6 text-foreground">{t.contact.getInTouch}</h2>
                 
-                <div className="glass-card p-6 space-y-6 mb-8">
+                <div className="bg-white border border-border rounded-xl p-6 space-y-6 mb-8 shadow-sm">
                   <div className="flex items-start">
                     <div className="flex-shrink-0 h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mr-4">
                       <MapPin className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-semibold mb-1">{t.contact.address}</h3>
-                      <p className="text-muted-foreground">
+                      <h3 className="font-semibold mb-1 text-foreground">{t.contact.address}</h3>
+                      <p className="text-muted-foreground leading-relaxed">
                         123 Seaside Boulevard<br />
                         Costa Bella, 12345<br />
                         Italy
@@ -104,7 +103,7 @@ export default function Contact() {
                       <Phone className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-semibold mb-1">{t.contact.phone}</h3>
+                      <h3 className="font-semibold mb-1 text-foreground">{t.contact.phone}</h3>
                       <p className="text-muted-foreground">+39 123 4567 890</p>
                       <p className="text-muted-foreground">+39 098 7654 321 (Reservations)</p>
                     </div>
@@ -115,7 +114,7 @@ export default function Contact() {
                       <Mail className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-semibold mb-1">{t.contact.email}</h3>
+                      <h3 className="font-semibold mb-1 text-foreground">{t.contact.email}</h3>
                       <p className="text-muted-foreground">info@maresereno.com</p>
                       <p className="text-muted-foreground">reservations@maresereno.com</p>
                     </div>
@@ -126,8 +125,8 @@ export default function Contact() {
                       <Clock className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-semibold mb-1">{t.contact.receptionHours}</h3>
-                      <p className="text-muted-foreground">
+                      <h3 className="font-semibold mb-1 text-foreground">{t.contact.receptionHours}</h3>
+                      <p className="text-muted-foreground leading-relaxed">
                         Monday - Sunday: 24 hours<br />
                         {t.contact.checkInTime}<br />
                         {t.contact.checkOutTime}
@@ -136,7 +135,7 @@ export default function Contact() {
                   </div>
                 </div>
                 
-                <div className="aspect-video rounded-xl overflow-hidden">
+                <div className="aspect-video rounded-xl overflow-hidden shadow-lg border border-border">
                   <iframe 
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387191.03606358136!2d14.165818971864153!3d40.85529294646443!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x133b0a3c328d896b%3A0x309e11f99628150!2sGulf%20of%20Naples!5e0!3m2!1sen!2sus!4v1628613152777!5m2!1sen!2sus" 
                     width="100%" 
@@ -151,33 +150,35 @@ export default function Contact() {
               
               {/* Contact Form */}
               <div className="animate-fade-in anim-delay-300">
-                <h2 className="text-2xl font-bold mb-6">{t.contact.sendMessage}</h2>
+                <h2 className="text-2xl font-bold mb-6 text-foreground">{t.contact.sendMessage}</h2>
                 
-                <div className="glass-card p-6">
+                <div className="bg-white border border-border rounded-xl p-6 shadow-sm">
                   {!isSubmitted ? (
                     <form onSubmit={handleSubmit} className="space-y-6">
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <Label htmlFor="name">{t.contact.fullName}</Label>
+                          <Label htmlFor="name" className="text-foreground">{t.contact.fullName}</Label>
                           <Input 
                             id="name" 
                             name="name"
                             value={formData.name}
                             onChange={handleInputChange}
-                            placeholder="John Doe" 
+                            placeholder="John Doe"
+                            className="bg-background border-input text-foreground"
                             required 
                           />
                         </div>
                         
                         <div className="space-y-2">
-                          <Label htmlFor="email">{t.contact.email}</Label>
+                          <Label htmlFor="email" className="text-foreground">{t.contact.email}</Label>
                           <Input 
                             id="email" 
                             name="email"
                             type="email"
                             value={formData.email}
                             onChange={handleInputChange}
-                            placeholder="john@example.com" 
+                            placeholder="john@example.com"
+                            className="bg-background border-input text-foreground"
                             required 
                           />
                         </div>
@@ -185,38 +186,40 @@ export default function Contact() {
                       
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <Label htmlFor="phone">{t.contact.phoneNumber}</Label>
+                          <Label htmlFor="phone" className="text-foreground">{t.contact.phoneNumber}</Label>
                           <Input 
                             id="phone" 
                             name="phone"
                             value={formData.phone}
                             onChange={handleInputChange}
-                            placeholder="+1 234 567 8900" 
+                            placeholder="+1 234 567 8900"
+                            className="bg-background border-input text-foreground"
                           />
                         </div>
                         
                         <div className="space-y-2">
-                          <Label htmlFor="subject">{t.contact.subject}</Label>
+                          <Label htmlFor="subject" className="text-foreground">{t.contact.subject}</Label>
                           <Input 
                             id="subject" 
                             name="subject"
                             value={formData.subject}
                             onChange={handleInputChange}
-                            placeholder="Reservation Inquiry" 
+                            placeholder="Reservation Inquiry"
+                            className="bg-background border-input text-foreground"
                             required 
                           />
                         </div>
                       </div>
                       
                       <div className="space-y-2">
-                        <Label htmlFor="message">{t.contact.message}</Label>
+                        <Label htmlFor="message" className="text-foreground">{t.contact.message}</Label>
                         <textarea 
                           id="message" 
                           name="message"
                           value={formData.message}
                           onChange={handleInputChange}
                           placeholder={t.contact.howCanWeHelp} 
-                          className="w-full min-h-[150px] p-3 rounded-md border border-input bg-background"
+                          className="w-full min-h-[150px] p-3 rounded-md border border-input bg-background text-foreground resize-none"
                           required 
                         />
                       </div>
@@ -237,7 +240,11 @@ export default function Contact() {
                     </form>
                   ) : (
                     <div className="text-center py-8">
-                      <p className="text-primary font-medium">{t.contact.success}</p>
+                      <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Check className="w-8 h-8 text-green-600" />
+                      </div>
+                      <p className="text-primary font-medium text-lg">{t.contact.success}</p>
+                      <p className="text-muted-foreground mt-2">پیام شما با موفقیت ارسال شد</p>
                     </div>
                   )}
                 </div>
@@ -247,11 +254,11 @@ export default function Contact() {
         </section>
         
         {/* FAQ Section */}
-        <section className="section bg-secondary/30">
+        <section className="section bg-secondary/10">
           <div className="container">
             <div className="max-w-3xl mx-auto text-center mb-12 animate-fade-in">
-              <h2 className="text-3xl font-bold mb-4">{t.contact.faq}</h2>
-              <p className="text-muted-foreground">
+              <h2 className="text-3xl font-bold mb-4 text-foreground">{t.contact.faq}</h2>
+              <p className="text-muted-foreground leading-relaxed">
                 {t.contact.faqSubtitle}
               </p>
             </div>
@@ -283,11 +290,14 @@ export default function Contact() {
                   icon: <MapPin className="h-5 w-5 text-primary" />
                 },
               ].map((faq, index) => (
-                <div key={index} className="glass-card p-6">
-                  <h3 className="font-semibold text-lg mb-2">
-                    {t.contact.questions[faq.questionKey].question}
-                  </h3>
-                  <p className="text-muted-foreground">
+                <div key={index} className="bg-white border border-border rounded-xl p-6 shadow-sm">
+                  <div className="flex items-start gap-3 mb-3">
+                    {faq.icon}
+                    <h3 className="font-semibold text-lg text-foreground">
+                      {t.contact.questions[faq.questionKey].question}
+                    </h3>
+                  </div>
+                  <p className="text-muted-foreground leading-relaxed">
                     {t.contact.questions[faq.questionKey].answer}
                   </p>
                 </div>

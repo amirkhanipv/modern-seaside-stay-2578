@@ -33,7 +33,7 @@ export default function ApartmentCard({ apartment }: { apartment: ApartmentProps
   
   return (
     <div 
-      className="rounded-xl overflow-hidden shadow-lg transition-all duration-500 hover:shadow-xl bg-card group"
+      className="rounded-xl overflow-hidden shadow-lg transition-all duration-500 hover:shadow-xl bg-card border border-border group"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

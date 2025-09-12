@@ -172,7 +172,7 @@ export default function BookingStatus() {
         </div>
 
         {/* Search Form */}
-        <Card className="mb-8 animate-fade-in anim-delay-120 bg-white border-border shadow-lg">
+        <Card className="mb-8 animate-fade-in anim-delay-120 bg-card border-border shadow-lg">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-foreground">
               <Search className="w-5 h-5 text-primary" />
@@ -210,7 +210,7 @@ export default function BookingStatus() {
 
         {/* Booking Details */}
         {booking && (
-          <Card className="animate-fade-in anim-delay-160 bg-white border-border shadow-lg">
+          <Card className="animate-fade-in anim-delay-160 bg-card border-border shadow-lg">
             <CardHeader>
               <CardTitle className="flex items-center justify-between text-foreground">
                 <span className="flex items-center gap-2">
@@ -296,13 +296,13 @@ export default function BookingStatus() {
 
               {/* Actions */}
               <div className="flex flex-col sm:flex-row gap-3 pt-4">
-                <Button 
-                  onClick={() => {
-                    navigate("/");
-                  }} 
-                  variant="outline" 
-                  className="flex-1 bg-white"
-                >
+                  <Button 
+                    onClick={() => {
+                      navigate("/");
+                    }} 
+                    variant="outline" 
+                    className="flex-1 bg-card"
+                  >
                   <Home className="ml-2 h-4 w-4" />
                   بازگشت به صفحه اصلی
                 </Button>
@@ -322,7 +322,7 @@ export default function BookingStatus() {
 
         {/* Help Section */}
         {!booking && (
-          <Card className="mt-8 animate-fade-in anim-delay-200 bg-white border-border shadow-sm">
+          <Card className="mt-8 animate-fade-in anim-delay-200 bg-card border-border shadow-sm">
             <CardContent className="p-6">
               <h3 className="font-semibold text-foreground mb-3">راهنما</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">

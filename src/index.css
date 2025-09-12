@@ -4,67 +4,79 @@
 
 @layer base {
   :root {
-    /* White Minimal Theme - Light Mode */
-    --background: 0 0% 100%;
-    --foreground: 0 0% 15%;
+    /* Light Mode as Default */
+    --background: 0 0% 98%;
+    --foreground: 0 0% 12%;
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 15%;
+    --card-foreground: 0 0% 12%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 15%;
+    --popover-foreground: 0 0% 12%;
     --primary: 220 85% 55%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 97%;
-    --secondary-foreground: 0 0% 20%;
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 50%;
-    --accent: 220 15% 96%;
-    --accent-foreground: 0 0% 20%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 25%;
+    --muted: 0 0% 95%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 220 15% 95%;
+    --accent-foreground: 0 0% 25%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 88%;
+    --border: 0 0% 90%;
     --input: 0 0% 100%;
     --ring: 220 85% 55%;
 
     --radius: 0.75rem;
 
-    /* Custom minimal theme colors */
+    /* Custom light theme colors */
     --gold: 45 93% 47%;
     --gold-light: 48 100% 80%;
-    --cream: 0 0% 100%;
+    --cream: 0 0% 99%;
     --lavender: 250 25% 95%;
-    --charcoal: 0 0% 20%;
-    --warm-gray: 0 0% 55%;
+    --charcoal: 0 0% 25%;
+    --warm-gray: 0 0% 50%;
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+    --info: 199 89% 48%;
+    --info-foreground: 0 0% 100%;
   }
 
   .dark {
-    /* Dark theme colors - Minimal white-based */
-    --background: 0 0% 5%;
-    --foreground: 0 0% 95%;
+    /* Dark theme - optional */
+    --background: 0 0% 6%;
+    --foreground: 0 0% 94%;
     --card: 0 0% 8%;
-    --card-foreground: 0 0% 95%;
+    --card-foreground: 0 0% 94%;
     --popover: 0 0% 8%;
-    --popover-foreground: 0 0% 95%;
-    --primary: 220 100% 60%;
+    --popover-foreground: 0 0% 94%;
+    --primary: 220 85% 65%;
     --primary-foreground: 0 0% 100%;
     --secondary: 0 0% 12%;
-    --secondary-foreground: 0 0% 95%;
+    --secondary-foreground: 0 0% 90%;
     --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 65%;
+    --muted-foreground: 0 0% 60%;
     --accent: 0 0% 12%;
-    --accent-foreground: 0 0% 95%;
+    --accent-foreground: 0 0% 90%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 20%;
-    --input: 0 0% 15%;
-    --ring: 220 100% 60%;
+    --border: 0 0% 18%;
+    --input: 0 0% 12%;
+    --ring: 220 85% 65%;
 
-    /* Dark mode minimal colors */
+    /* Dark mode colors */
     --gold: 45 93% 60%;
     --gold-light: 48 100% 80%;
-    --cream: 0 0% 5%;
+    --cream: 0 0% 8%;
     --lavender: 250 25% 15%;
-    --charcoal: 0 0% 95%;
-    --warm-gray: 0 0% 40%;
+    --charcoal: 0 0% 90%;
+    --warm-gray: 0 0% 45%;
+    --success: 142 76% 45%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 55%;
+    --warning-foreground: 0 0% 100%;
+    --info: 199 89% 55%;
+    --info-foreground: 0 0% 100%;
   }
 }
 
@@ -103,7 +115,7 @@
   }
   
   .btn-secondary {
-    @apply bg-white text-foreground rounded-xl px-8 py-3 font-medium transition-all duration-300 hover:bg-gray-50 active:scale-[0.98] border border-gray-200 shadow-sm hover:shadow-md;
+    @apply bg-secondary text-secondary-foreground rounded-xl px-8 py-3 font-medium transition-all duration-300 hover:bg-secondary/80 active:scale-[0.98] border border-border shadow-sm hover:shadow-md;
   }
   
   .section {

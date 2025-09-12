@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { MapPin, Phone, Mail, Clock, Send, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function Contact() {
@@ -16,291 +18,274 @@ export default function Contact() {
     subject: "",
     message: ""
   });
-  
   const [isSubmitted, setIsSubmitted] = useState(false);
-  
-  useEffect(() => {
-    // Scroll to top when component mounts
-    window.scrollTo(0, 0);
-  }, []);
-  
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
-  
-  const handleSubmit = (e: React.FormEvent) => {
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     
-    // In a real app, this would send the form data to a server
-    console.log("Form submitted:", formData);
-    
-    setIsSubmitted(true);
-    
-    // Reset form after 3 seconds
+    // Simulate form submission
     setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        subject: "",
-        message: ""
-      });
-    }, 3000);
+      setIsLoading(false);
+      setIsSubmitted(true);
+      setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
+      
+      // Reset success message after 5 seconds
+      setTimeout(() => setIsSubmitted(false), 5000);
+    }, 2000);
   };
-  
+
+  const contactInfo = [
+    {
+      icon: <MapPin className="h-6 w-6 text-primary" />,
+      title: "آدرس",
+      details: [
+        "تهران، خیابان ولیعصر",
+        "پلاک ۱۲۳، طبقه دوم",
+        "کد پستی: ۱۹۱۹۷"
+      ]
+    },
+    {
+      icon: <Phone className="h-6 w-6 text-primary" />,
+      title: "تلفن تماس",
+      details: ["۰۹۹۹ ۹۹۹ ۹۹۹۹", "۰۲۱ ۱۲۳۴ ۵۶۷۸"]
+    },
+    {
+      icon: <Mail className="h-6 w-6 text-primary" />,
+      title: "ایمیل",
+      details: ["info@norastudio.ir", "booking@norastudio.ir"]
+    },
+    {
+      icon: <Clock className="h-6 w-6 text-primary" />,
+      title: "ساعات کاری",
+      details: [
+        "شنبه تا پنج‌شنبه: ۹ تا ۱۸",
+        "جمعه: تعطیل"
+      ]
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
       
-      <main className="flex-1 pt-20">
-        {/* Header Section */}
-        <section className="relative py-20 bg-secondary/10 overflow-hidden">
-          <div className="container relative z-10">
-            <div className="max-w-3xl mx-auto text-center animate-fade-in anim-delay-80">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-foreground">
-                {t.contact.title}
+      <main className="flex-1">
+        {/* Hero Section */}
+        <section className="relative py-24 bg-gradient-to-b from-muted/30 to-background">
+          <div className="container">
+            <div className="text-center max-w-3xl mx-auto animate-fade-in">
+              <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
+                تماس با ما
               </h1>
-              <p className="text-muted-foreground text-lg mb-6 leading-relaxed">
-                {t.contact.subtitle}
+              <p className="text-xl text-muted-foreground leading-relaxed">
+                برای رزرو نوبت یا اطلاعات بیشتر با ما در ارتباط باشید
               </p>
             </div>
           </div>
-          
-          {/* Decorative elements */}
-          <div className="absolute top-0 right-0 w-1/3 h-full opacity-5">
-            <div className="absolute top-10 right-10 w-64 h-64 rounded-full bg-primary/30 blur-3xl" />
-            <div className="absolute bottom-10 right-40 w-48 h-48 rounded-full bg-primary/20 blur-3xl" />
-          </div>
         </section>
-        
-        {/* Contact Information & Form */}
-        <section className="section bg-white">
+
+        {/* Contact Form & Info Section */}
+        <section className="py-20 bg-background">
           <div className="container">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-              {/* Contact Information */}
-              <div className="animate-fade-in anim-delay-100">
-                <h2 className="text-2xl font-bold mb-6 text-foreground">{t.contact.getInTouch}</h2>
-                
-                <div className="bg-white border border-border rounded-xl p-6 space-y-6 mb-8 shadow-sm">
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0 h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mr-4">
-                      <MapPin className="h-5 w-5 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold mb-1 text-foreground">{t.contact.address}</h3>
-                      <p className="text-muted-foreground leading-relaxed">
-                        123 Seaside Boulevard<br />
-                        Costa Bella, 12345<br />
-                        Italy
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0 h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mr-4">
-                      <Phone className="h-5 w-5 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold mb-1 text-foreground">{t.contact.phone}</h3>
-                      <p className="text-muted-foreground">+39 123 4567 890</p>
-                      <p className="text-muted-foreground">+39 098 7654 321 (Reservations)</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0 h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mr-4">
-                      <Mail className="h-5 w-5 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold mb-1 text-foreground">{t.contact.email}</h3>
-                      <p className="text-muted-foreground">info@maresereno.com</p>
-                      <p className="text-muted-foreground">reservations@maresereno.com</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0 h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mr-4">
-                      <Clock className="h-5 w-5 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold mb-1 text-foreground">{t.contact.receptionHours}</h3>
-                      <p className="text-muted-foreground leading-relaxed">
-                        Monday - Sunday: 24 hours<br />
-                        {t.contact.checkInTime}<br />
-                        {t.contact.checkOutTime}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="aspect-video rounded-xl overflow-hidden shadow-lg border border-border">
-                  <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387191.03606358136!2d14.165818971864153!3d40.85529294646443!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x133b0a3c328d896b%3A0x309e11f99628150!2sGulf%20of%20Naples!5e0!3m2!1sen!2sus!4v1628613152777!5m2!1sen!2sus" 
-                    width="100%" 
-                    height="100%" 
-                    style={{ border: 0 }} 
-                    allowFullScreen 
-                    loading="lazy"
-                    title="Location Map"
-                  />
-                </div>
-              </div>
-              
               {/* Contact Form */}
-              <div className="animate-fade-in anim-delay-300">
-                <h2 className="text-2xl font-bold mb-6 text-foreground">{t.contact.sendMessage}</h2>
-                
-                <div className="bg-white border border-border rounded-xl p-6 shadow-sm">
-                  {!isSubmitted ? (
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="name" className="text-foreground">{t.contact.fullName}</Label>
-                          <Input 
-                            id="name" 
-                            name="name"
-                            value={formData.name}
-                            onChange={handleInputChange}
-                            placeholder="John Doe"
-                            className="bg-background border-input text-foreground"
-                            required 
-                          />
+              <div className="animate-fade-in">
+                <Card className="shadow-lg border-border bg-card">
+                  <CardHeader>
+                    <CardTitle className="text-2xl text-foreground">
+                      فرم تماس
+                    </CardTitle>
+                    <CardDescription className="text-muted-foreground">
+                      پیام خود را برای ما ارسال کنید
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    {isSubmitted ? (
+                      <div className="text-center py-8">
+                        <CheckCircle className="h-16 w-16 text-success mx-auto mb-4" />
+                        <h3 className="text-xl font-semibold text-foreground mb-2">
+                          پیام ارسال شد!
+                        </h3>
+                        <p className="text-muted-foreground">
+                          پیام شما با موفقیت ارسال شد. به زودی با شما تماس خواهیم گرفت.
+                        </p>
+                      </div>
+                    ) : (
+                      <form onSubmit={handleSubmit} className="space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="name" className="text-foreground">
+                              نام و نام خانوادگی
+                            </Label>
+                            <Input
+                              id="name"
+                              name="name"
+                              value={formData.name}
+                              onChange={handleInputChange}
+                              required
+                              className="bg-input border-border focus:border-primary"
+                              placeholder="نام خود را وارد کنید"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="phone" className="text-foreground">
+                              {t.contact.form.phone}
+                            </Label>
+                            <Input
+                              id="phone"
+                              name="phone"
+                              type="tel"
+                              value={formData.phone}
+                              onChange={handleInputChange}
+                              className="bg-input border-border focus:border-primary"
+                              placeholder={t.contact.form.placeholders.phone}
+                            />
+                          </div>
                         </div>
                         
                         <div className="space-y-2">
-                          <Label htmlFor="email" className="text-foreground">{t.contact.email}</Label>
-                          <Input 
-                            id="email" 
+                          <Label htmlFor="email" className="text-foreground">
+                            {t.contact.form.email}
+                          </Label>
+                          <Input
+                            id="email"
                             name="email"
                             type="email"
                             value={formData.email}
                             onChange={handleInputChange}
-                            placeholder="john@example.com"
-                            className="bg-background border-input text-foreground"
-                            required 
-                          />
-                        </div>
-                      </div>
-                      
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="phone" className="text-foreground">{t.contact.phoneNumber}</Label>
-                          <Input 
-                            id="phone" 
-                            name="phone"
-                            value={formData.phone}
-                            onChange={handleInputChange}
-                            placeholder="+1 234 567 8900"
-                            className="bg-background border-input text-foreground"
+                            required
+                            className="bg-input border-border focus:border-primary"
+                            placeholder={t.contact.form.placeholders.email}
                           />
                         </div>
                         
                         <div className="space-y-2">
-                          <Label htmlFor="subject" className="text-foreground">{t.contact.subject}</Label>
-                          <Input 
-                            id="subject" 
+                          <Label htmlFor="subject" className="text-foreground">
+                            {t.contact.form.subject}
+                          </Label>
+                          <Input
+                            id="subject"
                             name="subject"
                             value={formData.subject}
                             onChange={handleInputChange}
-                            placeholder="Reservation Inquiry"
-                            className="bg-background border-input text-foreground"
-                            required 
+                            required
+                            className="bg-input border-border focus:border-primary"
+                            placeholder={t.contact.form.placeholders.subject}
                           />
                         </div>
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <Label htmlFor="message" className="text-foreground">{t.contact.message}</Label>
-                        <textarea 
-                          id="message" 
-                          name="message"
-                          value={formData.message}
-                          onChange={handleInputChange}
-                          placeholder={t.contact.howCanWeHelp} 
-                          className="w-full min-h-[150px] p-3 rounded-md border border-input bg-background text-foreground resize-none"
-                          required 
-                        />
-                      </div>
-                      
-                      <div className="flex justify-end">
-                        <Button type="submit" className="btn-primary">
-                          {isSubmitted ? (
-                            <>
-                              <Check className="h-4 w-4 ml-2" /> {t.contact.success}
-                            </>
+                        
+                        <div className="space-y-2">
+                          <Label htmlFor="message" className="text-foreground">
+                            {t.contact.form.message}
+                          </Label>
+                          <Textarea
+                            id="message"
+                            name="message"
+                            value={formData.message}
+                            onChange={handleInputChange}
+                            required
+                            rows={5}
+                            className="bg-input border-border focus:border-primary resize-none"
+                            placeholder={t.contact.form.placeholders.message}
+                          />
+                        </div>
+                        
+                        <Button 
+                          type="submit" 
+                          className="w-full btn-primary"
+                          disabled={isLoading}
+                        >
+                          {isLoading ? (
+                            <div className="flex items-center">
+                              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground mr-2"></div>
+                              {t.contact.form.sending}
+                            </div>
                           ) : (
                             <>
-                              <Send className="h-4 w-4 ml-2" /> {t.contact.send}
+                              <Send className="mr-2 h-4 w-4" />
+                              {t.contact.form.send}
                             </>
                           )}
                         </Button>
-                      </div>
-                    </form>
-                  ) : (
-                    <div className="text-center py-8">
-                      <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <Check className="w-8 h-8 text-green-600" />
-                      </div>
-                      <p className="text-primary font-medium text-lg">{t.contact.success}</p>
-                      <p className="text-muted-foreground mt-2">پیام شما با موفقیت ارسال شد</p>
-                    </div>
-                  )}
+                      </form>
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Contact Information */}
+              <div className="space-y-8 animate-fade-in [animation-delay:200ms]">
+                <div>
+                  <h2 className="text-2xl font-bold mb-6 text-foreground">
+                    اطلاعات تماس
+                  </h2>
+                  <div className="grid gap-6">
+                    {contactInfo.map((info, index) => (
+                      <Card key={index} className="p-6 hover:shadow-md transition-shadow border-border bg-card">
+                        <div className="flex items-start space-x-4 rtl:space-x-reverse">
+                          <div className="p-3 rounded-full bg-primary/10 border border-primary/20">
+                            {info.icon}
+                          </div>
+                          <div>
+                            <h3 className="font-semibold text-foreground mb-2">
+                              {info.title}
+                            </h3>
+                            {info.details.map((detail, detailIndex) => (
+                              <p key={detailIndex} className="text-muted-foreground">
+                                {detail}
+                              </p>
+                            ))}
+                          </div>
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
                 </div>
+
+                {/* Map Placeholder */}
+                <Card className="overflow-hidden border-border bg-card">
+                  <div className="h-64 bg-muted/50 flex items-center justify-center">
+                    <div className="text-center">
+                      <MapPin className="h-12 w-12 text-muted-foreground mx-auto mb-2" />
+                      <p className="text-muted-foreground">
+                        نقشه محل استودیو
+                      </p>
+                    </div>
+                  </div>
+                </Card>
               </div>
             </div>
           </div>
         </section>
-        
+
         {/* FAQ Section */}
-        <section className="section bg-secondary/10">
+        <section className="py-20 bg-muted/20">
           <div className="container">
-            <div className="max-w-3xl mx-auto text-center mb-12 animate-fade-in">
-              <h2 className="text-3xl font-bold mb-4 text-foreground">{t.contact.faq}</h2>
+            <div className="text-center max-w-3xl mx-auto mb-12 animate-fade-in">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
+                {t.contact.faq.title}
+              </h2>
               <p className="text-muted-foreground leading-relaxed">
-                {t.contact.faqSubtitle}
+                {t.contact.faq.description}
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-in [animation-delay:200ms]">
-              {[
-                {
-                  questionKey: "checkInOut",
-                  icon: <Clock className="h-5 w-5 text-primary" />
-                },
-                {
-                  questionKey: "parking",
-                  icon: <MapPin className="h-5 w-5 text-primary" />
-                },
-                {
-                  questionKey: "pets",
-                  icon: <MapPin className="h-5 w-5 text-primary" />
-                },
-                {
-                  questionKey: "breakfast",
-                  icon: <MapPin className="h-5 w-5 text-primary" />
-                },
-                {
-                  questionKey: "transfers",
-                  icon: <MapPin className="h-5 w-5 text-primary" />
-                },
-                {
-                  questionKey: "amenities",
-                  icon: <MapPin className="h-5 w-5 text-primary" />
-                },
-              ].map((faq, index) => (
-                <div key={index} className="bg-white border border-border rounded-xl p-6 shadow-sm">
-                  <div className="flex items-start gap-3 mb-3">
-                    {faq.icon}
-                    <h3 className="font-semibold text-lg text-foreground">
-                      {t.contact.questions[faq.questionKey].question}
-                    </h3>
-                  </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              {t.contact.faq.items.map((faq, index) => (
+                <Card key={index} className="p-6 animate-fade-in border-border bg-card" style={{ animationDelay: `${index * 100}ms` }}>
+                  <h3 className="font-semibold text-foreground mb-3">
+                    {faq.question}
+                  </h3>
                   <p className="text-muted-foreground leading-relaxed">
-                    {t.contact.questions[faq.questionKey].answer}
+                    {faq.answer}
                   </p>
-                </div>
+                </Card>
               ))}
             </div>
           </div>

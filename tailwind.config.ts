@@ -60,7 +60,19 @@ export default {
 				cream: 'hsl(var(--cream))',
 				lavender: 'hsl(var(--lavender))',
 				charcoal: 'hsl(var(--charcoal))',
-				'warm-gray': 'hsl(var(--warm-gray))'
+				'warm-gray': 'hsl(var(--warm-gray))',
+				success: {
+					DEFAULT: 'hsl(var(--success))',
+					foreground: 'hsl(var(--success-foreground))'
+				},
+				warning: {
+					DEFAULT: 'hsl(var(--warning))',
+					foreground: 'hsl(var(--warning-foreground))'
+				},
+				info: {
+					DEFAULT: 'hsl(var(--info))',
+					foreground: 'hsl(var(--info-foreground))'
+				}
 			},
 			fontFamily: {
 				sans: ['Vazirmatn', 'IRANSans', 'sans-serif'],

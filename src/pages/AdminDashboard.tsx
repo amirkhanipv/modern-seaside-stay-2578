@@ -130,7 +130,7 @@ export default function AdminDashboard() {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        <Card className="w-full max-w-md animate-fade-in anim-delay-80 bg-white border-border shadow-lg">
+        <Card className="w-full max-w-md animate-fade-in anim-delay-80 bg-card border-border shadow-lg">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl text-foreground">ورود ادمین</CardTitle>
             <p className="text-muted-foreground">برای دسترسی به پنل مدیریت وارد شوید</p>
@@ -175,13 +175,13 @@ export default function AdminDashboard() {
             <p className="text-muted-foreground mt-2">مدیریت رزروها و محتوای سایت</p>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Button variant="outline" onClick={() => window.location.href = '/admin/portfolio'} className="bg-white">
+            <Button variant="outline" onClick={() => window.location.href = '/admin/portfolio'} className="bg-card">
               مدیریت نمونه کارها
             </Button>
-            <Button variant="outline" onClick={() => window.location.href = '/admin/reviews'} className="bg-white">
+            <Button variant="outline" onClick={() => window.location.href = '/admin/reviews'} className="bg-card">
               مدیریت نظرات
             </Button>
-            <Button variant="outline" onClick={() => window.location.href = '/admin/homepage'} className="bg-white">
+            <Button variant="outline" onClick={() => window.location.href = '/admin/homepage'} className="bg-card">
               مدیریت صفحه اصلی
             </Button>
             <Button variant="destructive" onClick={handleLogout}>خروج</Button>
@@ -190,7 +190,7 @@ export default function AdminDashboard() {
 
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <Card className="bg-white border-border shadow-sm">
+          <Card className="bg-card border-border shadow-sm">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -204,7 +204,7 @@ export default function AdminDashboard() {
             </CardContent>
           </Card>
 
-          <Card className="bg-white border-border shadow-sm">
+          <Card className="bg-card border-border shadow-sm">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -218,7 +218,7 @@ export default function AdminDashboard() {
             </CardContent>
           </Card>
 
-          <Card className="bg-white border-border shadow-sm">
+          <Card className="bg-card border-border shadow-sm">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -237,7 +237,7 @@ export default function AdminDashboard() {
         <div className="space-y-4">
           <h2 className="text-xl font-semibold text-foreground mb-4">لیست رزروها</h2>
           {bookings.length === 0 ? (
-            <Card className="bg-white border-border shadow-sm">
+            <Card className="bg-card border-border shadow-sm">
               <CardContent className="p-8 text-center">
                 <p className="text-muted-foreground">هیچ رزروی یافت نشد</p>
               </CardContent>
@@ -246,7 +246,7 @@ export default function AdminDashboard() {
             bookings.map((booking, index) => (
               <Card 
                 key={booking.id}
-                className="bg-white border-border shadow-sm hover:shadow-md transition-shadow animate-fade-in"
+                className="bg-card border-border shadow-sm hover:shadow-md transition-shadow animate-fade-in"
                 style={{ animationDelay: `${index * 60}ms`, animationFillMode: 'both' }}
               >
                 <CardContent className="p-6">

@@ -86,7 +86,7 @@ export default function Footer() {
               <input 
                 type="email" 
                 placeholder={t.footer.yourEmail} 
-                className="rounded-md px-4 py-2 bg-background border border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary"
+                className="rounded-md px-4 py-2 bg-input border border-input text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary"
                 required 
               />
               <button 

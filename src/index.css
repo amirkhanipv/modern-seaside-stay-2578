@@ -78,6 +78,14 @@
     font-family: 'Vazirmatn', 'IRANSans', sans-serif;
     direction: rtl;
   }
+
+  html {
+    color-scheme: light;
+  }
+
+  .dark {
+    color-scheme: dark;
+  }
   
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Vazirmatn', 'IRANSans', sans-serif;
@@ -103,15 +111,15 @@
   }
   
   .glass-card {
-    @apply bg-white/95 backdrop-blur-sm border border-gray-200/50 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300;
+    @apply bg-card/95 backdrop-blur-sm border border-border rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300;
   }
-  
+
   .minimal-gradient {
-    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%);
+    background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--muted)) 50%, hsl(var(--muted)/0.5) 100%);
   }
-  
+
   .minimal-shadow {
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 20px hsl(var(--foreground) / 0.08), 0 1px 3px hsl(var(--foreground) / 0.05);
   }
   
   .hero-overlay {

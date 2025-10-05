@@ -44,13 +44,13 @@ export default function HeroSection() {
         style={{ transform: `translateY(${contentY}px)` }}
       >
         <div className="max-w-3xl animate-fade-in">
-          <span className="inline-block text-white/90 text-lg mb-4 tracking-wide border-b border-white/30 pb-2">
+          <span className="inline-block text-primary-foreground/95 text-lg mb-4 tracking-wide border-b border-primary-foreground/40 pb-2 drop-shadow-lg">
             {t.hero.subtitle}
           </span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary-foreground mb-6 drop-shadow-2xl">
             {t.hero.title}
           </h1>
-          <p className="text-lg text-white/90 mb-8 max-w-2xl mx-auto">
+          <p className="text-lg text-primary-foreground/95 mb-8 max-w-2xl mx-auto drop-shadow-lg">
             {t.hero.description}
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -68,7 +68,7 @@ export default function HeroSection() {
       </div>
       
       {/* Scroll down indicator */}
-      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
+      <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-primary-foreground animate-bounce drop-shadow-lg">
         <a 
           href="#welcome" 
           className="flex flex-col items-center opacity-70 hover:opacity-100 transition-opacity"

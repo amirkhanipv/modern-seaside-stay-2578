@@ -115,7 +115,7 @@ export default function HomepageGallery({ showViewAllButton = true }: HomepageGa
 
   if (homepageImages.length === 0) {
     return (
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-background">
         <div className="container">
           <div className="text-center max-w-3xl mx-auto mb-12 animate-fade-in">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">گالری آثار</h2>
@@ -128,7 +128,7 @@ export default function HomepageGallery({ showViewAllButton = true }: HomepageGa
 
   return (
     <>
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-background">
         <div className="container">
           <div className="text-center max-w-3xl mx-auto mb-12 animate-fade-in">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">گالری آثار</h2>
@@ -154,9 +154,9 @@ export default function HomepageGallery({ showViewAllButton = true }: HomepageGa
                         alt={item.portfolio_image?.title || `تصویر ${index + 1}`}
                         className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105"
                       />
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 flex items-center justify-center">
-                        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 backdrop-blur-sm rounded-full p-4 transform group-hover:scale-110 transition-transform">
-                          <Camera className="w-8 h-8 text-gray-800" />
+                      <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/30 transition-all duration-300 flex items-center justify-center">
+                        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-card/95 backdrop-blur-sm rounded-full p-4 transform group-hover:scale-110 transition-transform border border-border">
+                          <Camera className="w-8 h-8 text-foreground" />
                         </div>
                       </div>
                     </div>

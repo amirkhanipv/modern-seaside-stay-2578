@@ -142,9 +142,9 @@ export default function GallerySection({ showViewAllButton = true }: GallerySect
                             alt={`${category.title} ${index + 1}`}
                             className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105"
                           />
-                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 flex items-center justify-center">
-                            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 backdrop-blur-sm rounded-full p-4 transform group-hover:scale-110 transition-transform">
-                              <Camera className="w-8 h-8 text-gray-800" />
+                          <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/30 transition-all duration-300 flex items-center justify-center">
+                            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-card/95 backdrop-blur-sm rounded-full p-4 transform group-hover:scale-110 transition-transform border border-border">
+                              <Camera className="w-8 h-8 text-foreground" />
                             </div>
                           </div>
                         </div>

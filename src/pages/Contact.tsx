@@ -135,7 +135,7 @@ export default function Contact() {
                           </div>
                           <div className="space-y-2">
                             <Label htmlFor="phone" className="text-foreground">
-                              {t.contact.form.phone}
+                              {t.contact.phoneNumber}
                             </Label>
                             <Input
                               id="phone"
@@ -144,14 +144,14 @@ export default function Contact() {
                               value={formData.phone}
                               onChange={handleInputChange}
                               className="bg-input border-border focus:border-primary"
-                              placeholder={t.contact.form.placeholders.phone}
+                              placeholder="شماره تماس خود را وارد کنید"
                             />
                           </div>
                         </div>
                         
                         <div className="space-y-2">
                           <Label htmlFor="email" className="text-foreground">
-                            {t.contact.form.email}
+                            {t.contact.email}
                           </Label>
                           <Input
                             id="email"
@@ -161,13 +161,13 @@ export default function Contact() {
                             onChange={handleInputChange}
                             required
                             className="bg-input border-border focus:border-primary"
-                            placeholder={t.contact.form.placeholders.email}
+                            placeholder="ایمیل خود را وارد کنید"
                           />
                         </div>
                         
                         <div className="space-y-2">
                           <Label htmlFor="subject" className="text-foreground">
-                            {t.contact.form.subject}
+                            {t.contact.subject}
                           </Label>
                           <Input
                             id="subject"
@@ -176,13 +176,13 @@ export default function Contact() {
                             onChange={handleInputChange}
                             required
                             className="bg-input border-border focus:border-primary"
-                            placeholder={t.contact.form.placeholders.subject}
+                            placeholder="موضوع پیام"
                           />
                         </div>
                         
                         <div className="space-y-2">
                           <Label htmlFor="message" className="text-foreground">
-                            {t.contact.form.message}
+                            {t.contact.message}
                           </Label>
                           <Textarea
                             id="message"
@@ -192,7 +192,7 @@ export default function Contact() {
                             required
                             rows={5}
                             className="bg-input border-border focus:border-primary resize-none"
-                            placeholder={t.contact.form.placeholders.message}
+                            placeholder={t.contact.howCanWeHelp}
                           />
                         </div>
                         
@@ -204,12 +204,12 @@ export default function Contact() {
                           {isLoading ? (
                             <div className="flex items-center">
                               <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground mr-2"></div>
-                              {t.contact.form.sending}
+                              در حال ارسال...
                             </div>
                           ) : (
                             <>
                               <Send className="mr-2 h-4 w-4" />
-                              {t.contact.form.send}
+                              {t.contact.send}
                             </>
                           )}
                         </Button>
@@ -269,15 +269,15 @@ export default function Contact() {
           <div className="container">
             <div className="text-center max-w-3xl mx-auto mb-12 animate-fade-in">
               <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
-                {t.contact.faq.title}
+                {t.contact.faq}
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                {t.contact.faq.description}
+                {t.contact.faqSubtitle}
               </p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              {t.contact.faq.items.map((faq, index) => (
+              {Object.values(t.contact.questions).map((faq, index) => (
                 <Card key={index} className="p-6 animate-fade-in border-border bg-card" style={{ animationDelay: `${index * 100}ms` }}>
                   <h3 className="font-semibold text-foreground mb-3">
                     {faq.question}

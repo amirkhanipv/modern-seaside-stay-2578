@@ -13,7 +13,7 @@ export interface PortfolioImage {
   id: string;
   title: string;
   description?: string;
-  url: string;
+  image_url: string;
   category_id: string;
   featured: boolean;
   display_order: number;
@@ -28,16 +28,12 @@ export interface PortfolioImage {
 
 export interface DiscountPlan {
   id: string;
-  name: string;
-  description: string;
-  original_price: number;
-  discounted_price?: number;
-  category_id: string;
-  features: string[];
-  duration_days?: number;
-  conditions?: string;
-  active: boolean;
-  display_order: number;
+  plan_name: string;
+  description?: string;
+  price: number;
+  duration_months?: number;
+  category_id?: string;
+  is_active: boolean;
   created_at: string;
   updated_at: string;
   categories?: {

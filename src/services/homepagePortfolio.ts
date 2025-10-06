@@ -1,9 +1,16 @@
 import { supabase } from "@/integrations/supabase/client";
-import type { Database } from "@/integrations/supabase/types";
 
-export type HomepagePortfolio = Database["public"]["Tables"]["homepage_portfolio"]["Row"];
+export interface HomepagePortfolio {
+  id: string;
+  portfolio_image_id: string;
+  display_order: number;
+  active?: boolean;
+  created_at: string;
+  updated_at: string;
+}
 
-export async function fetchHomepagePortfolio() {
+export async function fetchHomepagePortfolio(): Promise<HomepagePortfolio[]> {
+  // @ts-expect-error - Supabase type inference depth limitation
   const { data, error } = await supabase
     .from("homepage_portfolio")
     .select("*")
@@ -14,7 +21,7 @@ export async function fetchHomepagePortfolio() {
     throw new Error(error.message);
   }
 
-  return data ?? [];
+  return (data as HomepagePortfolio[]) ?? [];
 }
 
 export async function addToHomepagePortfolio(portfolioImageId: string, displayOrder: number = 0): Promise<HomepagePortfolio> {
@@ -33,7 +40,7 @@ export async function addToHomepagePortfolio(portfolioImageId: string, displayOr
     throw new Error(error.message);
   }
 
-  return data;
+  return data as HomepagePortfolio;
 }
 
 export async function removeFromHomepagePortfolio(id: string): Promise<void> {
@@ -61,5 +68,5 @@ export async function updateHomepagePortfolioOrder(id: string, displayOrder: num
     throw new Error(error.message);
   }
 
-  return data;
+  return data as HomepagePortfolio;
 }

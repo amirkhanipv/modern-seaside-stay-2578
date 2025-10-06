@@ -35,7 +35,7 @@ export default function HomepageGallery({ showViewAllButton = true }: HomepageGa
             portfolio_image: image || {
               id: '',
               title: 'تصویر یافت نشد',
-              url: '',
+              image_url: '',
               description: '',
               featured: false,
               category_id: null,
@@ -71,7 +71,7 @@ export default function HomepageGallery({ showViewAllButton = true }: HomepageGa
   const navigateLightbox = (direction: "prev" | "next") => {
     if (!selectedImage) return;
     
-    const currentIndex = homepageImages.findIndex(item => item.portfolio_image?.url === selectedImage);
+    const currentIndex = homepageImages.findIndex(item => item.portfolio_image?.image_url === selectedImage);
     let newIndex;
     
     if (direction === "prev") {
@@ -80,7 +80,7 @@ export default function HomepageGallery({ showViewAllButton = true }: HomepageGa
       newIndex = currentIndex < homepageImages.length - 1 ? currentIndex + 1 : 0;
     }
     
-    setSelectedImage(homepageImages[newIndex]?.portfolio_image?.url || null);
+    setSelectedImage(homepageImages[newIndex]?.portfolio_image?.image_url || null);
   };
 
   // Handle keyboard navigation for lightbox
@@ -147,10 +147,10 @@ export default function HomepageGallery({ showViewAllButton = true }: HomepageGa
                     <div 
                       key={item.id} 
                       className="w-full h-full flex-shrink-0 relative cursor-pointer group"
-                      onClick={() => setSelectedImage(item.portfolio_image?.url || null)}
+                      onClick={() => setSelectedImage(item.portfolio_image?.image_url || null)}
                     >
                       <img 
-                        src={item.portfolio_image?.url || ''}
+                        src={item.portfolio_image?.image_url || ''}
                         alt={item.portfolio_image?.title || `تصویر ${index + 1}`}
                         className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105"
                       />
@@ -210,11 +210,11 @@ export default function HomepageGallery({ showViewAllButton = true }: HomepageGa
                     )}
                     onClick={() => {
                       setActiveSlideIndex(index);
-                      setTimeout(() => setSelectedImage(item.portfolio_image?.url || null), 100);
+                      setTimeout(() => setSelectedImage(item.portfolio_image?.image_url || null), 100);
                     }}
                   >
                     <img 
-                      src={item.portfolio_image?.url || ''}
+                      src={item.portfolio_image?.image_url || ''}
                       alt={item.portfolio_image?.title || `تصویر ${index + 1}`}
                       className="w-full h-full object-cover"
                     />

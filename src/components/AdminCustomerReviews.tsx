@@ -20,8 +20,12 @@ export default function AdminCustomerReviews() {
   const [editingReview, setEditingReview] = useState<CustomerReview | null>(null);
   const [formData, setFormData] = useState({
     customer_name: "",
+    customer_name_en: "",
+    customer_name_it: "",
     customer_location: "",
     review_text: "",
+    review_text_en: "",
+    review_text_it: "",
     rating: 5,
     avatar_url: "",
     featured: false,
@@ -52,8 +56,12 @@ export default function AdminCustomerReviews() {
   const resetForm = () => {
     setFormData({
       customer_name: "",
+      customer_name_en: "",
+      customer_name_it: "",
       customer_location: "",
       review_text: "",
+      review_text_en: "",
+      review_text_it: "",
       rating: 5,
       avatar_url: "",
       featured: false,
@@ -99,8 +107,12 @@ export default function AdminCustomerReviews() {
     setEditingReview(review);
     setFormData({
       customer_name: review.customer_name,
+      customer_name_en: review.customer_name_en || "",
+      customer_name_it: review.customer_name_it || "",
       customer_location: review.customer_location || "",
       review_text: review.review_text,
+      review_text_en: review.review_text_en || "",
+      review_text_it: review.review_text_it || "",
       rating: review.rating,
       avatar_url: review.avatar_url || "",
       featured: review.featured || false,

@@ -151,7 +151,7 @@ export default function AdminPortfolio() {
 
     try {
       const newImage = await createPortfolioImage({
-        url: imageUrl,
+        image_url: imageUrl,
         title: imageTitle,
         category_id: imageCategory,
         description: imageDescription,
@@ -212,16 +212,12 @@ export default function AdminPortfolio() {
 
     try {
       const newPlan = await createDiscountPlan({
-        name: planName,
-        original_price: parseFloat(planOriginalPrice),
-        discounted_price: planDiscountedPrice ? parseFloat(planDiscountedPrice) : undefined,
+        plan_name: planName,
+        price: parseFloat(planOriginalPrice),
         category_id: planCategory,
         description: planDescription,
-        features: planFeatures.split('\n').filter(f => f.trim()),
-        duration_days: planDuration ? parseInt(planDuration) : undefined,
-        conditions: planConditions || undefined,
-        active: true,
-        display_order: 0
+        duration_months: planDuration ? parseInt(planDuration) : undefined,
+        is_active: true
       });
 
       setPlans([newPlan, ...plans]);
@@ -465,7 +461,7 @@ export default function AdminPortfolio() {
                 <Card key={image.id} className="overflow-hidden">
                   <div className="aspect-square overflow-hidden">
                     <img 
-                      src={image.url} 
+                      src={image.image_url} 
                       alt={image.title}
                       className="w-full h-full object-cover"
                     />
@@ -606,9 +602,9 @@ export default function AdminPortfolio() {
                 <Card key={plan.id}>
                   <CardHeader>
                     <div className="flex items-start justify-between">
-                      <CardTitle className="text-xl">{plan.name}</CardTitle>
-                      <Badge variant={plan.active ? "default" : "secondary"}>
-                        {plan.active ? "فعال" : "غیرفعال"}
+                      <CardTitle className="text-xl">{plan.plan_name}</CardTitle>
+                      <Badge variant={plan.is_active ? "default" : "secondary"}>
+                        {plan.is_active ? "فعال" : "غیرفعال"}
                       </Badge>
                     </div>
                   </CardHeader>
@@ -619,45 +615,15 @@ export default function AdminPortfolio() {
                     <p>{plan.description}</p>
                     
                     <div className="flex items-center gap-2">
-                      {plan.discounted_price ? (
-                        <>
-                          <span className="text-2xl font-bold text-primary">
-                            {formatPrice(plan.discounted_price)}
-                          </span>
-                          <span className="text-lg line-through text-muted-foreground">
-                            {formatPrice(plan.original_price)}
-                          </span>
-                          <Badge variant="destructive">
-                            {Math.round(((plan.original_price - plan.discounted_price) / plan.original_price) * 100)}% تخفیف
-                          </Badge>
-                        </>
-                      ) : (
-                        <span className="text-2xl font-bold text-primary">
-                          {formatPrice(plan.original_price)}
-                        </span>
-                      )}
+                      <span className="text-2xl font-bold text-primary">
+                        {formatPrice(plan.price)}
+                      </span>
                     </div>
 
                     {/* Additional plan details */}
-                    {(plan.duration_days || plan.conditions) && (
+                    {plan.duration_months && (
                       <div className="space-y-2 text-sm text-muted-foreground">
-                        {plan.duration_days && (
-                          <p>مدت اعتبار: {plan.duration_days} روز</p>
-                        )}
-                        {plan.conditions && (
-                          <p>شرایط: {plan.conditions}</p>
-                        )}
-                      </div>
-                    )}
-
-                    {plan.features.length > 0 && (
-                      <div>
-                        <h4 className="font-semibold mb-2">ویژگی‌ها:</h4>
-                        <ul className="list-disc list-inside space-y-1 text-sm">
-                          {plan.features.map((feature, index) => (
-                            <li key={index}>{feature}</li>
-                          ))}
-                        </ul>
+                        <p>مدت اعتبار: {plan.duration_months} ماه</p>
                       </div>
                     )}
 

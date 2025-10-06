@@ -41,7 +41,7 @@ export default function AdminHomepagePortfolio() {
           portfolio_image: image || {
             id: '',
             title: 'تصویر یافت نشد',
-            url: '',
+            image_url: '',
             description: '',
             featured: false,
             category_id: null,
@@ -88,7 +88,7 @@ export default function AdminHomepagePortfolio() {
         portfolio_image: image || {
           id: '',
           title: 'تصویر یافت نشد',
-          url: '',
+          image_url: '',
           description: '',
           featured: false,
           category_id: null,
@@ -211,9 +211,9 @@ export default function AdminHomepagePortfolio() {
               .map((item) => (
               <div key={item.id} className="flex items-center gap-4 p-4 border rounded-lg">
                 <div className="w-20 h-20 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
-                  {item.portfolio_image?.url ? (
+                  {item.portfolio_image?.image_url ? (
                     <img 
-                      src={item.portfolio_image.url} 
+                      src={item.portfolio_image.image_url} 
                       alt={item.portfolio_image.title}
                       className="w-full h-full object-cover"
                     />

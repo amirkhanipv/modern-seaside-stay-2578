@@ -70,6 +70,7 @@ export type Database = {
           name: string
           name_en: string | null
           name_it: string | null
+          slug: string
           updated_at: string
         }
         Insert: {
@@ -79,6 +80,7 @@ export type Database = {
           name: string
           name_en?: string | null
           name_it?: string | null
+          slug: string
           updated_at?: string
         }
         Update: {
@@ -88,19 +90,23 @@ export type Database = {
           name?: string
           name_en?: string | null
           name_it?: string | null
+          slug?: string
           updated_at?: string
         }
         Relationships: []
       }
       customer_reviews: {
         Row: {
+          active: boolean | null
+          avatar_url: string | null
           created_at: string
+          customer_location: string | null
           customer_name: string
           customer_name_en: string | null
           customer_name_it: string | null
           display_order: number | null
+          featured: boolean | null
           id: string
-          is_featured: boolean | null
           rating: number | null
           review_text: string
           review_text_en: string | null
@@ -108,13 +114,16 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          active?: boolean | null
+          avatar_url?: string | null
           created_at?: string
+          customer_location?: string | null
           customer_name: string
           customer_name_en?: string | null
           customer_name_it?: string | null
           display_order?: number | null
+          featured?: boolean | null
           id?: string
-          is_featured?: boolean | null
           rating?: number | null
           review_text: string
           review_text_en?: string | null
@@ -122,13 +131,16 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          active?: boolean | null
+          avatar_url?: string | null
           created_at?: string
+          customer_location?: string | null
           customer_name?: string
           customer_name_en?: string | null
           customer_name_it?: string | null
           display_order?: number | null
+          featured?: boolean | null
           id?: string
-          is_featured?: boolean | null
           rating?: number | null
           review_text?: string
           review_text_en?: string | null
@@ -225,39 +237,42 @@ export type Database = {
           created_at: string
           description: string | null
           display_order: number | null
+          featured: boolean | null
           id: string
           image_url: string
-          is_featured: boolean | null
           title: string
           title_en: string | null
           title_it: string | null
           updated_at: string
+          url: string | null
         }
         Insert: {
           category_id?: string | null
           created_at?: string
           description?: string | null
           display_order?: number | null
+          featured?: boolean | null
           id?: string
           image_url: string
-          is_featured?: boolean | null
           title: string
           title_en?: string | null
           title_it?: string | null
           updated_at?: string
+          url?: string | null
         }
         Update: {
           category_id?: string | null
           created_at?: string
           description?: string | null
           display_order?: number | null
+          featured?: boolean | null
           id?: string
           image_url?: string
-          is_featured?: boolean | null
           title?: string
           title_en?: string | null
           title_it?: string | null
           updated_at?: string
+          url?: string | null
         }
         Relationships: [
           {

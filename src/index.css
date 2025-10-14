@@ -43,34 +43,34 @@
   }
 
   .dark {
-    /* Pink & White Palette - Dark Mode */
-    --background: 340 15% 10%;
-    --foreground: 340 100% 95%;
-    --card: 340 15% 12%;
-    --card-foreground: 340 100% 95%;
-    --popover: 340 15% 12%;
-    --popover-foreground: 340 100% 95%;
-    --primary: 340 82% 70%;
-    --primary-foreground: 340 20% 10%;
-    --secondary: 340 25% 20%;
-    --secondary-foreground: 340 100% 92%;
-    --muted: 340 20% 18%;
-    --muted-foreground: 340 40% 65%;
-    --accent: 330 70% 60%;
-    --accent-foreground: 340 100% 95%;
+    /* Disable dark mode - use same light colors */
+    --background: 0 0% 100%;
+    --foreground: 340 70% 20%;
+    --card: 0 0% 100%;
+    --card-foreground: 340 70% 20%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 340 70% 20%;
+    --primary: 340 82% 58%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 340 60% 97%;
+    --secondary-foreground: 340 80% 25%;
+    --muted: 340 40% 98%;
+    --muted-foreground: 340 50% 40%;
+    --accent: 330 85% 70%;
+    --accent-foreground: 340 90% 20%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 340 20% 25%;
-    --input: 340 15% 15%;
-    --ring: 340 82% 70%;
+    --border: 340 30% 88%;
+    --input: 0 0% 100%;
+    --ring: 340 82% 58%;
 
-    /* Dark mode pink colors */
-    --rose: 350 80% 50%;
-    --blush: 340 75% 55%;
-    --soft-pink: 330 70% 60%;
-    --pastel-pink: 320 65% 65%;
-    --deep-pink: 340 90% 55%;
-    --pink-glow: 340 85% 60%;
+    /* Same pink colors as light mode */
+    --rose: 350 100% 95%;
+    --blush: 340 100% 96%;
+    --soft-pink: 330 100% 97%;
+    --pastel-pink: 320 100% 98%;
+    --deep-pink: 340 90% 50%;
+    --pink-glow: 340 100% 92%;
     --success: 340 76% 65%;
     --success-foreground: 0 0% 100%;
     --warning: 340 92% 70%;

@@ -36,7 +36,7 @@ export default function HeroSection() {
       />
       
       {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/60" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/30" />
       
       {/* Content */}
       <div
@@ -57,8 +57,8 @@ export default function HeroSection() {
             <Button asChild size="lg" variant="heroSolid" className="min-w-[200px] rounded-full transform transition-all duration-300 hover:translate-y-[-2px]">
               <Link to="/booking">رزرو نوبت</Link>
             </Button>
-            <Button asChild variant="hero" size="lg" className="min-w-[200px] rounded-full transform transition-all duration-300 hover:translate-y-[-2px]">
-              <Link to="/gallery">مشاهده نمونه کارها</Link>
+            <Button asChild variant="hero" size="lg" className="min-w-[200px] rounded-full transform transition-all duration-300 hover:translate-y-[-2px] text-black hover:text-black">
+              <Link to="/gallery" className="text-black">مشاهده نمونه کارها</Link>
             </Button>
             <Button asChild variant="hero" size="lg" className="min-w-[200px] rounded-full transform transition-all duration-300 hover:translate-y-[-2px]">
               <Link to="/booking-status">پیگیری رزرو</Link>

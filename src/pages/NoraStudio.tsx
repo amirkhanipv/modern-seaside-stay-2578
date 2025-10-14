@@ -271,28 +271,22 @@ export default function NoraStudio() {
             {PRICING_PLANS.map((plan, index) => (
               <Card
                 key={`plan-${index}`}
-                className={`bg-white shadow-[0_10px_40px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] transition-all duration-300 relative overflow-hidden border-2 hover:-translate-y-2 h-full flex flex-col ${
-                  plan.popular ? "border-primary md:scale-105" : "border-border"
+                className={`bg-white shadow-[0_10px_40px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] transition-all duration-300 relative overflow-visible hover:-translate-y-2 h-full flex flex-col ${
+                  plan.popular ? "border-4 border-transparent bg-gradient-to-r from-pink-400 via-primary to-pink-500 p-[4px] md:scale-105" : "border-2 border-border"
                 } animate-fade-in`}
                 style={{ 
                   animationDelay: `${100 + index * 80}ms`, 
                   animationFillMode: "both"
                 }}
               >
+                <div className={plan.popular ? "bg-white rounded-lg h-full flex flex-col" : "h-full flex flex-col"}>
                 {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
-                    <span className="bg-gradient-to-r from-primary to-accent text-white px-6 py-2 rounded-full text-sm font-bold shadow-lg">
-                      ⭐ محبوب‌ترین
-                    </span>
-                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 pointer-events-none rounded-lg" />
                 )}
-                {plan.popular && (
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 pointer-events-none" />
-                )}
-                <CardHeader className="pb-4 pt-8">
+                <CardHeader className="pb-4 pt-8 relative z-10">
                   <CardTitle className="text-2xl text-foreground font-bold text-center">{plan.title}</CardTitle>
                 </CardHeader>
-                <CardContent className="p-6 pt-4 flex-1 flex flex-col">
+                <CardContent className="p-6 pt-4 flex-1 flex flex-col relative z-10">
                   <div className="mb-6 text-center pb-6 border-b-2 border-border">
                     <span className="text-4xl font-bold bg-gradient-to-l from-primary to-accent bg-clip-text text-transparent">{plan.price}</span>
                     <span className="text-muted-foreground mr-2 text-lg">تومان</span>
@@ -323,6 +317,7 @@ export default function NoraStudio() {
                     </Button>
                   </div>
                 </CardContent>
+                </div>
               </Card>
             ))}
           </div>

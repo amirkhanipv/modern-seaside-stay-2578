@@ -188,7 +188,7 @@ export default function BookingStatus() {
                   value={trackingCode}
                   onChange={(e) => setTrackingCode(e.target.value)}
                   placeholder="مثال: NR123456"
-                  className="text-center bg-background border-input text-foreground text-lg py-3"
+                  className="text-center bg-background border-4 border-gray-300 text-foreground text-lg py-3"
                 />
               </div>
               <Button type="submit" className="w-full btn-primary py-3" disabled={loading}>

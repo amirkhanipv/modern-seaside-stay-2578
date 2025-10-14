@@ -269,56 +269,55 @@ export default function NoraStudio() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
             {PRICING_PLANS.map((plan, index) => (
-              <Card
+              <div
                 key={`plan-${index}`}
-                className={`bg-white shadow-[0_10px_40px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] transition-all duration-300 relative overflow-visible hover:-translate-y-2 h-full flex flex-col ${
-                  plan.popular ? "border-4 border-transparent bg-gradient-to-r from-pink-400 via-primary to-pink-500 p-[4px] md:scale-105" : "border-2 border-border"
-                } animate-fade-in`}
+                className={`animate-fade-in ${plan.popular ? "p-1 bg-gradient-to-r from-pink-400 via-pink-500 to-primary rounded-2xl md:scale-105" : ""}`}
                 style={{ 
                   animationDelay: `${100 + index * 80}ms`, 
                   animationFillMode: "both"
                 }}
               >
-                <div className={plan.popular ? "bg-white rounded-lg h-full flex flex-col" : "h-full flex flex-col"}>
-                {plan.popular && (
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 pointer-events-none rounded-lg" />
-                )}
-                <CardHeader className="pb-4 pt-8 relative z-10">
-                  <CardTitle className="text-2xl text-foreground font-bold text-center">{plan.title}</CardTitle>
-                </CardHeader>
-                <CardContent className="p-6 pt-4 flex-1 flex flex-col relative z-10">
-                  <div className="mb-6 text-center pb-6 border-b-2 border-border">
-                    <span className="text-4xl font-bold bg-gradient-to-l from-primary to-accent bg-clip-text text-transparent">{plan.price}</span>
-                    <span className="text-muted-foreground mr-2 text-lg">تومان</span>
-                  </div>
-                  <ul className="space-y-3 mb-6 flex-1">
-                    {plan.features.map((feature, i) => (
-                      <li key={`feature-${index}-${i}`} className="flex items-start gap-3 text-foreground">
-                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
-                          <Heart className="w-4 h-4 text-primary fill-primary" />
-                        </div>
-                        <span className="font-medium text-sm leading-relaxed">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="space-y-3 mt-auto">
-                    <p className="text-sm text-white font-bold bg-gradient-to-r from-primary to-accent rounded-xl p-3 text-center shadow-md">
-                      🎁 تخفیف ویژه رزرو آنلاین
-                    </p>
-                    <Button
-                      className={`w-full text-lg py-6 rounded-xl font-bold shadow-lg transition-all duration-300 ${
-                        plan.popular 
-                          ? 'bg-gradient-to-r from-primary to-accent hover:shadow-2xl hover:scale-105' 
-                          : 'bg-primary hover:bg-primary/90 hover:shadow-xl'
-                      }`}
-                      onClick={() => (window.location.href = "/booking")}
-                    >
-                      رزرو این پکیج
-                    </Button>
-                  </div>
-                </CardContent>
-                </div>
-              </Card>
+                <Card
+                  className={`bg-white shadow-[0_10px_40px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] transition-all duration-300 relative hover:-translate-y-2 h-full flex flex-col ${
+                    plan.popular ? "rounded-2xl" : "border-2 border-border rounded-2xl"
+                  }`}
+                >
+                  <CardHeader className="pb-4 pt-8 relative z-10">
+                    <CardTitle className="text-2xl text-foreground font-bold text-center">{plan.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-6 pt-4 flex-1 flex flex-col relative z-10">
+                    <div className="mb-6 text-center pb-6 border-b-2 border-border">
+                      <span className="text-4xl font-bold bg-gradient-to-l from-primary to-accent bg-clip-text text-transparent">{plan.price}</span>
+                      <span className="text-muted-foreground mr-2 text-lg">تومان</span>
+                    </div>
+                    <ul className="space-y-3 mb-6 flex-1">
+                      {plan.features.map((feature, i) => (
+                        <li key={`feature-${index}-${i}`} className="flex items-start gap-3 text-foreground">
+                          <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
+                            <Heart className="w-4 h-4 text-primary fill-primary" />
+                          </div>
+                          <span className="font-medium text-sm leading-relaxed">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="space-y-3 mt-auto">
+                      <p className="text-sm text-white font-bold bg-gradient-to-r from-primary to-accent rounded-xl p-3 text-center shadow-md">
+                        🎁 تخفیف ویژه رزرو آنلاین
+                      </p>
+                      <Button
+                        className={`w-full text-lg py-6 rounded-xl font-bold shadow-lg transition-all duration-300 ${
+                          plan.popular 
+                            ? 'bg-gradient-to-r from-primary to-accent hover:shadow-2xl hover:scale-105' 
+                            : 'bg-primary hover:bg-primary/90 hover:shadow-xl'
+                        }`}
+                        onClick={() => (window.location.href = "/booking")}
+                      >
+                        رزرو این پکیج
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
             ))}
           </div>
         </div>

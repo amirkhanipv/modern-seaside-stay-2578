@@ -4,78 +4,78 @@
 
 @layer base {
   :root {
-    /* Light Mode as Default */
-    --background: 0 0% 98%;
-    --foreground: 0 0% 12%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 12%;
+    /* Pink & White Palette - Light Mode */
+    --background: 0 0% 100%;
+    --foreground: 340 60% 25%;
+    --card: 340 100% 99%;
+    --card-foreground: 340 60% 25%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 12%;
-    --primary: 220 85% 55%;
+    --popover-foreground: 340 60% 25%;
+    --primary: 340 82% 65%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 25%;
-    --muted: 0 0% 95%;
-    --muted-foreground: 0 0% 45%;
-    --accent: 220 15% 95%;
-    --accent-foreground: 0 0% 25%;
+    --secondary: 340 60% 95%;
+    --secondary-foreground: 340 70% 35%;
+    --muted: 340 40% 96%;
+    --muted-foreground: 340 30% 50%;
+    --accent: 330 85% 75%;
+    --accent-foreground: 340 80% 25%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 90%;
-    --input: 0 0% 100%;
-    --ring: 220 85% 55%;
+    --border: 340 30% 90%;
+    --input: 340 100% 99%;
+    --ring: 340 82% 65%;
 
     --radius: 0.75rem;
 
-    /* Custom light theme colors */
-    --gold: 45 93% 47%;
-    --gold-light: 48 100% 80%;
-    --cream: 0 0% 99%;
-    --lavender: 250 25% 95%;
-    --charcoal: 0 0% 25%;
-    --warm-gray: 0 0% 50%;
-    --success: 142 76% 36%;
+    /* Custom pink theme colors */
+    --rose: 350 100% 88%;
+    --blush: 340 100% 92%;
+    --soft-pink: 330 100% 94%;
+    --pastel-pink: 320 100% 96%;
+    --deep-pink: 340 90% 50%;
+    --pink-glow: 340 100% 85%;
+    --success: 340 76% 65%;
     --success-foreground: 0 0% 100%;
-    --warning: 38 92% 50%;
+    --warning: 340 92% 70%;
     --warning-foreground: 0 0% 100%;
-    --info: 199 89% 48%;
+    --info: 340 89% 75%;
     --info-foreground: 0 0% 100%;
   }
 
   .dark {
-    /* Dark theme - optional */
-    --background: 0 0% 6%;
-    --foreground: 0 0% 94%;
-    --card: 0 0% 8%;
-    --card-foreground: 0 0% 94%;
-    --popover: 0 0% 8%;
-    --popover-foreground: 0 0% 94%;
-    --primary: 220 85% 65%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 0 0% 12%;
-    --secondary-foreground: 0 0% 90%;
-    --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 60%;
-    --accent: 0 0% 12%;
-    --accent-foreground: 0 0% 90%;
+    /* Pink & White Palette - Dark Mode */
+    --background: 340 15% 10%;
+    --foreground: 340 100% 95%;
+    --card: 340 15% 12%;
+    --card-foreground: 340 100% 95%;
+    --popover: 340 15% 12%;
+    --popover-foreground: 340 100% 95%;
+    --primary: 340 82% 70%;
+    --primary-foreground: 340 20% 10%;
+    --secondary: 340 25% 20%;
+    --secondary-foreground: 340 100% 92%;
+    --muted: 340 20% 18%;
+    --muted-foreground: 340 40% 65%;
+    --accent: 330 70% 60%;
+    --accent-foreground: 340 100% 95%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 18%;
-    --input: 0 0% 12%;
-    --ring: 220 85% 65%;
+    --border: 340 20% 25%;
+    --input: 340 15% 15%;
+    --ring: 340 82% 70%;
 
-    /* Dark mode colors */
-    --gold: 45 93% 60%;
-    --gold-light: 48 100% 80%;
-    --cream: 0 0% 8%;
-    --lavender: 250 25% 15%;
-    --charcoal: 0 0% 90%;
-    --warm-gray: 0 0% 45%;
-    --success: 142 76% 45%;
+    /* Dark mode pink colors */
+    --rose: 350 80% 50%;
+    --blush: 340 75% 55%;
+    --soft-pink: 330 70% 60%;
+    --pastel-pink: 320 65% 65%;
+    --deep-pink: 340 90% 55%;
+    --pink-glow: 340 85% 60%;
+    --success: 340 76% 65%;
     --success-foreground: 0 0% 100%;
-    --warning: 38 92% 55%;
+    --warning: 340 92% 70%;
     --warning-foreground: 0 0% 100%;
-    --info: 199 89% 55%;
+    --info: 340 89% 75%;
     --info-foreground: 0 0% 100%;
   }
 }
@@ -126,16 +126,16 @@
     @apply bg-card/95 backdrop-blur-sm border border-border rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300;
   }
 
-  .minimal-gradient {
-    background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--muted)) 50%, hsl(var(--muted)/0.5) 100%);
+  .pink-gradient {
+    background: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--soft-pink)) 50%, hsl(var(--rose)) 100%);
   }
 
-  .minimal-shadow {
-    box-shadow: 0 4px 20px hsl(var(--foreground) / 0.08), 0 1px 3px hsl(var(--foreground) / 0.05);
+  .pink-shadow {
+    box-shadow: 0 4px 20px hsl(var(--primary) / 0.15), 0 1px 3px hsl(var(--primary) / 0.08);
   }
   
   .hero-overlay {
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.4) 100%);
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.2) 0%, hsl(var(--accent) / 0.1) 50%, hsl(var(--primary) / 0.3) 100%);
   }
 }
 

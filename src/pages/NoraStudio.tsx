@@ -267,17 +267,16 @@ export default function NoraStudio() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
             {PRICING_PLANS.map((plan, index) => (
               <Card
                 key={`plan-${index}`}
-                className={`bg-white shadow-[0_10px_40px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] transition-all duration-300 relative overflow-hidden border-2 hover:-translate-y-2 ${
-                  plan.popular ? "border-primary scale-105" : "border-border"
+                className={`bg-white shadow-[0_10px_40px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] transition-all duration-300 relative overflow-hidden border-2 hover:-translate-y-2 h-full flex flex-col ${
+                  plan.popular ? "border-primary md:scale-105" : "border-border"
                 } animate-fade-in`}
                 style={{ 
                   animationDelay: `${100 + index * 80}ms`, 
-                  animationFillMode: "both",
-                  transform: plan.popular ? 'perspective(1000px) rotateY(0deg)' : 'none'
+                  animationFillMode: "both"
                 }}
               >
                 {plan.popular && (
@@ -293,26 +292,26 @@ export default function NoraStudio() {
                 <CardHeader className="pb-4 pt-8">
                   <CardTitle className="text-2xl text-foreground font-bold text-center">{plan.title}</CardTitle>
                 </CardHeader>
-                <CardContent className="p-8 pt-4">
-                  <div className="mb-8 text-center pb-6 border-b-2 border-border">
+                <CardContent className="p-6 pt-4 flex-1 flex flex-col">
+                  <div className="mb-6 text-center pb-6 border-b-2 border-border">
                     <span className="text-4xl font-bold bg-gradient-to-l from-primary to-accent bg-clip-text text-transparent">{plan.price}</span>
                     <span className="text-muted-foreground mr-2 text-lg">تومان</span>
                   </div>
-                  <ul className="space-y-4 mb-8">
+                  <ul className="space-y-3 mb-6 flex-1">
                     {plan.features.map((feature, i) => (
-                      <li key={`feature-${index}-${i}`} className="flex items-center gap-3 text-foreground">
-                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center">
+                      <li key={`feature-${index}-${i}`} className="flex items-start gap-3 text-foreground">
+                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
                           <Heart className="w-4 h-4 text-primary fill-primary" />
                         </div>
-                        <span className="font-medium">{feature}</span>
+                        <span className="font-medium text-sm leading-relaxed">{feature}</span>
                       </li>
                     ))}
                   </ul>
-                  <div className="space-y-3">
-                    <p className="text-sm text-white font-bold bg-gradient-to-r from-primary to-accent rounded-xl p-4 text-center shadow-md">
+                  <div className="space-y-3 mt-auto">
+                    <p className="text-sm text-white font-bold bg-gradient-to-r from-primary to-accent rounded-xl p-3 text-center shadow-md">
                       🎁 تخفیف ویژه رزرو آنلاین
                     </p>
-                    <Button 
+                    <Button
                       className={`w-full text-lg py-6 rounded-xl font-bold shadow-lg transition-all duration-300 ${
                         plan.popular 
                           ? 'bg-gradient-to-r from-primary to-accent hover:shadow-2xl hover:scale-105' 

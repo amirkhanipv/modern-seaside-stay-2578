@@ -140,12 +140,12 @@ export default function AllWorks() {
       <section className="py-16">
         <div className="container">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-4 max-w-2xl mx-auto mb-12 bg-card shadow-lg">
+            <TabsList className="grid w-full grid-cols-4 max-w-2xl mx-auto mb-12 bg-white shadow-lg border-2 border-border h-auto p-2">
               {Object.entries(allWorksImages).map(([key, category]) => (
                 <TabsTrigger 
                   key={key} 
                   value={key}
-                  className="text-lg font-medium data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-300 hover:bg-primary/10"
+                  className="text-lg font-medium py-3 data-[state=active]:bg-primary data-[state=active]:text-white transition-all duration-300 hover:bg-primary/10 rounded-md"
                 >
                   {category.title}
                 </TabsTrigger>

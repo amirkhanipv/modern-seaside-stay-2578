@@ -6,34 +6,34 @@
   :root {
     /* Pink & White Palette - Light Mode */
     --background: 0 0% 100%;
-    --foreground: 340 60% 25%;
-    --card: 340 100% 99%;
-    --card-foreground: 340 60% 25%;
+    --foreground: 340 70% 20%;
+    --card: 0 0% 100%;
+    --card-foreground: 340 70% 20%;
     --popover: 0 0% 100%;
-    --popover-foreground: 340 60% 25%;
-    --primary: 340 82% 65%;
+    --popover-foreground: 340 70% 20%;
+    --primary: 340 82% 58%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 340 60% 95%;
-    --secondary-foreground: 340 70% 35%;
-    --muted: 340 40% 96%;
-    --muted-foreground: 340 30% 50%;
-    --accent: 330 85% 75%;
-    --accent-foreground: 340 80% 25%;
+    --secondary: 340 60% 97%;
+    --secondary-foreground: 340 80% 25%;
+    --muted: 340 40% 98%;
+    --muted-foreground: 340 50% 40%;
+    --accent: 330 85% 70%;
+    --accent-foreground: 340 90% 20%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 340 30% 90%;
-    --input: 340 100% 99%;
-    --ring: 340 82% 65%;
+    --border: 340 30% 88%;
+    --input: 0 0% 100%;
+    --ring: 340 82% 58%;
 
     --radius: 0.75rem;
 
     /* Custom pink theme colors */
-    --rose: 350 100% 88%;
-    --blush: 340 100% 92%;
-    --soft-pink: 330 100% 94%;
-    --pastel-pink: 320 100% 96%;
+    --rose: 350 100% 95%;
+    --blush: 340 100% 96%;
+    --soft-pink: 330 100% 97%;
+    --pastel-pink: 320 100% 98%;
     --deep-pink: 340 90% 50%;
-    --pink-glow: 340 100% 85%;
+    --pink-glow: 340 100% 92%;
     --success: 340 76% 65%;
     --success-foreground: 0 0% 100%;
     --warning: 340 92% 70%;

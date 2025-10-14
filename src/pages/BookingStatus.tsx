@@ -188,7 +188,7 @@ export default function BookingStatus() {
                   value={trackingCode}
                   onChange={(e) => setTrackingCode(e.target.value)}
                   placeholder="مثال: NR123456"
-                  className="text-center bg-background border-4 border-gray-300 text-foreground text-lg py-3"
+                  className="text-center bg-background border-2 border-gray-200 text-foreground text-lg py-3 shadow-[0_8px_16px_-2px_rgba(236,72,153,0.25),0_4px_8px_-2px_rgba(236,72,153,0.2)] hover:shadow-[0_12px_20px_-2px_rgba(236,72,153,0.3),0_6px_12px_-2px_rgba(236,72,153,0.25)]"
                 />
               </div>
               <Button type="submit" className="w-full btn-primary py-3" disabled={loading}>

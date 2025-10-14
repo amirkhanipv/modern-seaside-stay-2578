@@ -228,7 +228,7 @@ export default function NoraStudio() {
             {TESTIMONIALS.map((testimonial, index) => (
               <Card
                 key={`testimonial-${index}`}
-                className="bg-white border border-border shadow-sm hover:shadow-md transition-shadow overflow-hidden animate-fade-in"
+                className="bg-white border-2 border-border shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden rounded-2xl hover:-translate-y-1 animate-fade-in"
                 style={{ animationDelay: `${80 + index * 80}ms`, animationFillMode: "both" }}
               >
                 <div className="relative">
@@ -237,18 +237,18 @@ export default function NoraStudio() {
                     alt={testimonial.name}
                     className="w-full h-64 object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
                     <div className="flex mb-2">
                       {Array.from({ length: testimonial.rating }).map((_, i) => (
                         <Star
                           key={`star-${index}-${i}`}
-                          className="w-4 h-4 fill-yellow-400 text-yellow-400"
+                          className="w-5 h-5 fill-yellow-400 text-yellow-400"
                         />
                       ))}
                     </div>
-                    <h3 className="text-xl font-bold">{testimonial.name}</h3>
-                    <p className="text-white/80 leading-relaxed">{testimonial.review}</p>
+                    <h3 className="text-xl font-bold mb-2">{testimonial.name}</h3>
+                    <p className="text-white/90 leading-relaxed text-sm">{testimonial.review}</p>
                   </div>
                 </div>
               </Card>
@@ -258,7 +258,7 @@ export default function NoraStudio() {
       </section>
 
       {/* Pricing Plans */}
-      <section className="section bg-secondary/10">
+      <section className="section bg-gradient-to-b from-white to-soft-pink">
         <div className="container">
           <div className="text-center mb-16 animate-fade-in anim-delay-80">
             <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">پکیج‌های عکاسی</h2>
@@ -271,39 +271,55 @@ export default function NoraStudio() {
             {PRICING_PLANS.map((plan, index) => (
               <Card
                 key={`plan-${index}`}
-                className={`bg-white border shadow-sm hover:shadow-md transition-shadow relative ${
-                  plan.popular ? "border-primary border-2" : "border-border"
+                className={`bg-white shadow-[0_10px_40px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] transition-all duration-300 relative overflow-hidden border-2 hover:-translate-y-2 ${
+                  plan.popular ? "border-primary scale-105" : "border-border"
                 } animate-fade-in`}
-                style={{ animationDelay: `${100 + index * 80}ms`, animationFillMode: "both" }}
+                style={{ 
+                  animationDelay: `${100 + index * 80}ms`, 
+                  animationFillMode: "both",
+                  transform: plan.popular ? 'perspective(1000px) rotateY(0deg)' : 'none'
+                }}
               >
                 {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-primary text-primary-foreground px-4 py-1 rounded-full text-sm font-medium">
-                      محبوب‌ترین
+                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
+                    <span className="bg-gradient-to-r from-primary to-accent text-white px-6 py-2 rounded-full text-sm font-bold shadow-lg">
+                      ⭐ محبوب‌ترین
                     </span>
                   </div>
                 )}
-                <CardHeader>
-                  <CardTitle className="text-2xl text-foreground">{plan.title}</CardTitle>
+                {plan.popular && (
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 pointer-events-none" />
+                )}
+                <CardHeader className="pb-4 pt-8">
+                  <CardTitle className="text-2xl text-foreground font-bold text-center">{plan.title}</CardTitle>
                 </CardHeader>
-                <CardContent className="p-8">
-                  <div className="mb-6">
-                    <span className="text-3xl font-bold text-primary">{plan.price}</span>
-                    <span className="text-muted-foreground mr-2">تومان</span>
+                <CardContent className="p-8 pt-4">
+                  <div className="mb-8 text-center pb-6 border-b-2 border-border">
+                    <span className="text-4xl font-bold bg-gradient-to-l from-primary to-accent bg-clip-text text-transparent">{plan.price}</span>
+                    <span className="text-muted-foreground mr-2 text-lg">تومان</span>
                   </div>
-                  <ul className="space-y-3 mb-6">
+                  <ul className="space-y-4 mb-8">
                     {plan.features.map((feature, i) => (
-                      <li key={`feature-${index}-${i}`} className="flex items-center gap-2">
-                        <Heart className="w-4 h-4 text-primary flex-shrink-0" />
-                        <span className="text-foreground">{feature}</span>
+                      <li key={`feature-${index}-${i}`} className="flex items-center gap-3 text-foreground">
+                        <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center">
+                          <Heart className="w-4 h-4 text-primary fill-primary" />
+                        </div>
+                        <span className="font-medium">{feature}</span>
                       </li>
                     ))}
                   </ul>
                   <div className="space-y-3">
-                    <p className="text-sm text-primary font-medium bg-primary/10 border border-primary/20 rounded-lg p-3 text-center">
-                      تخفیف ویژه به دلیل رزرو از سایت
+                    <p className="text-sm text-white font-bold bg-gradient-to-r from-primary to-accent rounded-xl p-4 text-center shadow-md">
+                      🎁 تخفیف ویژه رزرو آنلاین
                     </p>
-                    <Button className="w-full btn-primary" onClick={() => (window.location.href = "/booking")}>
+                    <Button 
+                      className={`w-full text-lg py-6 rounded-xl font-bold shadow-lg transition-all duration-300 ${
+                        plan.popular 
+                          ? 'bg-gradient-to-r from-primary to-accent hover:shadow-2xl hover:scale-105' 
+                          : 'bg-primary hover:bg-primary/90 hover:shadow-xl'
+                      }`}
+                      onClick={() => (window.location.href = "/booking")}
+                    >
                       رزرو این پکیج
                     </Button>
                   </div>
@@ -323,18 +339,18 @@ export default function NoraStudio() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
             {/* Phone & Address */}
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6 text-center border border-blue-200">
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6 text-center border-2 border-blue-200 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <Phone className="w-10 h-10 text-blue-600 mx-auto mb-3" />
               <h3 className="text-xl font-bold mb-3 text-foreground">تماس تلفنی</h3>
               <a
                 href="tel:09999999999"
-                className="inline-flex items-center bg-blue-600 text-white rounded-xl px-4 py-2 hover:bg-blue-700 hover:shadow-lg transition-all duration-300 mb-4 text-sm"
+                className="inline-flex items-center bg-blue-600 text-white rounded-xl px-4 py-2 hover:bg-blue-700 hover:shadow-lg transition-all duration-300 mb-4 text-sm font-bold"
               >
                 <Phone className="ml-1 h-4 w-4" />
                 <span className="font-medium">۰۹۹۹۹۹۹۹۹۹۹</span>
               </a>
 
-              <div className="space-y-2 text-muted-foreground text-sm">
+              <div className="space-y-2 text-foreground text-sm border-t-2 border-blue-200 pt-4 mt-4">
                 <div className="flex items-center justify-center">
                   <MapPin className="w-4 h-4 ml-1 text-blue-600" />
                   <span>تهران، خیابان مثال، پلاک ۱۲</span>
@@ -347,55 +363,55 @@ export default function NoraStudio() {
             </div>
 
             {/* WhatsApp */}
-            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6 text-center border border-green-200">
+            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6 text-center border-2 border-green-200 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <MessageCircle className="w-10 h-10 text-green-600 mx-auto mb-3" />
               <h3 className="text-xl font-bold mb-3 text-foreground">واتساپ</h3>
               <a
                 href="https://wa.me/989999999999"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center bg-green-600 text-white rounded-xl px-4 py-2 hover:bg-green-700 hover:shadow-lg transition-all duration-300 mb-4 text-sm"
+                className="inline-flex items-center bg-green-600 text-white rounded-xl px-4 py-2 hover:bg-green-700 hover:shadow-lg transition-all duration-300 mb-4 text-sm font-bold"
               >
                 <MessageCircle className="ml-1 h-4 w-4" />
                 <span className="font-medium">پیام واتساپ</span>
               </a>
-              <p className="text-muted-foreground text-sm leading-relaxed">
+              <p className="text-foreground text-sm leading-relaxed border-t-2 border-green-200 pt-4 mt-4">
                 برای مشاوره سریع و رزرو آنلاین در واتساپ با ما در تماس باشید
               </p>
             </div>
 
             {/* Telegram */}
-            <div className="bg-gradient-to-br from-sky-50 to-sky-100 rounded-2xl p-6 text-center border border-sky-200">
+            <div className="bg-gradient-to-br from-sky-50 to-sky-100 rounded-2xl p-6 text-center border-2 border-sky-200 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <Send className="w-10 h-10 text-sky-600 mx-auto mb-3" />
               <h3 className="text-xl font-bold mb-3 text-foreground">تلگرام</h3>
               <a
                 href="https://t.me/NoraStudio"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center bg-sky-600 text-white rounded-xl px-4 py-2 hover:bg-sky-700 hover:shadow-lg transition-all duration-300 mb-4 text-sm"
+                className="inline-flex items-center bg-sky-600 text-white rounded-xl px-4 py-2 hover:bg-sky-700 hover:shadow-lg transition-all duration-300 mb-4 text-sm font-bold"
               >
                 <Send className="ml-1 h-4 w-4" />
                 <span className="font-medium">@NoraStudio</span>
               </a>
-              <p className="text-muted-foreground text-sm leading-relaxed">
+              <p className="text-foreground text-sm leading-relaxed border-t-2 border-sky-200 pt-4 mt-4">
                 برای چت و مشاوره سریع در تلگرام با ما در ارتباط باشید
               </p>
             </div>
 
             {/* Instagram */}
-            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 text-center border border-purple-200">
+            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 text-center border-2 border-purple-200 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <Instagram className="w-10 h-10 text-purple-600 mx-auto mb-3" />
               <h3 className="text-xl font-bold mb-3 text-foreground">اینستاگرام</h3>
               <a
                 href="https://instagram.com/Nora_Stu"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl px-4 py-2 hover:shadow-lg transition-all duration-300 mb-4 text-sm"
+                className="inline-flex items-center bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl px-4 py-2 hover:shadow-lg transition-all duration-300 mb-4 text-sm font-bold"
               >
                 <Instagram className="ml-1 h-4 w-4" />
                 <span className="font-medium">Nora_Stu</span>
               </a>
-              <p className="text-muted-foreground text-sm leading-relaxed">
+              <p className="text-foreground text-sm leading-relaxed border-t-2 border-purple-200 pt-4 mt-4">
                 نمونه‌کارهای روزانه و آخرین اخبار آتلیه را دنبال کنید
               </p>
             </div>

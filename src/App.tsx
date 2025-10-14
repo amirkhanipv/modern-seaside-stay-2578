@@ -32,28 +32,6 @@ const App = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Check if environment variables are loaded
-  if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground p-8 text-center">
-        <div className="max-w-md space-y-4">
-          <h2 className="text-2xl font-bold text-destructive">⚠️ Environment Not Loaded</h2>
-          <p className="text-muted-foreground">
-            The preview environment hasn't picked up your backend configuration yet.
-          </p>
-          <div className="space-y-2 text-sm text-muted-foreground">
-            <p>Please try:</p>
-            <ul className="list-disc list-inside text-left">
-              <li>Hard refresh your browser (Ctrl+Shift+R or Cmd+Shift+R)</li>
-              <li>Wait 1-2 minutes for the backend to initialize</li>
-              <li>Check your backend status if the issue persists</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   if (isLoading) {
     return <LoadingPage />;
   }

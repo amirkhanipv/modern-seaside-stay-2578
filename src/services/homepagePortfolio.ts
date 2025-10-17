@@ -4,17 +4,14 @@ export interface HomepagePortfolio {
   id: string;
   portfolio_image_id: string;
   display_order: number;
-  active?: boolean;
   created_at: string;
   updated_at: string;
 }
 
 export async function fetchHomepagePortfolio(): Promise<HomepagePortfolio[]> {
-  // @ts-expect-error - Supabase type inference depth limitation
   const { data, error } = await supabase
     .from("homepage_portfolio")
     .select("*")
-    .eq("active", true)
     .order("display_order", { ascending: true });
 
   if (error) {
@@ -29,8 +26,7 @@ export async function addToHomepagePortfolio(portfolioImageId: string, displayOr
     .from("homepage_portfolio")
     .insert({
       portfolio_image_id: portfolioImageId,
-      display_order: displayOrder,
-      active: true
+      display_order: displayOrder
     })
     .select()
     .single()

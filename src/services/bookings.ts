@@ -30,7 +30,13 @@ export async function updateBookingCalled(id: string, called: boolean): Promise<
   });
 
   if (error) {
+    console.error('Function invoke error:', error);
     throw new Error(error.message);
+  }
+
+  if (data?.error) {
+    console.error('Function response error:', data.error);
+    throw new Error(data.error);
   }
 
   return data as Booking;
@@ -49,14 +55,20 @@ export async function updateBookingStatus(id: string, status: string): Promise<B
   });
 
   if (error) {
+    console.error('Function invoke error:', error);
     throw new Error(error.message);
+  }
+
+  if (data?.error) {
+    console.error('Function response error:', data.error);
+    throw new Error(data.error);
   }
 
   return data as Booking;
 }
 
 export async function deleteBookingById(id: string): Promise<void> {
-  const { error } = await supabase.functions.invoke('admin-bookings', {
+  const { data, error } = await supabase.functions.invoke('admin-bookings', {
     body: {
       action: 'delete',
       id
@@ -67,7 +79,12 @@ export async function deleteBookingById(id: string): Promise<void> {
   });
 
   if (error) {
-    console.error('Delete error:', error);
+    console.error('Function invoke error:', error);
     throw new Error(error.message);
+  }
+
+  if (data?.error) {
+    console.error('Function response error:', data.error);
+    throw new Error(data.error);
   }
 }

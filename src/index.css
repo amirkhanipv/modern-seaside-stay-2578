@@ -150,6 +150,12 @@
   .anim-delay-240 { animation-delay: 240ms; animation-fill-mode: both; }
   .anim-delay-300 { animation-delay: 300ms; animation-fill-mode: both; }
 
+  /* Force black text color */
+  .force-black-text,
+  .force-black-text * {
+    color: #000000 !important;
+  }
+
   /* Reduced motion accessibility */
   @media (prefers-reduced-motion: reduce) {
     .animate-fade-in,

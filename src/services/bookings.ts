@@ -18,13 +18,16 @@ export async function fetchBookings(): Promise<Booking[]> {
 }
 
 export async function updateBookingCalled(id: string, called: boolean): Promise<Booking> {
-  const { data, error } = await supabase
-    .from("bookings")
-    .update({ called, updated_at: new Date().toISOString() })
-    .eq("id", id)
-    .select()
-    .maybeSingle()
-    .setHeader('x-admin-key', 'admin-access-2024');
+  const { data, error } = await supabase.functions.invoke('admin-bookings', {
+    body: {
+      action: 'update_called',
+      id,
+      data: { called }
+    },
+    headers: {
+      'x-admin-key': 'admin-access-2024'
+    }
+  });
 
   if (error) {
     throw new Error(error.message);
@@ -34,13 +37,16 @@ export async function updateBookingCalled(id: string, called: boolean): Promise<
 }
 
 export async function updateBookingStatus(id: string, status: string): Promise<Booking> {
-  const { data, error } = await supabase
-    .from("bookings")
-    .update({ status, updated_at: new Date().toISOString() })
-    .eq("id", id)
-    .select()
-    .maybeSingle()
-    .setHeader('x-admin-key', 'admin-access-2024');
+  const { data, error } = await supabase.functions.invoke('admin-bookings', {
+    body: {
+      action: 'update_status',
+      id,
+      data: { status }
+    },
+    headers: {
+      'x-admin-key': 'admin-access-2024'
+    }
+  });
 
   if (error) {
     throw new Error(error.message);
@@ -50,11 +56,15 @@ export async function updateBookingStatus(id: string, status: string): Promise<B
 }
 
 export async function deleteBookingById(id: string): Promise<void> {
-  const { error } = await supabase
-    .from("bookings")
-    .delete()
-    .eq("id", id)
-    .setHeader('x-admin-key', 'admin-access-2024');
+  const { error } = await supabase.functions.invoke('admin-bookings', {
+    body: {
+      action: 'delete',
+      id
+    },
+    headers: {
+      'x-admin-key': 'admin-access-2024'
+    }
+  });
 
   if (error) {
     console.error('Delete error:', error);

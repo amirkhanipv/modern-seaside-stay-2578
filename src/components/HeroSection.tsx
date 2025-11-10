@@ -57,7 +57,7 @@ export default function HeroSection() {
             <Button asChild size="lg" variant="heroSolid" className="min-w-[200px] rounded-full transform transition-all duration-300 hover:translate-y-[-2px]">
               <Link to="/booking">رزرو نوبت</Link>
             </Button>
-            <Button asChild variant="hero" size="lg" className="min-w-[200px] rounded-full transform transition-all duration-300 hover:translate-y-[-2px] force-black-text">
+            <Button asChild variant="heroBlackText" size="lg" className="min-w-[200px] rounded-full transform transition-all duration-300 hover:translate-y-[-2px]">
               <Link to="/gallery">مشاهده نمونه کارها</Link>
             </Button>
             <Button asChild variant="hero" size="lg" className="min-w-[200px] rounded-full transform transition-all duration-300 hover:translate-y-[-2px]">

@@ -57,9 +57,13 @@ export default function HeroSection() {
             <Button asChild size="lg" variant="heroSolid" className="min-w-[200px] rounded-full transform transition-all duration-300 hover:translate-y-[-2px]">
               <Link to="/booking">رزرو نوبت</Link>
             </Button>
-            <Button asChild variant="heroBlackText" size="lg" className="min-w-[200px] rounded-full transform transition-all duration-300 hover:translate-y-[-2px]">
-              <Link to="/gallery">مشاهده نمونه کارها</Link>
-            </Button>
+            <Link 
+              to="/gallery"
+              className="min-w-[200px] h-11 px-8 inline-flex items-center justify-center rounded-full bg-white/95 backdrop-blur-sm border-2 border-gray-200 shadow-lg hover:shadow-xl hover:bg-white hover:scale-[1.02] transform transition-all duration-300 hover:translate-y-[-2px]"
+              style={{ color: '#000000' }}
+            >
+              <span style={{ color: '#000000' }} className="font-medium">مشاهده نمونه کارها</span>
+            </Link>
             <Button asChild variant="hero" size="lg" className="min-w-[200px] rounded-full transform transition-all duration-300 hover:translate-y-[-2px]">
               <Link to="/booking-status">پیگیری رزرو</Link>
             </Button>

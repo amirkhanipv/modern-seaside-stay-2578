@@ -302,7 +302,7 @@ export default function NoraStudio() {
                       ))}
                     </ul>
                     <div className="space-y-3 mt-auto">
-                      <p className="text-sm text-white font-bold bg-gradient-to-r from-primary/80 to-accent/80 backdrop-blur-md rounded-xl p-3 text-center shadow-md border border-white/20">
+                      <p className="text-sm text-white font-bold bg-white/20 backdrop-blur-lg rounded-xl p-3 text-center shadow-md border border-white/30">
                         🎁 تخفیف ویژه رزرو آنلاین
                       </p>
                       <Button

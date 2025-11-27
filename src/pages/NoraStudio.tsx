@@ -184,17 +184,18 @@ export default function NoraStudio() {
             لحظه‌های خاص شما در قاب هنر
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in anim-delay-180">
-            <Button
-              className="btn-primary text-lg px-8 py-4 bg-white text-charcoal hover:bg-white/90"
+            <button
               onClick={() =>
                 document
                   .getElementById("portfolio")
                   ?.scrollIntoView({ behavior: "smooth" })
               }
+              className="inline-flex items-center justify-center text-lg px-8 py-4 bg-white rounded-lg font-bold shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 border-2 border-gray-200"
+              style={{ color: '#000000' }}
             >
-              <Camera className="ml-2 h-5 w-5" />
-              مشاهده نمونه کارها
-            </Button>
+              <Camera className="ml-2 h-5 w-5" style={{ color: '#000000' }} />
+              <span style={{ color: '#000000' }}>مشاهده نمونه کارها</span>
+            </button>
             <Button
               className="text-lg px-8 py-4 bg-white/20 text-white border border-white/30 hover:bg-white/30 backdrop-blur-sm"
               onClick={() => (window.location.href = "/booking")}

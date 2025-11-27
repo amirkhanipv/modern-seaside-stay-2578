@@ -185,7 +185,7 @@ export default function NoraStudio() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in anim-delay-180">
             <Button
-              className="text-lg px-8 py-4 bg-white hover:bg-white/90 border border-white/30"
+              className="text-lg px-8 py-4 bg-white/50 backdrop-blur-md hover:bg-white/60 border border-white/30 transition-all duration-300"
               onClick={() =>
                 document
                   .getElementById("portfolio")

@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ChevronLeft, ChevronRight, X, Camera } from "lucide-react";
+import { ChevronLeft, ChevronRight, X, Camera, Sparkles, Grid3X3, LayoutGrid } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const galleryCategories = {
   wedding: {
     title: "عروس",
+    icon: "💍",
     images: [
       "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&h=600&fit=crop",
       "https://images.unsplash.com/photo-1465495976277-4387d4b0e4a6?w=800&h=600&fit=crop",
@@ -15,7 +15,8 @@ const galleryCategories = {
     ]
   },
   children: {
-    title: "کودک", 
+    title: "کودک",
+    icon: "👶",
     images: [
       "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&h=600&fit=crop",
       "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800&h=600&fit=crop",
@@ -25,6 +26,7 @@ const galleryCategories = {
   },
   sport: {
     title: "اسپرت",
+    icon: "⚡",
     images: [
       "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
       "https://images.unsplash.com/photo-1594736797933-d0ed94ac1274?w=800&h=600&fit=crop",
@@ -34,6 +36,7 @@ const galleryCategories = {
   },
   family: {
     title: "خانوادگی",
+    icon: "👨‍👩‍👧‍👦",
     images: [
       "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=800&h=600&fit=crop",
       "https://images.unsplash.com/photo-1609220136736-443140cffec6?w=800&h=600&fit=crop",
@@ -49,37 +52,41 @@ interface GallerySectionProps {
 
 export default function GallerySection({ showViewAllButton = true }: GallerySectionProps) {
   const [activeTab, setActiveTab] = useState("wedding");
-  const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [filteredImages, setFilteredImages] = useState(galleryCategories.wedding.images);
+  const [viewMode, setViewMode] = useState<"grid" | "masonry">("masonry");
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  useEffect(() => {
-    const category = galleryCategories[activeTab as keyof typeof galleryCategories];
-    setFilteredImages(category.images);
-    setActiveSlideIndex(0);
-  }, [activeTab]);
+  const currentCategory = galleryCategories[activeTab as keyof typeof galleryCategories];
 
-  const goToNextSlide = () => {
-    setActiveSlideIndex((prev) => (prev + 1) % filteredImages.length);
-  };
-
-  const goToPreviousSlide = () => {
-    setActiveSlideIndex((prev) => (prev - 1 + filteredImages.length) % filteredImages.length);
+  const handleCategoryChange = (category: string) => {
+    if (category === activeTab) return;
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setActiveTab(category);
+      setIsTransitioning(false);
+    }, 300);
   };
 
   const navigateLightbox = (direction: "prev" | "next") => {
     if (!selectedImage) return;
     
-    const currentIndex = filteredImages.findIndex(img => img === selectedImage);
+    const images = currentCategory.images;
     let newIndex;
     
     if (direction === "prev") {
-      newIndex = currentIndex > 0 ? currentIndex - 1 : filteredImages.length - 1;
+      newIndex = currentImageIndex > 0 ? currentImageIndex - 1 : images.length - 1;
     } else {
-      newIndex = currentIndex < filteredImages.length - 1 ? currentIndex + 1 : 0;
+      newIndex = currentImageIndex < images.length - 1 ? currentImageIndex + 1 : 0;
     }
     
-    setSelectedImage(filteredImages[newIndex]);
+    setCurrentImageIndex(newIndex);
+    setSelectedImage(images[newIndex]);
+  };
+
+  const openLightbox = (image: string, index: number) => {
+    setCurrentImageIndex(index);
+    setSelectedImage(image);
   };
 
   // Handle keyboard navigation for lightbox
@@ -98,129 +105,193 @@ export default function GallerySection({ showViewAllButton = true }: GallerySect
     
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedImage, filteredImages]);
+  }, [selectedImage, currentCategory.images, currentImageIndex]);
 
   return (
     <>
-      <section className="py-20 bg-background">
+      {/* Hero Header Section */}
+      <section className="relative py-24 bg-gradient-to-br from-primary/5 via-accent/5 to-pink-glow/20 overflow-hidden">
+        {/* Decorative Elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-20 right-20 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-float" />
+          <div className="absolute bottom-10 left-10 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '-3s' }} />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-pink-glow/5 rounded-full blur-3xl" />
+        </div>
+
+        <div className="container relative z-10">
+          <div className="text-center max-w-4xl mx-auto animate-fade-in">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full mb-6 animate-slide-in-bottom">
+              <Sparkles className="w-5 h-5 text-primary animate-pulse-slow" />
+              <span className="text-primary font-medium">گالری نمونه کارها</span>
+            </div>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-l from-primary via-accent to-deep-pink bg-clip-text text-transparent">
+              آثار هنری ما
+            </h1>
+            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              مجموعه‌ای از بهترین کارهای ما در دسته‌بندی‌های مختلف. هر عکس داستانی منحصر به فرد دارد.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Main Gallery Section */}
+      <section className="py-16 bg-background">
         <div className="container">
-          <div className="text-center max-w-3xl mx-auto mb-12 animate-fade-in">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">گالری آثار</h2>
-            <p className="text-muted-foreground">نمونه‌ای از بهترین کارهای ما در دسته‌بندی‌های مختلف</p>
+          {/* Category Pills & View Toggle */}
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-12">
+            {/* Category Pills */}
+            <div className="flex flex-wrap justify-center gap-3">
+              {Object.entries(galleryCategories).map(([key, category], index) => (
+                <button
+                  key={key}
+                  onClick={() => handleCategoryChange(key)}
+                  className={cn(
+                    "group relative px-6 py-3 rounded-2xl font-medium transition-all duration-500 transform hover:scale-105",
+                    "animate-fade-in",
+                    activeTab === key
+                      ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30"
+                      : "bg-card hover:bg-secondary border border-border hover:border-primary/30"
+                  )}
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <span className="flex items-center gap-2">
+                    <span className="text-xl">{category.icon}</span>
+                    <span>{category.title}</span>
+                  </span>
+                  {activeTab === key && (
+                    <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-8 h-1 bg-primary-foreground/50 rounded-full" />
+                  )}
+                </button>
+              ))}
+            </div>
+
+            {/* View Toggle */}
+            <div className="flex items-center gap-2 p-1 bg-card rounded-xl border border-border">
+              <button
+                onClick={() => setViewMode("masonry")}
+                className={cn(
+                  "p-2.5 rounded-lg transition-all duration-300",
+                  viewMode === "masonry" 
+                    ? "bg-primary text-primary-foreground" 
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                )}
+                title="نمایش Masonry"
+              >
+                <LayoutGrid className="w-5 h-5" />
+              </button>
+              <button
+                onClick={() => setViewMode("grid")}
+                className={cn(
+                  "p-2.5 rounded-lg transition-all duration-300",
+                  viewMode === "grid" 
+                    ? "bg-primary text-primary-foreground" 
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                )}
+                title="نمایش Grid"
+              >
+                <Grid3X3 className="w-5 h-5" />
+              </button>
+            </div>
           </div>
 
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full" dir="rtl">
-            <TabsList className="grid w-full grid-cols-4 max-w-2xl mx-auto mb-12 bg-card shadow-lg h-16 rounded-2xl p-1">
-              {Object.entries(galleryCategories).map(([key, category]) => (
-                <TabsTrigger 
-                  key={key} 
-                  value={key}
-                  className="text-lg font-medium h-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all duration-500 hover:bg-primary/10 relative overflow-hidden rounded-xl"
-                >
-                  <span className="relative z-10 px-3">{category.title}</span>
-                </TabsTrigger>
-              ))}
-            </TabsList>
+          {/* Gallery Grid */}
+          <div 
+            className={cn(
+              "transition-all duration-500",
+              isTransitioning ? "opacity-0 scale-95" : "opacity-100 scale-100"
+            )}
+          >
+            {viewMode === "masonry" ? (
+              /* Masonry Layout */
+              <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+                {currentCategory.images.map((image, index) => (
+                  <div
+                    key={`${activeTab}-${index}`}
+                    className="break-inside-avoid group cursor-pointer animate-zoom-in"
+                    style={{ animationDelay: `${index * 100}ms` }}
+                    onClick={() => openLightbox(image, index)}
+                  >
+                    <div className="relative overflow-hidden rounded-2xl bg-card shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+                      <div className={cn(
+                        "relative",
+                        index % 3 === 0 ? "aspect-[3/4]" : index % 3 === 1 ? "aspect-square" : "aspect-[4/3]"
+                      )}>
+                        <img
+                          src={image}
+                          alt={`${currentCategory.title} ${index + 1}`}
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        />
+                        
+                        {/* Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500">
+                          <div className="absolute inset-0 flex flex-col items-center justify-center">
+                            <div className="transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">
+                              <div className="p-4 bg-card/95 backdrop-blur-sm rounded-full shadow-xl border border-border">
+                                <Camera className="w-8 h-8 text-primary" />
+                              </div>
+                            </div>
+                            <p className="mt-4 text-primary-foreground font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                              مشاهده تصویر
+                            </p>
+                          </div>
+                        </div>
 
-            {Object.entries(galleryCategories).map(([key, category]) => (
-              <TabsContent key={key} value={key} className="animate-fade-in">
-                <div className="max-w-4xl mx-auto">
-                  {/* Main slide */}
-                  <div className="relative aspect-[16/10] mb-6 overflow-hidden rounded-2xl shadow-2xl">
-                    <div 
-                      className="flex transition-transform duration-700 ease-in-out h-full"
-                      style={{ transform: `translateX(${activeSlideIndex * -100}%)` }}
-                    >
-                      {category.images.map((image, index) => (
-                        <div 
-                          key={index} 
-                          className="w-full h-full flex-shrink-0 relative cursor-pointer group"
-                          onClick={() => setSelectedImage(image)}
-                        >
-                          <img 
-                            src={image}
-                            alt={`${category.title} ${index + 1}`}
-                            className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105"
-                          />
-                          <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/30 transition-all duration-300 flex items-center justify-center">
-                            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-card/95 backdrop-blur-sm rounded-full p-4 transform group-hover:scale-110 transition-transform border border-border">
-                              <Camera className="w-8 h-8 text-foreground" />
+                        {/* Badge */}
+                        <div className="absolute top-4 right-4 px-3 py-1.5 bg-card/90 backdrop-blur-sm rounded-full text-sm font-medium text-foreground border border-border opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          {currentCategory.title}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              /* Grid Layout */
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                {currentCategory.images.map((image, index) => (
+                  <div
+                    key={`${activeTab}-${index}`}
+                    className="group cursor-pointer animate-slide-in-bottom"
+                    style={{ animationDelay: `${index * 100}ms` }}
+                    onClick={() => openLightbox(image, index)}
+                  >
+                    <div className="relative aspect-square overflow-hidden rounded-2xl bg-card shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-[1.02]">
+                      <img
+                        src={image}
+                        alt={`${currentCategory.title} ${index + 1}`}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                      
+                      {/* Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500">
+                        <div className="absolute bottom-0 left-0 right-0 p-4">
+                          <div className="flex items-center justify-between">
+                            <span className="text-primary-foreground font-medium">{currentCategory.title}</span>
+                            <div className="p-2 bg-card/90 backdrop-blur-sm rounded-full">
+                              <Camera className="w-5 h-5 text-primary" />
                             </div>
                           </div>
                         </div>
-                      ))}
-                    </div>
-
-                    {/* Navigation arrows - Fixed for RTL */}
-                    <button 
-                      className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/95 hover:bg-white text-foreground p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10 border border-border"
-                      onClick={goToPreviousSlide}
-                      aria-label="قبلی"
-                    >
-                      <ChevronRight className="w-6 h-6" />
-                    </button>
-                    <button 
-                      className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/95 hover:bg-white text-foreground p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10 border border-border"
-                      onClick={goToNextSlide}
-                      aria-label="بعدی"
-                    >
-                      <ChevronLeft className="w-6 h-6" />
-                    </button>
-                  </div>
-
-                  {/* Indicators */}
-                  <div className="flex justify-center gap-4 mb-8">
-                    {category.images.map((_, index) => (
-                      <button
-                        key={`${key}-dot-${index}`}
-                        className={cn(
-                          "transition-all duration-500 hover:scale-110",
-                          index === activeSlideIndex 
-                            ? "w-10 h-3 bg-primary rounded-full shadow-md" 
-                            : "w-3 h-3 bg-primary/30 rounded-full hover:bg-primary/60"
-                        )}
-                        onClick={() => setActiveSlideIndex(index)}
-                        aria-label={`رفتن به اسلاید ${index + 1}`}
-                      />
-                    ))}
-                  </div>
-
-                  {/* Thumbnail grid */}
-                  <div className="grid grid-cols-4 gap-4">
-                    {category.images.map((image, index) => (
-                      <div 
-                        key={index}
-                        className={cn(
-                          "aspect-square overflow-hidden rounded-xl cursor-pointer transition-all duration-300 hover:scale-105",
-                          index === activeSlideIndex 
-                            ? "ring-4 ring-primary ring-offset-2 ring-offset-background" 
-                            : "hover:shadow-lg"
-                        )}
-                        onClick={() => {
-                          setActiveSlideIndex(index);
-                          setTimeout(() => setSelectedImage(image), 100);
-                        }}
-                      >
-                        <img 
-                          src={image}
-                          alt={`${category.title} ${index + 1}`}
-                          className="w-full h-full object-cover"
-                        />
                       </div>
-                    ))}
-                  </div>
-                </div>
-              </TabsContent>
-            ))}
-          </Tabs>
 
+                      {/* Shimmer Effect */}
+                      <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* View All Button */}
           {showViewAllButton && (
-            <div className="text-center mt-12 animate-fade-in anim-delay-160">
+            <div className="text-center mt-16 animate-fade-in">
               <Button
                 onClick={() => (window.location.href = "/gallery")}
                 size="lg"
-                className="px-8 py-4 text-lg rounded-full transform transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                className="px-10 py-6 text-lg rounded-full transform transition-all duration-500 hover:scale-105 hover:shadow-xl hover:shadow-primary/20 bg-gradient-to-l from-primary to-accent"
               >
+                <Sparkles className="w-5 h-5 ml-2" />
                 مشاهده همه آثار
               </Button>
             </div>
@@ -230,38 +301,73 @@ export default function GallerySection({ showViewAllButton = true }: GallerySect
 
       {/* Lightbox */}
       {selectedImage && (
-        <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4 animate-fade-in">
+        <div 
+          className="fixed inset-0 z-50 bg-foreground/95 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setSelectedImage(null);
+          }}
+        >
+          {/* Close Button */}
           <button 
-            className="absolute top-6 right-6 text-white p-3 rounded-full hover:bg-white/10 transition-colors z-10"
+            className="absolute top-6 right-6 text-primary-foreground p-3 rounded-full hover:bg-primary-foreground/10 transition-all duration-300 z-10 group"
             onClick={() => setSelectedImage(null)}
           >
-            <X className="h-8 w-8" />
+            <X className="h-8 w-8 transition-transform duration-300 group-hover:rotate-90" />
             <span className="sr-only">بستن</span>
           </button>
+
+          {/* Image Counter */}
+          <div className="absolute top-6 left-6 px-4 py-2 bg-primary-foreground/10 backdrop-blur-sm rounded-full text-primary-foreground text-sm font-medium">
+            {currentImageIndex + 1} / {currentCategory.images.length}
+          </div>
           
+          {/* Navigation - Previous */}
           <button 
-            className="absolute right-6 top-1/2 -translate-y-1/2 text-white p-4 rounded-full hover:bg-white/10 transition-colors z-10"
+            className="absolute right-6 top-1/2 -translate-y-1/2 text-primary-foreground p-4 rounded-full hover:bg-primary-foreground/10 transition-all duration-300 z-10 group"
             onClick={() => navigateLightbox("prev")}
           >
             <span className="sr-only">قبلی</span>
-            <ChevronRight className="h-10 w-10" />
+            <ChevronRight className="h-10 w-10 transition-transform duration-300 group-hover:translate-x-1" />
           </button>
           
-          <div className="max-w-6xl max-h-[85vh] overflow-hidden animate-scale-in">
+          {/* Main Image */}
+          <div className="max-w-6xl max-h-[85vh] overflow-hidden animate-zoom-in">
             <img 
               src={selectedImage} 
               alt="نمایش بزرگ"
-              className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
+              className="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl"
             />
           </div>
           
+          {/* Navigation - Next */}
           <button 
-            className="absolute left-6 top-1/2 -translate-y-1/2 text-white p-4 rounded-full hover:bg-white/10 transition-colors z-10"
+            className="absolute left-6 top-1/2 -translate-y-1/2 text-primary-foreground p-4 rounded-full hover:bg-primary-foreground/10 transition-all duration-300 z-10 group"
             onClick={() => navigateLightbox("next")}
           >
             <span className="sr-only">بعدی</span>
-            <ChevronLeft className="h-10 w-10" />
+            <ChevronLeft className="h-10 w-10 transition-transform duration-300 group-hover:-translate-x-1" />
           </button>
+
+          {/* Thumbnail Strip */}
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 p-2 bg-primary-foreground/10 backdrop-blur-sm rounded-2xl">
+            {currentCategory.images.map((img, idx) => (
+              <button
+                key={idx}
+                onClick={() => {
+                  setCurrentImageIndex(idx);
+                  setSelectedImage(img);
+                }}
+                className={cn(
+                  "w-16 h-16 rounded-xl overflow-hidden transition-all duration-300",
+                  idx === currentImageIndex 
+                    ? "ring-2 ring-primary-foreground scale-110" 
+                    : "opacity-60 hover:opacity-100"
+                )}
+              >
+                <img src={img} alt="" className="w-full h-full object-cover" />
+              </button>
+            ))}
+          </div>
         </div>
       )}
     </>

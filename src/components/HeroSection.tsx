@@ -53,14 +53,24 @@ export default function HeroSection() {
           <p className="text-lg text-primary-foreground/95 mb-8 max-w-2xl mx-auto drop-shadow-lg">
             {t.hero.description}
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button asChild size="lg" variant="heroSolid" className="min-w-[200px] rounded-full transform transition-all duration-300 hover:translate-y-[-2px]">
-              <Link to="/booking">رزرو نوبت</Link>
-            </Button>
-            <Button asChild variant="hero" size="lg" className="min-w-[200px] rounded-full transform transition-all duration-300 hover:translate-y-[-2px]">
-              <Link to="/booking-status">پیگیری رزرو</Link>
-            </Button>
-          </div>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Button asChild size="lg" variant="heroSolid" className="min-w-[200px] rounded-full transform transition-all duration-300 hover:translate-y-[-2px]">
+                <Link to="/booking">رزرو نوبت</Link>
+              </Button>
+              <Button asChild variant="hero" size="lg" className="min-w-[200px] rounded-full transform transition-all duration-300 hover:translate-y-[-2px]">
+                <Link to="/booking-status">پیگیری رزرو</Link>
+              </Button>
+            </div>
+            <div className="mt-4">
+              <Button 
+                asChild 
+                variant="hero" 
+                size="lg" 
+                className="min-w-[200px] rounded-full transform transition-all duration-300 hover:translate-y-[-2px]"
+              >
+                <a href="#portfolio">مشاهده نمونه کارها</a>
+              </Button>
+            </div>
         </div>
       </div>
       

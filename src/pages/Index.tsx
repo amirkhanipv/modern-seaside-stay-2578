@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import HeroSection from "@/components/HeroSection";
 import BookingForm from "@/components/BookingForm";
 import TestimonialsSection from "@/components/TestimonialsSection";
+import HomepageGallery from "@/components/HomepageGallery";
 import ApartmentCard, { ApartmentProps } from "@/components/ApartmentCard";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -217,6 +218,9 @@ export default function Index() {
             </div>
           </div>
         </section>
+        
+        {/* Portfolio/Gallery Section */}
+        <HomepageGallery />
         
         {/* Testimonials Section */}
         <TestimonialsSection />

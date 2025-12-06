@@ -63,12 +63,17 @@ export default function HeroSection() {
             </div>
             <div className="mt-4">
               <Button 
-                asChild 
                 variant="hero" 
                 size="lg" 
-                className="min-w-[200px] rounded-full transform transition-all duration-300 hover:translate-y-[-2px]"
+                className="min-w-[200px] rounded-full transform transition-all duration-300 hover:translate-y-[-2px] cursor-pointer"
+                onClick={() => {
+                  const element = document.getElementById('portfolio');
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
               >
-                <a href="#portfolio">مشاهده نمونه کارها</a>
+                مشاهده نمونه کارها
               </Button>
             </div>
         </div>

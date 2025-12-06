@@ -128,7 +128,7 @@ export default function HomepageGallery({ showViewAllButton = true }: HomepageGa
 
   return (
     <>
-      <section className="py-20 bg-white">
+      <section id="portfolio" className="py-20 bg-white">
         <div className="container">
           <div className="text-center max-w-3xl mx-auto mb-12 animate-fade-in">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">گالری آثار</h2>

@@ -5,9 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "@/components/ui/use-toast";
-import { Trash2, Plus, Star, Edit } from "lucide-react";
+import { Trash2, Plus, Star, Edit, ImageIcon, Info } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { 
-  fetchCustomerReviews, 
+  fetchAllCustomerReviews, 
   createCustomerReview, 
   updateCustomerReview, 
   deleteCustomerReview,
@@ -36,7 +37,7 @@ export default function AdminCustomerReviews() {
   const loadData = async () => {
     setLoading(true);
     try {
-      const data = await fetchCustomerReviews();
+      const data = await fetchAllCustomerReviews();
       setReviews(data);
     } catch (error: any) {
       toast({
@@ -160,6 +161,14 @@ export default function AdminCustomerReviews() {
 
   return (
     <div className="space-y-6">
+      {/* Image Size Guide */}
+      <Alert className="bg-blue-50 border-blue-200">
+        <Info className="h-4 w-4 text-blue-600" />
+        <AlertDescription className="text-blue-800">
+          <strong>راهنمای سایز تصاویر:</strong> عکس آواتار نظرات باید حداقل <strong>150×150 پیکسل</strong> و ترجیحاً <strong>مربعی</strong> باشد. فرمت‌های پیشنهادی: JPG یا PNG
+        </AlertDescription>
+      </Alert>
+
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">

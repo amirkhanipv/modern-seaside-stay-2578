@@ -8,7 +8,8 @@ import { toast } from "@/components/ui/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
-import { X, Upload, Eye, Trash2, Plus, Edit } from "lucide-react";
+import { X, Upload, Eye, Trash2, Plus, Edit, Info } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   fetchCategories,
   fetchPortfolioImages,
@@ -371,6 +372,14 @@ export default function AdminPortfolio() {
           </TabsContent>
 
           <TabsContent value="portfolio" className="space-y-6">
+            {/* Image Size Guide */}
+            <Alert className="bg-blue-50 border-blue-200">
+              <Info className="h-4 w-4 text-blue-600" />
+              <AlertDescription className="text-blue-800">
+                <strong>راهنمای سایز تصاویر نمونه کار:</strong> ابعاد پیشنهادی <strong>1200×800 پیکسل</strong> یا نسبت <strong>3:2</strong>. حداقل عرض <strong>800 پیکسل</strong>. فرمت‌های پیشنهادی: JPG یا WebP (حجم کمتر از 500KB)
+              </AlertDescription>
+            </Alert>
+
             {/* Add Image Form */}
             <Card>
               <CardHeader>

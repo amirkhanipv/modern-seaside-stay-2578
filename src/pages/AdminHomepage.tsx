@@ -2,31 +2,34 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Home } from "lucide-react";
 import AdminHomepagePortfolio from "@/components/AdminHomepagePortfolio";
+import AdminAuthGuard from "@/components/AdminAuthGuard";
 
 export default function AdminHomepage() {
   return (
-    <div className="min-h-screen p-4 animate-fade-in bg-background">
-      <div className="max-w-6xl mx-auto">
-        <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
-          <h1 className="text-3xl font-bold">مدیریت صفحه اصلی</h1>
-          <div className="flex gap-2">
-            <Button asChild variant="outline" className="bg-card">
-              <Link to="/" className="flex items-center gap-2">
-                <Home className="h-4 w-4" />
-                صفحه اصلی
-              </Link>
-            </Button>
-            <Button asChild variant="outline" className="bg-card">
-              <Link to="/admin" className="flex items-center gap-2">
-                <ArrowLeft className="h-4 w-4" />
-                بازگشت به داشبورد
-              </Link>
-            </Button>
+    <AdminAuthGuard title="ورود به مدیریت صفحه اصلی">
+      <div className="min-h-screen p-4 animate-fade-in bg-background">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
+            <h1 className="text-3xl font-bold">مدیریت صفحه اصلی</h1>
+            <div className="flex gap-2">
+              <Button asChild variant="outline" className="bg-card">
+                <Link to="/" className="flex items-center gap-2">
+                  <Home className="h-4 w-4" />
+                  صفحه اصلی
+                </Link>
+              </Button>
+              <Button asChild variant="outline" className="bg-card">
+                <Link to="/admin" className="flex items-center gap-2">
+                  <ArrowLeft className="h-4 w-4" />
+                  بازگشت به داشبورد
+                </Link>
+              </Button>
+            </div>
           </div>
+          
+          <AdminHomepagePortfolio />
         </div>
-        
-        <AdminHomepagePortfolio />
       </div>
-    </div>
+    </AdminAuthGuard>
   );
 }

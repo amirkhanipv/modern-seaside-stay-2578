@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -6,28 +6,51 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { fetchDiscountPlans, type DiscountPlan } from "@/services/portfolio";
 
 export default function BookingForm() {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     phone: "",
-    planType: ""
+    planType: "",
+    planPrice: 0
   });
+  const [plans, setPlans] = useState<DiscountPlan[]>([]);
+  const [loading, setLoading] = useState(true);
   const [trackingCode, setTrackingCode] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { toast } = useToast();
+
+  useEffect(() => {
+    const loadPlans = async () => {
+      try {
+        const plansData = await fetchDiscountPlans();
+        setPlans(plansData.filter(p => p.is_active));
+      } catch (error) {
+        console.error('Error loading plans:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadPlans();
+  }, []);
+
+  const handlePlanChange = (planId: string) => {
+    const selectedPlan = plans.find(p => p.id === planId);
+    if (selectedPlan) {
+      setFormData({
+        ...formData, 
+        planType: selectedPlan.plan_name,
+        planPrice: selectedPlan.price
+      });
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     try {
-      const planPrices = {
-        children: 2500000,
-        wedding: 8000000,
-        family: 4000000
-      };
-
       const { data, error } = await supabase
         .from('bookings')
         .insert([
@@ -36,7 +59,7 @@ export default function BookingForm() {
             last_name: formData.lastName,
             phone: formData.phone,
             plan_type: formData.planType,
-            plan_price: planPrices[formData.planType as keyof typeof planPrices],
+            plan_price: formData.planPrice,
             tracking_code: 'NR' + Math.random().toString().substr(2, 6)
           }
         ])
@@ -116,18 +139,24 @@ export default function BookingForm() {
             </div>
             <div>
               <Label htmlFor="plan">نوع پکیج</Label>
-              <Select value={formData.planType} onValueChange={(value) => setFormData({...formData, planType: value})}>
+              <Select 
+                value={plans.find(p => p.plan_name === formData.planType)?.id || ""} 
+                onValueChange={handlePlanChange}
+                disabled={loading}
+              >
                 <SelectTrigger>
-                  <SelectValue placeholder="پکیج مورد نظر را انتخاب کنید" />
+                  <SelectValue placeholder={loading ? "در حال بارگیری..." : "پکیج مورد نظر را انتخاب کنید"} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="children">پکیج کودک</SelectItem>
-                  <SelectItem value="wedding">پکیج عروس</SelectItem>
-                  <SelectItem value="family">پکیج خانوادگی</SelectItem>
+                  {plans.map((plan) => (
+                    <SelectItem key={plan.id} value={plan.id}>
+                      {plan.plan_name} - {new Intl.NumberFormat('fa-IR').format(plan.price)} تومان
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full" disabled={!formData.planType}>
               ثبت رزرو
             </Button>
           </form>

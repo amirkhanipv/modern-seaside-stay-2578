@@ -261,9 +261,9 @@ export default function NoraStudio() {
                         </p>
                       )}
                       <div className="space-y-3 mt-auto">
-                        <p className="text-sm text-white font-bold bg-gradient-to-r from-primary to-accent rounded-xl p-3 text-center shadow-md">
+                        <span className="block text-xs text-muted-foreground font-medium bg-muted/50 rounded-lg p-2 text-center border border-border/50">
                           🎁 تخفیف ویژه رزرو آنلاین
-                        </p>
+                        </span>
                         <Button
                           className="w-full text-lg py-6 rounded-xl font-bold shadow-lg transition-all duration-300 bg-primary hover:bg-primary/90 hover:shadow-xl"
                           onClick={() => (window.location.href = "/booking")}

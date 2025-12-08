@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { X, Upload, Eye, Trash2, Plus, Edit, Info } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import AdminAuthGuard from "@/components/AdminAuthGuard";
 import {
   fetchCategories,
   fetchPortfolioImages,
@@ -275,17 +276,20 @@ export default function AdminPortfolio() {
 
   if (loading) {
     return (
-      <div className="min-h-screen p-4 animate-fade-in flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p>در حال بارگیری...</p>
+      <AdminAuthGuard title="ورود به مدیریت نمونه کارها">
+        <div className="min-h-screen p-4 animate-fade-in flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p>در حال بارگیری...</p>
+          </div>
         </div>
-      </div>
+      </AdminAuthGuard>
     );
   }
 
   return (
-    <div className="min-h-screen p-4 animate-fade-in bg-background">
+    <AdminAuthGuard title="ورود به مدیریت نمونه کارها">
+      <div className="min-h-screen p-4 animate-fade-in bg-background">
       <div className="max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
           <h1 className="text-3xl font-bold">مدیریت نمونه کارها و قیمت‌ها</h1>
@@ -575,13 +579,13 @@ export default function AdminPortfolio() {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="planDuration">مدت اعتبار (روز)</Label>
+                    <Label htmlFor="planDuration">مدت اعتبار (ماه)</Label>
                     <Input
                       id="planDuration"
                       type="number"
                       value={planDuration}
                       onChange={(e) => setPlanDuration(e.target.value)}
-                      placeholder="30"
+                      placeholder="۳"
                     />
                   </div>
                   <div>
@@ -657,6 +661,7 @@ export default function AdminPortfolio() {
           </TabsContent>
         </Tabs>
       </div>
-    </div>
+      </div>
+    </AdminAuthGuard>
   );
 }

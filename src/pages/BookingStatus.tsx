@@ -163,6 +163,18 @@ export default function BookingStatus() {
   return (
     <div className="min-h-screen bg-background py-12 px-4">
       <div className="max-w-2xl mx-auto">
+        {/* Back to Home Button */}
+        <div className="mb-6 animate-fade-in">
+          <Button 
+            onClick={() => navigate("/")} 
+            variant="outline" 
+            className="bg-card"
+          >
+            <Home className="ml-2 h-4 w-4" />
+            بازگشت به صفحه اصلی
+          </Button>
+        </div>
+
         {/* Header */}
         <div className="text-center mb-8 animate-fade-in anim-delay-80">
           <h1 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">پیگیری رزرو</h1>

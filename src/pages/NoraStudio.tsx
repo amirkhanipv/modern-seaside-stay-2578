@@ -18,6 +18,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import HomepageGallery from "@/components/HomepageGallery";
 import heroImage from "@/assets/hero-model.jpg";
+import { fetchCustomerReviews, type CustomerReview } from "@/services/customerReviews";
+import { fetchDiscountPlans, type DiscountPlan } from "@/services/portfolio";
 
 // ----- Types -----
 type PortfolioCategoryKey = "children" | "wedding" | "sport" | "family";
@@ -25,21 +27,6 @@ type PortfolioCategoryKey = "children" | "wedding" | "sport" | "family";
 type PortfolioCategory = {
   title: string;
   images: string[];
-};
-
-type Testimonial = {
-  name: string;
-  image: string;
-  review: string;
-  rating: number;
-};
-
-type PricingPlan = {
-  title: string;
-  price: string;
-  features: string[];
-  category: PortfolioCategoryKey;
-  popular?: boolean;
 };
 
 // ----- Static Content (same data, structured more clearly) -----
@@ -82,57 +69,6 @@ const PORTFOLIO_CATEGORIES: Record<PortfolioCategoryKey, PortfolioCategory> = {
   },
 };
 
-const TESTIMONIALS: Testimonial[] = [
-  {
-    name: "فاطمه احمدی",
-    image: "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&h=600&fit=crop",
-    review:
-      "آتلیه نورا بهترین تجربه عکاسی که داشتم. عکس‌های عروسی‌ام فوق‌العاده زیبا شد.",
-    rating: 5,
-  },
-  {
-    name: "علی رضایی",
-    image: "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=800&h=600&fit=crop",
-    review: "عکس‌های خانوادگی ما خیلی طبیعی و زیبا شد. کیفیت کار عالی بود.",
-    rating: 5,
-  },
-  {
-    name: "مریم کریمی",
-    image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&h=600&fit=crop",
-    review:
-      "برای عکس‌های بچه‌ام به آتلیه نورا رفتم و خیلی راضی بودم. حرفه‌ای و دقیق.",
-    rating: 5,
-  },
-];
-
-const PRICING_PLANS: PricingPlan[] = [
-  {
-    title: "پکیج کودک",
-    price: "۲,۵۰۰,۰۰۰",
-    features: ["۳۰ عکس ویرایش شده", "۲ ست لباس", "آتلیه لوکس", "چاپ ۱۰ عکس"],
-    category: "children",
-  },
-  {
-    title: "پکیج عروس",
-    price: "۸,۰۰۰,۰۰۰",
-    features: [
-      "۱۰۰ عکس ویرایش شده",
-      "عکاسی در آتلیه و بیرون",
-      "آلبوم لوکس",
-      "فیلم کوتاه",
-      "لوازم جانبی کامل",
-    ],
-    category: "wedding",
-    popular: true,
-  },
-  {
-    title: "پکیج خانوادگی",
-    price: "۴,۰۰۰,۰۰۰",
-    features: ["۵۰ عکس ویرایش شده", "عکاسی در آتلیه", "چاپ ۲۰ عکس", "فایل‌های دیجیتال"],
-    category: "family",
-  },
-];
-
 // ----- Component -----
 export default function NoraStudio() {
   const [activeCategoryKey, setActiveCategoryKey] = useState<PortfolioCategoryKey>(
@@ -140,9 +76,30 @@ export default function NoraStudio() {
   );
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const [lightboxImageSrc, setLightboxImageSrc] = useState<string | null>(null);
+  const [reviews, setReviews] = useState<CustomerReview[]>([]);
+  const [pricingPlans, setPricingPlans] = useState<DiscountPlan[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+    
+    // Load data from database
+    const loadData = async () => {
+      try {
+        const [reviewsData, plansData] = await Promise.all([
+          fetchCustomerReviews(),
+          fetchDiscountPlans()
+        ]);
+        setReviews(reviewsData);
+        setPricingPlans(plansData.filter(p => p.is_active));
+      } catch (error) {
+        console.error('Error loading data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    loadData();
   }, []);
 
   // Reset slide index on tab change
@@ -165,6 +122,10 @@ export default function NoraStudio() {
       (prev) => (prev - 1 + activeCategoryImageCount) % activeCategoryImageCount
     );
   }, [activeCategoryImageCount]);
+
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('fa-IR').format(price);
+  };
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -216,113 +177,108 @@ export default function NoraStudio() {
       <HomepageGallery />
 
       {/* Testimonials */}
-      <section className="section bg-white">
-        <div className="container">
-          <div className="text-center mb-16 animate-fade-in anim-delay-80">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">نظرات مشتریان</h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              تجربه‌های واقعی از مشتریان ما
-            </p>
-          </div>
+      {reviews.length > 0 && (
+        <section className="section bg-white">
+          <div className="container">
+            <div className="text-center mb-16 animate-fade-in anim-delay-80">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">نظرات مشتریان</h2>
+              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                تجربه‌های واقعی از مشتریان ما
+              </p>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {TESTIMONIALS.map((testimonial, index) => (
-              <Card
-                key={`testimonial-${index}`}
-                className="bg-white border-2 border-border shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden rounded-2xl hover:-translate-y-1 animate-fade-in"
-                style={{ animationDelay: `${80 + index * 80}ms`, animationFillMode: "both" }}
-              >
-                <div className="relative">
-                  <img
-                    src={testimonial.image}
-                    alt={testimonial.name}
-                    className="w-full h-64 object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                    <div className="flex mb-2">
-                      {Array.from({ length: testimonial.rating }).map((_, i) => (
-                        <Star
-                          key={`star-${index}-${i}`}
-                          className="w-5 h-5 fill-yellow-400 text-yellow-400"
-                        />
-                      ))}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {reviews.map((review, index) => (
+                <Card
+                  key={`testimonial-${review.id}`}
+                  className="bg-white border-2 border-border shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden rounded-2xl hover:-translate-y-1 animate-fade-in"
+                  style={{ animationDelay: `${80 + index * 80}ms`, animationFillMode: "both" }}
+                >
+                  <div className="relative">
+                    {review.avatar_url && (
+                      <img
+                        src={review.avatar_url}
+                        alt={review.customer_name}
+                        className="w-full h-64 object-cover"
+                      />
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                      <div className="flex mb-2">
+                        {Array.from({ length: review.rating || 5 }).map((_, i) => (
+                          <Star
+                            key={`star-${review.id}-${i}`}
+                            className="w-5 h-5 fill-yellow-400 text-yellow-400"
+                          />
+                        ))}
+                      </div>
+                      <h3 className="text-xl font-bold mb-2">{review.customer_name}</h3>
+                      <p className="text-white/90 leading-relaxed text-sm">{review.review_text}</p>
                     </div>
-                    <h3 className="text-xl font-bold mb-2">{testimonial.name}</h3>
-                    <p className="text-white/90 leading-relaxed text-sm">{testimonial.review}</p>
                   </div>
-                </div>
-              </Card>
-            ))}
+                </Card>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Pricing Plans */}
-      <section className="section bg-gradient-to-b from-white to-soft-pink">
-        <div className="container">
-          <div className="text-center mb-16 animate-fade-in anim-delay-80">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">پکیج‌های عکاسی</h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              انتخاب مناسب برای سلیقه و بودجه شما
-            </p>
-          </div>
+      {pricingPlans.length > 0 && (
+        <section className="section bg-gradient-to-b from-white to-soft-pink">
+          <div className="container">
+            <div className="text-center mb-16 animate-fade-in anim-delay-80">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">پکیج‌های عکاسی</h2>
+              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                انتخاب مناسب برای سلیقه و بودجه شما
+              </p>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-            {PRICING_PLANS.map((plan, index) => (
-              <div
-                key={`plan-${index}`}
-                className={`animate-fade-in ${plan.popular ? "p-1 bg-gradient-to-r from-pink-400 via-pink-500 to-primary rounded-2xl md:scale-105" : ""}`}
-                style={{ 
-                  animationDelay: `${100 + index * 80}ms`, 
-                  animationFillMode: "both"
-                }}
-              >
-                <Card
-                  className={`bg-white shadow-[0_10px_40px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] transition-all duration-300 relative hover:-translate-y-2 h-full flex flex-col ${
-                    plan.popular ? "rounded-2xl" : "border-2 border-border rounded-2xl"
-                  }`}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+              {pricingPlans.map((plan, index) => (
+                <div
+                  key={`plan-${plan.id}`}
+                  className="animate-fade-in"
+                  style={{ 
+                    animationDelay: `${100 + index * 80}ms`, 
+                    animationFillMode: "both"
+                  }}
                 >
-                  <CardHeader className="pb-4 pt-8 relative z-10">
-                    <CardTitle className="text-2xl text-foreground font-bold text-center">{plan.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-6 pt-4 flex-1 flex flex-col relative z-10">
-                    <div className="mb-6 text-center pb-6 border-b-2 border-border">
-                      <span className="text-4xl font-bold bg-gradient-to-l from-primary to-accent bg-clip-text text-transparent">{plan.price}</span>
-                      <span className="text-muted-foreground mr-2 text-lg">تومان</span>
-                    </div>
-                    <ul className="space-y-3 mb-6 flex-1">
-                      {plan.features.map((feature, i) => (
-                        <li key={`feature-${index}-${i}`} className="flex items-start gap-3 text-foreground">
-                          <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mt-0.5">
-                            <Heart className="w-4 h-4 text-primary fill-primary" />
-                          </div>
-                          <span className="font-medium text-sm leading-relaxed">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    <div className="space-y-3 mt-auto">
-                      <p className="text-sm text-white font-bold bg-gradient-to-r from-primary to-accent rounded-xl p-3 text-center shadow-md">
-                        🎁 تخفیف ویژه رزرو آنلاین
-                      </p>
-                      <Button
-                        className={`w-full text-lg py-6 rounded-xl font-bold shadow-lg transition-all duration-300 ${
-                          plan.popular 
-                            ? 'bg-gradient-to-r from-primary to-accent hover:shadow-2xl hover:scale-105' 
-                            : 'bg-primary hover:bg-primary/90 hover:shadow-xl'
-                        }`}
-                        onClick={() => (window.location.href = "/booking")}
-                      >
-                        رزرو این پکیج
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            ))}
+                  <Card
+                    className="bg-white shadow-[0_10px_40px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] transition-all duration-300 relative hover:-translate-y-2 h-full flex flex-col border-2 border-border rounded-2xl"
+                  >
+                    <CardHeader className="pb-4 pt-8 relative z-10">
+                      <CardTitle className="text-2xl text-foreground font-bold text-center">{plan.plan_name}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-6 pt-4 flex-1 flex flex-col relative z-10">
+                      <div className="mb-6 text-center pb-6 border-b-2 border-border">
+                        <span className="text-4xl font-bold bg-gradient-to-l from-primary to-accent bg-clip-text text-transparent">{formatPrice(plan.price)}</span>
+                        <span className="text-muted-foreground mr-2 text-lg">تومان</span>
+                      </div>
+                      {plan.description && (
+                        <p className="text-muted-foreground text-sm mb-6 text-center leading-relaxed">
+                          {plan.description}
+                        </p>
+                      )}
+                      <div className="space-y-3 mt-auto">
+                        <p className="text-sm text-white font-bold bg-gradient-to-r from-primary to-accent rounded-xl p-3 text-center shadow-md">
+                          🎁 تخفیف ویژه رزرو آنلاین
+                        </p>
+                        <Button
+                          className="w-full text-lg py-6 rounded-xl font-bold shadow-lg transition-all duration-300 bg-primary hover:bg-primary/90 hover:shadow-xl"
+                          onClick={() => (window.location.href = "/booking")}
+                        >
+                          رزرو این پکیج
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Contact Section */}
       <section className="section bg-white">

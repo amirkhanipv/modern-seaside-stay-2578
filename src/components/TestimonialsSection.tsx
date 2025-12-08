@@ -1,19 +1,52 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { fetchCustomerReviews, type CustomerReview } from "@/services/customerReviews";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 
 export default function TestimonialsSection() {
-  const [currentTestimonial, setCurrentTestimonial] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
   const [reviews, setReviews] = useState<CustomerReview[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  // Embla carousel with autoplay
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { 
+      loop: true,
+      align: "start",
+      slidesToScroll: 1,
+      direction: "rtl"
+    },
+    [Autoplay({ delay: 5000, stopOnInteraction: false })]
+  );
+
+  const scrollPrev = useCallback(() => {
+    if (emblaApi) emblaApi.scrollPrev();
+  }, [emblaApi]);
+
+  const scrollNext = useCallback(() => {
+    if (emblaApi) emblaApi.scrollNext();
+  }, [emblaApi]);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on('select', onSelect);
+    return () => {
+      emblaApi.off('select', onSelect);
+    };
+  }, [emblaApi, onSelect]);
 
   useEffect(() => {
     const loadReviews = async () => {
       try {
         const reviewsData = await fetchCustomerReviews();
-        // Show all active reviews (filtering done by API)
         setReviews(reviewsData);
         setLoading(false);
       } catch (error) {
@@ -24,30 +57,6 @@ export default function TestimonialsSection() {
 
     loadReviews();
   }, []);
-
-  const nextTestimonial = () => {
-    if (isTransitioning || reviews.length === 0) return;
-    setIsTransitioning(true);
-    setTimeout(() => {
-      setCurrentTestimonial((prev) => (prev + 1) % reviews.length);
-      setIsTransitioning(false);
-    }, 150);
-  };
-
-  const prevTestimonial = () => {
-    if (isTransitioning || reviews.length === 0) return;
-    setIsTransitioning(true);
-    setTimeout(() => {
-      setCurrentTestimonial((prev) => (prev - 1 + reviews.length) % reviews.length);
-      setIsTransitioning(false);
-    }, 150);
-  };
-
-  useEffect(() => {
-    if (reviews.length === 0) return;
-    const interval = setInterval(nextTestimonial, 8000);
-    return () => clearInterval(interval);
-  }, [reviews.length]);
 
   if (loading || reviews.length === 0) {
     return null;
@@ -68,71 +77,86 @@ export default function TestimonialsSection() {
           </p>
         </div>
 
-        <div className="relative max-w-4xl mx-auto">
-          <div className="bg-card border border-border shadow-lg p-8 md:p-12 rounded-3xl relative overflow-hidden">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={prevTestimonial}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 bg-card hover:bg-accent border-border shadow-md"
-            >
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-            
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={nextTestimonial}
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-card hover:bg-accent border-border shadow-md"
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
+        <div className="relative max-w-6xl mx-auto">
+          {/* Navigation Buttons */}
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={scrollPrev}
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-card hover:bg-accent border-border shadow-md -translate-x-2 md:-translate-x-6"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+          
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={scrollNext}
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-card hover:bg-accent border-border shadow-md translate-x-2 md:translate-x-6"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
 
-            <div className={`transition-opacity duration-300 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}>
-              <div className="text-center">
-                <div className="flex justify-center mb-6">
-                  {[...Array(reviews[currentTestimonial]?.rating || 5)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                  ))}
-                </div>
+          {/* Carousel Container */}
+          <div className="overflow-hidden mx-8 md:mx-16" ref={emblaRef}>
+            <div className="flex gap-6">
+              {reviews.map((review) => (
+                <div 
+                  key={review.id} 
+                  className="flex-shrink-0 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
+                >
+                  <div className="bg-card border border-border shadow-lg p-6 rounded-2xl h-full flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                    {/* Rating Stars */}
+                    <div className="flex justify-center mb-4">
+                      {[...Array(review.rating || 5)].map((_, i) => (
+                        <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
+                      ))}
+                    </div>
 
-                <blockquote className="text-lg md:text-xl text-foreground mb-8 leading-relaxed">
-                  "{reviews[currentTestimonial]?.review_text}"
-                </blockquote>
+                    {/* Review Text */}
+                    <blockquote className="text-base text-foreground mb-6 leading-relaxed text-center flex-1">
+                      "{review.review_text}"
+                    </blockquote>
 
-                <div className="flex items-center justify-center">
-                  <div className="flex items-center">
-                    {reviews[currentTestimonial]?.avatar_url && (
-                      <img 
-                        src={reviews[currentTestimonial].avatar_url} 
-                        alt={reviews[currentTestimonial]?.customer_name}
-                        className="w-12 h-12 rounded-full object-cover ml-4"
-                      />
-                    )}
-                    <div className="text-right">
-                      <div className="font-semibold text-foreground">
-                        {reviews[currentTestimonial]?.customer_name}
-                      </div>
-                      <div className="text-sm text-muted-foreground">
-                        {reviews[currentTestimonial]?.customer_location}
+                    {/* Customer Info */}
+                    <div className="flex items-center justify-center">
+                      <div className="flex items-center">
+                        {review.avatar_url && (
+                          <img 
+                            src={review.avatar_url} 
+                            alt={review.customer_name}
+                            className="w-12 h-12 rounded-full object-cover ml-4"
+                          />
+                        )}
+                        <div className="text-right">
+                          <div className="font-semibold text-foreground">
+                            {review.customer_name}
+                          </div>
+                          {review.customer_location && (
+                            <div className="text-sm text-muted-foreground">
+                              {review.customer_location}
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-
-            <div className="flex justify-center mt-8 space-x-reverse space-x-2">
-              {reviews.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentTestimonial(index)}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                    index === currentTestimonial ? 'bg-primary w-8' : 'bg-muted-foreground/30'
-                  }`}
-                />
               ))}
             </div>
+          </div>
+
+          {/* Dots Indicator */}
+          <div className="flex justify-center mt-8 gap-2">
+            {reviews.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => emblaApi?.scrollTo(index)}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  index === selectedIndex ? 'bg-primary w-8' : 'bg-muted-foreground/30 hover:bg-muted-foreground/50 w-2'
+                }`}
+              />
+            ))}
           </div>
         </div>
       </div>

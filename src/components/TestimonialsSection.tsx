@@ -13,7 +13,8 @@ export default function TestimonialsSection() {
     const loadReviews = async () => {
       try {
         const reviewsData = await fetchCustomerReviews();
-        setReviews(reviewsData.filter(r => r.featured || reviewsData.length <= 4));
+        // Show all active reviews (filtering done by API)
+        setReviews(reviewsData);
         setLoading(false);
       } catch (error) {
         console.error('Error loading reviews:', error);

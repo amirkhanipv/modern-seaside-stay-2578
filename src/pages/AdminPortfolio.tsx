@@ -285,13 +285,18 @@ export default function AdminPortfolio() {
   }
 
   return (
-    <div className="min-h-screen p-4 animate-fade-in bg-white">
+    <div className="min-h-screen p-4 animate-fade-in bg-background">
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
           <h1 className="text-3xl font-bold">مدیریت نمونه کارها و قیمت‌ها</h1>
-          <Button variant="outline" onClick={() => window.location.href = '/admin'}>
-            بازگشت به داشبورد
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={() => window.location.href = '/'} className="bg-card">
+              صفحه اصلی
+            </Button>
+            <Button variant="outline" onClick={() => window.location.href = '/admin'} className="bg-card">
+              بازگشت به داشبورد
+            </Button>
+          </div>
         </div>
         
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">

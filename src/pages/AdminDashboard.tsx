@@ -175,6 +175,9 @@ export default function AdminDashboard() {
             <p className="text-muted-foreground mt-2">مدیریت رزروها و محتوای سایت</p>
           </div>
           <div className="flex flex-wrap gap-2">
+            <Button variant="outline" onClick={() => window.location.href = '/'} className="bg-card">
+              صفحه اصلی
+            </Button>
             <Button variant="outline" onClick={() => window.location.href = '/admin/portfolio'} className="bg-card">
               مدیریت نمونه کارها
             </Button>

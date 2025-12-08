@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
-import { Trash2, Plus, ArrowUpDown } from "lucide-react";
+import { Trash2, Plus, ArrowUpDown, Eye } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { 
   fetchHomepagePortfolio, 
   addToHomepagePortfolio, 
@@ -154,6 +155,14 @@ export default function AdminHomepagePortfolio() {
 
   return (
     <div className="space-y-6">
+      {/* Display Info */}
+      <Alert className="bg-green-50 border-green-200">
+        <Eye className="h-4 w-4 text-green-600" />
+        <AlertDescription className="text-green-800">
+          <strong>{homepageItems.length} تصویر</strong> در حال حاضر در صفحه اصلی سایت نمایش داده می‌شود
+        </AlertDescription>
+      </Alert>
+
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -229,7 +238,11 @@ export default function AdminHomepagePortfolio() {
                   <p className="text-sm text-muted-foreground">
                     {item.portfolio_image?.categories?.name || 'بدون دسته‌بندی'}
                   </p>
-                  <div className="flex items-center gap-2 mt-2">
+                <div className="flex items-center gap-2 mt-2">
+                    <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded flex items-center gap-1">
+                      <Eye className="h-3 w-3" />
+                      در سایت نمایش داده می‌شود
+                    </span>
                     <span className="text-xs bg-muted px-2 py-1 rounded">
                       ترتیب: {item.display_order || 0}
                     </span>

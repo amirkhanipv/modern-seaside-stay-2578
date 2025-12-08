@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "@/components/ui/use-toast";
-import { Trash2, Plus, Star, Edit, ImageIcon, Info } from "lucide-react";
+import { Trash2, Plus, Star, Edit, ImageIcon, Info, Eye } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { 
   fetchAllCustomerReviews, 
@@ -271,7 +271,12 @@ export default function AdminCustomerReviews() {
 
       <Card>
         <CardHeader>
-          <CardTitle>نظرات مشتریان ({reviews.length})</CardTitle>
+          <CardTitle className="flex items-center justify-between">
+            <span>نظرات مشتریان ({reviews.length})</span>
+            <span className="text-sm font-normal text-muted-foreground">
+              {reviews.filter(r => r.active).length} نظر فعال در سایت نمایش داده می‌شود
+            </span>
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid gap-4">
@@ -307,11 +312,16 @@ export default function AdminCustomerReviews() {
                   
                   <div className="flex items-center gap-2">
                     <div className="flex items-center gap-1 text-xs">
+                      {review.active ? (
+                        <span className="bg-green-100 text-green-800 px-2 py-1 rounded flex items-center gap-1">
+                          <Eye className="h-3 w-3" />
+                          در سایت نمایش داده می‌شود
+                        </span>
+                      ) : (
+                        <span className="bg-red-100 text-red-800 px-2 py-1 rounded">غیرفعال</span>
+                      )}
                       {review.featured && (
                         <span className="bg-yellow-100 text-yellow-800 px-2 py-1 rounded">ویژه</span>
-                      )}
-                      {!review.active && (
-                        <span className="bg-red-100 text-red-800 px-2 py-1 rounded">غیرفعال</span>
                       )}
                       <span className="bg-muted px-2 py-1 rounded">
                         ترتیب: {review.display_order || 0}

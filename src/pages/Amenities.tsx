@@ -1,9 +1,10 @@
-
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Heart, Dumbbell, Droplets, Activity, Utensils, Wine, Coffee, Clock, Car, Plane, Car as CarIcon, MapPin, Waves, Users, Music, BookOpen } from "lucide-react";
+import { Heart, Dumbbell, Droplets, Activity, Utensils, Wine, Coffee, Clock, Car, Plane, Car as CarIcon, MapPin, Waves, Users, Music, BookOpen, Home } from "lucide-react";
 
 export default function Amenities() {
   const { t } = useLanguage();
@@ -30,9 +31,19 @@ export default function Amenities() {
       <Navbar />
       
       <main className="flex-1">
+        {/* Back to Home Button */}
+        <div className="container py-6 pt-24">
+          <Button asChild variant="outline" className="bg-card">
+            <Link to="/" className="flex items-center gap-2">
+              <Home className="h-4 w-4" />
+              بازگشت به صفحه اصلی
+            </Link>
+          </Button>
+        </div>
+
         {/* Hero Section */}
-        <section className="relative py-20 bg-gradient-to-r from-sea-light to-white dark:from-sea-dark dark:to-background">
-          <div className="container relative z-10 pt-20">
+        <section className="relative py-12 bg-gradient-to-r from-muted/30 to-background">
+          <div className="container relative z-10">
             <div className="text-center max-w-3xl mx-auto animate-fade-in anim-delay-80">
               <span className="text-sm text-primary font-medium uppercase tracking-wider">
                 MareSereno
@@ -49,7 +60,7 @@ export default function Amenities() {
           {/* Decorative elements */}
           <div className="absolute top-0 right-0 w-1/3 h-full opacity-10">
             <div className="absolute top-10 right-10 w-64 h-64 rounded-full bg-primary/50 blur-3xl" />
-            <div className="absolute bottom-10 right-40 w-48 h-48 rounded-full bg-sea-light blur-3xl" />
+            <div className="absolute bottom-10 right-40 w-48 h-48 rounded-full bg-muted blur-3xl" />
           </div>
         </section>
         

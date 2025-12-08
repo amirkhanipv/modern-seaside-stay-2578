@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Camera, X } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Camera, X, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
@@ -108,10 +109,18 @@ export default function AllWorks() {
   }, [selectedImage, filteredImages]);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <section className="relative py-20 bg-gradient-to-r from-gray-50 to-white overflow-hidden">
+      <section className="relative py-20 bg-gradient-to-r from-muted/30 to-background overflow-hidden">
         <div className="container relative z-10">
+          <div className="mb-6">
+            <Button asChild variant="outline" className="bg-card">
+              <Link to="/" className="flex items-center gap-2">
+                <Home className="h-4 w-4" />
+                بازگشت به صفحه اصلی
+              </Link>
+            </Button>
+          </div>
           <div className="max-w-3xl mx-auto text-center animate-fade-in anim-delay-80">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
               مجموعه کامل آثار
@@ -119,20 +128,13 @@ export default function AllWorks() {
             <p className="text-muted-foreground text-lg mb-8">
               نگاهی به تمام دسته‌بندی‌های عکاسی آتلیه نورا
             </p>
-            <Button 
-              onClick={() => window.location.href = '/'} 
-              variant="outline"
-              className="mb-4"
-            >
-              بازگشت به صفحه اصلی
-            </Button>
           </div>
         </div>
         
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-1/3 h-full opacity-10">
           <div className="absolute top-10 right-10 w-64 h-64 rounded-full bg-primary/20 blur-3xl" />
-          <div className="absolute bottom-10 right-40 w-48 h-48 rounded-full bg-gray-200 blur-3xl" />
+          <div className="absolute bottom-10 right-40 w-48 h-48 rounded-full bg-muted blur-3xl" />
         </div>
       </section>
 

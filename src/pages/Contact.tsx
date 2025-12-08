@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { MapPin, Phone, Mail, Clock, Send, CheckCircle } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle, ArrowLeft } from "lucide-react";
+import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -76,8 +77,18 @@ export default function Contact() {
       <Navbar />
       
       <main className="flex-1">
+        {/* Back to Home Button */}
+        <div className="container py-6">
+          <Button asChild variant="outline" className="bg-card">
+            <Link to="/" className="flex items-center gap-2">
+              <ArrowLeft className="h-4 w-4" />
+              بازگشت به صفحه اصلی
+            </Link>
+          </Button>
+        </div>
+
         {/* Hero Section */}
-        <section className="relative py-24 bg-gradient-to-b from-muted/30 to-background">
+        <section className="relative py-12 bg-gradient-to-b from-muted/30 to-background">
           <div className="container">
             <div className="text-center max-w-3xl mx-auto animate-fade-in">
               <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">

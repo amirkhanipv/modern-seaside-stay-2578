@@ -1,84 +1,49 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Camera, X, Home } from "lucide-react";
+import { Camera, X, Home, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-
-// Extended gallery images with more items per category
-const allWorksImages = {
-  wedding: {
-    title: "عروس",
-    images: [
-      "https://images.unsplash.com/photo-1519741497674-611481863552?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1465495976277-4387d4b0e4a6?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1594736797933-d0ed94ac1274?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1525258934283-7f6ca8c4b8e7?w=600&h=600&fit=crop"
-    ]
-  },
-  children: {
-    title: "کودک",
-    images: [
-      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1587393855524-087f83d95bc9?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1503919005314-30d93d07d823?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1518307117445-f4a9f0e93c8d?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1519340241574-2cec6aef0c01?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1612924618369-2ef2d8b8c01e?w=600&h=600&fit=crop"
-    ]
-  },
-  sport: {
-    title: "اسپرت",
-    images: [
-      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1594736797933-d0ed94ac1274?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1566754219187-f30ba1c0bd5f?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1566844538439-5c1f436b5ea8?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1566219538388-7844b8a6b49e?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1518307117445-f4a9f0e93c8d?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1553835973-dec43bfb62b0?w=600&h=600&fit=crop"
-    ]
-  },
-  family: {
-    title: "خانوادگی",
-    images: [
-      "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1609220136736-443140cffec6?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1566498235407-4e8e97e69b15?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1604736193798-ee87f8cc3ddb?w=600&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=600&h=600&fit=crop"
-    ]
-  }
-};
+import { fetchCategories, fetchPortfolioImages, type Category, type PortfolioImage } from "@/services/portfolio";
 
 export default function AllWorks() {
-  const [activeTab, setActiveTab] = useState("wedding");
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [images, setImages] = useState<PortfolioImage[]>([]);
+  const [activeTab, setActiveTab] = useState<string>("");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [filteredImages, setFilteredImages] = useState(allWorksImages.wedding.images);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
-    const category = allWorksImages[activeTab as keyof typeof allWorksImages];
-    setFilteredImages(category.images);
-  }, [activeTab]);
+    const loadData = async () => {
+      try {
+        const [categoriesData, imagesData] = await Promise.all([
+          fetchCategories(),
+          fetchPortfolioImages()
+        ]);
+        setCategories(categoriesData);
+        setImages(imagesData);
+        if (categoriesData.length > 0) {
+          setActiveTab(categoriesData[0].slug);
+        }
+      } catch (error) {
+        console.error('Error loading gallery data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadData();
+  }, []);
+
+  const filteredImages = images.filter(img => img.categories?.slug === activeTab);
 
   const navigateLightbox = (direction: "prev" | "next") => {
     if (!selectedImage) return;
     
-    const currentIndex = filteredImages.findIndex(img => img === selectedImage);
+    const currentIndex = filteredImages.findIndex(img => img.image_url === selectedImage);
     let newIndex;
     
     if (direction === "prev") {
@@ -87,7 +52,7 @@ export default function AllWorks() {
       newIndex = currentIndex < filteredImages.length - 1 ? currentIndex + 1 : 0;
     }
     
-    setSelectedImage(filteredImages[newIndex]);
+    setSelectedImage(filteredImages[newIndex]?.image_url || null);
   };
 
   // Handle keyboard navigation
@@ -107,6 +72,14 @@ export default function AllWorks() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [selectedImage, filteredImages]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -141,45 +114,67 @@ export default function AllWorks() {
       {/* Gallery */}
       <section className="py-16">
         <div className="container">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-4 max-w-2xl mx-auto mb-12 bg-white shadow-lg border-2 border-border h-auto p-2">
-              {Object.entries(allWorksImages).map(([key, category]) => (
-                <TabsTrigger 
-                  key={key} 
-                  value={key}
-                  className="text-lg font-medium py-3 data-[state=active]:bg-primary data-[state=active]:text-white transition-all duration-300 hover:bg-primary/10 rounded-md"
-                >
-                  {category.title}
-                </TabsTrigger>
-              ))}
-            </TabsList>
+          {categories.length === 0 ? (
+            <div className="text-center py-16">
+              <p className="text-muted-foreground">هنوز دسته‌بندی یا تصویری اضافه نشده است.</p>
+            </div>
+          ) : (
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <TabsList className={cn(
+                "grid w-full max-w-2xl mx-auto mb-12 bg-white shadow-lg border-2 border-border h-auto p-2",
+                `grid-cols-${Math.min(categories.length, 4)}`
+              )}>
+                {categories.map((category) => (
+                  <TabsTrigger 
+                    key={category.id} 
+                    value={category.slug}
+                    className="text-lg font-medium py-3 data-[state=active]:bg-primary data-[state=active]:text-white transition-all duration-300 hover:bg-primary/10 rounded-md"
+                  >
+                    {category.name}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
 
-            {Object.entries(allWorksImages).map(([key, category]) => (
-              <TabsContent key={key} value={key} className="animate-fade-in">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                  {category.images.map((image, index) => (
-                    <div 
-                      key={index}
-                      className="group relative aspect-square overflow-hidden rounded-xl cursor-pointer animate-fade-in hover-scale"
-                      style={{ animationDelay: `${index * 100}ms` }}
-                      onClick={() => setSelectedImage(image)}
-                    >
-                      <img 
-                        src={image}
-                        alt={`${category.title} ${index + 1}`}
-                        className="w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 flex items-center justify-center">
-                        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 backdrop-blur-sm rounded-full p-4">
-                          <Camera className="w-6 h-6 text-gray-800" />
-                        </div>
+              {categories.map((category) => {
+                const categoryImages = images.filter(img => img.categories?.slug === category.slug);
+                return (
+                  <TabsContent key={category.id} value={category.slug} className="animate-fade-in">
+                    {categoryImages.length === 0 ? (
+                      <div className="text-center py-16">
+                        <p className="text-muted-foreground">در این دسته‌بندی تصویری وجود ندارد.</p>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </TabsContent>
-            ))}
-          </Tabs>
+                    ) : (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                        {categoryImages.map((image, index) => (
+                          <div 
+                            key={image.id}
+                            className="group relative aspect-square overflow-hidden rounded-xl cursor-pointer animate-fade-in hover-scale"
+                            style={{ animationDelay: `${index * 100}ms` }}
+                            onClick={() => setSelectedImage(image.image_url)}
+                          >
+                            <img 
+                              src={image.image_url}
+                              alt={image.title}
+                              className="w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-110"
+                            />
+                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 flex items-center justify-center">
+                              <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 backdrop-blur-sm rounded-full p-4">
+                                <Camera className="w-6 h-6 text-gray-800" />
+                              </div>
+                            </div>
+                            {/* Title overlay */}
+                            <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                              <p className="text-white text-sm font-medium">{image.title}</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </TabsContent>
+                );
+              })}
+            </Tabs>
+          )}
         </div>
       </section>
 

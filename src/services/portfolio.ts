@@ -200,7 +200,6 @@ export async function fetchDiscountPlans(): Promise<DiscountPlan[]> {
         slug
       )
     `)
-    .order("display_order")
     .order("created_at", { ascending: false });
 
   if (error) {

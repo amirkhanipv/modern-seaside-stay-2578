@@ -1,69 +1,53 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, X, Camera, Sparkles, Grid3X3, LayoutGrid } from "lucide-react";
+import { ChevronLeft, ChevronRight, X, Camera, Sparkles, Grid3X3, LayoutGrid, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const galleryCategories = {
-  wedding: {
-    title: "عروس",
-    icon: "💍",
-    images: [
-      "https://images.unsplash.com/photo-1519741497674-611481863552?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1465495976277-4387d4b0e4a6?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=800&h=600&fit=crop"
-    ]
-  },
-  children: {
-    title: "کودک",
-    icon: "👶",
-    images: [
-      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1587393855524-087f83d95bc9?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1503919005314-30d93d07d823?w=800&h=600&fit=crop"
-    ]
-  },
-  sport: {
-    title: "اسپرت",
-    icon: "⚡",
-    images: [
-      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1594736797933-d0ed94ac1274?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1566754219187-f30ba1c0bd5f?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1566844538439-5c1f436b5ea8?w=800&h=600&fit=crop"
-    ]
-  },
-  family: {
-    title: "خانوادگی",
-    icon: "👨‍👩‍👧‍👦",
-    images: [
-      "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1609220136736-443140cffec6?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop",
-      "https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?w=800&h=600&fit=crop"
-    ]
-  }
-};
+import { fetchCategories, fetchPortfolioImages, type Category, type PortfolioImage } from "@/services/portfolio";
 
 interface GallerySectionProps {
   showViewAllButton?: boolean;
 }
 
 export default function GallerySection({ showViewAllButton = true }: GallerySectionProps) {
-  const [activeTab, setActiveTab] = useState("wedding");
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [images, setImages] = useState<PortfolioImage[]>([]);
+  const [activeTab, setActiveTab] = useState<string>("");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<"grid" | "masonry">("masonry");
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
 
-  const currentCategory = galleryCategories[activeTab as keyof typeof galleryCategories];
+  // Load data from database
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const [categoriesData, imagesData] = await Promise.all([
+          fetchCategories(),
+          fetchPortfolioImages()
+        ]);
+        setCategories(categoriesData);
+        setImages(imagesData);
+        if (categoriesData.length > 0) {
+          setActiveTab(categoriesData[0].slug);
+        }
+      } catch (error) {
+        console.error('Error loading gallery data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadData();
+  }, []);
 
-  const handleCategoryChange = (category: string) => {
-    if (category === activeTab) return;
+  const currentCategory = categories.find(c => c.slug === activeTab);
+  const currentImages = images.filter(img => img.categories?.slug === activeTab);
+
+  const handleCategoryChange = (categorySlug: string) => {
+    if (categorySlug === activeTab) return;
     setIsTransitioning(true);
     setTimeout(() => {
-      setActiveTab(category);
+      setActiveTab(categorySlug);
       setIsTransitioning(false);
     }, 300);
   };
@@ -71,22 +55,21 @@ export default function GallerySection({ showViewAllButton = true }: GallerySect
   const navigateLightbox = (direction: "prev" | "next") => {
     if (!selectedImage) return;
     
-    const images = currentCategory.images;
     let newIndex;
     
     if (direction === "prev") {
-      newIndex = currentImageIndex > 0 ? currentImageIndex - 1 : images.length - 1;
+      newIndex = currentImageIndex > 0 ? currentImageIndex - 1 : currentImages.length - 1;
     } else {
-      newIndex = currentImageIndex < images.length - 1 ? currentImageIndex + 1 : 0;
+      newIndex = currentImageIndex < currentImages.length - 1 ? currentImageIndex + 1 : 0;
     }
     
     setCurrentImageIndex(newIndex);
-    setSelectedImage(images[newIndex]);
+    setSelectedImage(currentImages[newIndex]?.image_url || null);
   };
 
-  const openLightbox = (image: string, index: number) => {
+  const openLightbox = (imageUrl: string, index: number) => {
     setCurrentImageIndex(index);
-    setSelectedImage(image);
+    setSelectedImage(imageUrl);
   };
 
   // Handle keyboard navigation for lightbox
@@ -105,7 +88,27 @@ export default function GallerySection({ showViewAllButton = true }: GallerySect
     
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [selectedImage, currentCategory.images, currentImageIndex]);
+  }, [selectedImage, currentImages, currentImageIndex]);
+
+  if (loading) {
+    return (
+      <section className="py-24 bg-background">
+        <div className="container flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      </section>
+    );
+  }
+
+  if (categories.length === 0) {
+    return (
+      <section className="py-24 bg-background">
+        <div className="container text-center">
+          <p className="text-muted-foreground">هنوز دسته‌بندی یا تصویری اضافه نشده است.</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <>
@@ -141,24 +144,23 @@ export default function GallerySection({ showViewAllButton = true }: GallerySect
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-12">
             {/* Category Pills */}
             <div className="flex flex-wrap justify-center gap-3">
-              {Object.entries(galleryCategories).map(([key, category], index) => (
+              {categories.map((category, index) => (
                 <button
-                  key={key}
-                  onClick={() => handleCategoryChange(key)}
+                  key={category.id}
+                  onClick={() => handleCategoryChange(category.slug)}
                   className={cn(
                     "group relative px-6 py-3 rounded-2xl font-medium transition-all duration-500 transform hover:scale-105",
                     "animate-fade-in",
-                    activeTab === key
+                    activeTab === category.slug
                       ? "bg-primary text-primary-foreground shadow-lg shadow-primary/30"
                       : "bg-card hover:bg-secondary border border-border hover:border-primary/30"
                   )}
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <span className="flex items-center gap-2">
-                    <span className="text-xl">{category.icon}</span>
-                    <span>{category.title}</span>
+                    <span>{category.name}</span>
                   </span>
-                  {activeTab === key && (
+                  {activeTab === category.slug && (
                     <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-8 h-1 bg-primary-foreground/50 rounded-full" />
                   )}
                 </button>
@@ -201,15 +203,19 @@ export default function GallerySection({ showViewAllButton = true }: GallerySect
               isTransitioning ? "opacity-0 scale-95" : "opacity-100 scale-100"
             )}
           >
-            {viewMode === "masonry" ? (
+            {currentImages.length === 0 ? (
+              <div className="text-center py-16">
+                <p className="text-muted-foreground">در این دسته‌بندی تصویری وجود ندارد.</p>
+              </div>
+            ) : viewMode === "masonry" ? (
               /* Masonry Layout */
               <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
-                {currentCategory.images.map((image, index) => (
+                {currentImages.map((image, index) => (
                   <div
-                    key={`${activeTab}-${index}`}
+                    key={image.id}
                     className="break-inside-avoid group cursor-pointer animate-zoom-in"
                     style={{ animationDelay: `${index * 100}ms` }}
-                    onClick={() => openLightbox(image, index)}
+                    onClick={() => openLightbox(image.image_url, index)}
                   >
                     <div className="relative overflow-hidden rounded-2xl bg-card shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
                       <div className={cn(
@@ -217,8 +223,8 @@ export default function GallerySection({ showViewAllButton = true }: GallerySect
                         index % 3 === 0 ? "aspect-[3/4]" : index % 3 === 1 ? "aspect-square" : "aspect-[4/3]"
                       )}>
                         <img
-                          src={image}
-                          alt={`${currentCategory.title} ${index + 1}`}
+                          src={image.image_url}
+                          alt={image.title}
                           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                         />
                         
@@ -231,14 +237,14 @@ export default function GallerySection({ showViewAllButton = true }: GallerySect
                               </div>
                             </div>
                             <p className="mt-4 text-primary-foreground font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                              مشاهده تصویر
+                              {image.title}
                             </p>
                           </div>
                         </div>
 
                         {/* Badge */}
                         <div className="absolute top-4 right-4 px-3 py-1.5 bg-card/90 backdrop-blur-sm rounded-full text-sm font-medium text-foreground border border-border opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                          {currentCategory.title}
+                          {currentCategory?.name}
                         </div>
                       </div>
                     </div>
@@ -248,17 +254,17 @@ export default function GallerySection({ showViewAllButton = true }: GallerySect
             ) : (
               /* Grid Layout */
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {currentCategory.images.map((image, index) => (
+                {currentImages.map((image, index) => (
                   <div
-                    key={`${activeTab}-${index}`}
+                    key={image.id}
                     className="group cursor-pointer animate-slide-in-bottom"
                     style={{ animationDelay: `${index * 100}ms` }}
-                    onClick={() => openLightbox(image, index)}
+                    onClick={() => openLightbox(image.image_url, index)}
                   >
                     <div className="relative aspect-square overflow-hidden rounded-2xl bg-card shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-[1.02]">
                       <img
-                        src={image}
-                        alt={`${currentCategory.title} ${index + 1}`}
+                        src={image.image_url}
+                        alt={image.title}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       />
                       
@@ -266,7 +272,7 @@ export default function GallerySection({ showViewAllButton = true }: GallerySect
                       <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500">
                         <div className="absolute bottom-0 left-0 right-0 p-4">
                           <div className="flex items-center justify-between">
-                            <span className="text-primary-foreground font-medium">{currentCategory.title}</span>
+                            <span className="text-primary-foreground font-medium">{image.title}</span>
                             <div className="p-2 bg-card/90 backdrop-blur-sm rounded-full">
                               <Camera className="w-5 h-5 text-primary" />
                             </div>
@@ -318,7 +324,7 @@ export default function GallerySection({ showViewAllButton = true }: GallerySect
 
           {/* Image Counter */}
           <div className="absolute top-6 left-6 px-4 py-2 bg-primary-foreground/10 backdrop-blur-sm rounded-full text-primary-foreground text-sm font-medium">
-            {currentImageIndex + 1} / {currentCategory.images.length}
+            {currentImageIndex + 1} / {currentImages.length}
           </div>
           
           {/* Navigation - Previous */}
@@ -349,22 +355,22 @@ export default function GallerySection({ showViewAllButton = true }: GallerySect
           </button>
 
           {/* Thumbnail Strip */}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 p-2 bg-primary-foreground/10 backdrop-blur-sm rounded-2xl">
-            {currentCategory.images.map((img, idx) => (
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 p-2 bg-primary-foreground/10 backdrop-blur-sm rounded-2xl max-w-full overflow-x-auto">
+            {currentImages.map((img, idx) => (
               <button
-                key={idx}
+                key={img.id}
                 onClick={() => {
                   setCurrentImageIndex(idx);
-                  setSelectedImage(img);
+                  setSelectedImage(img.image_url);
                 }}
                 className={cn(
-                  "w-16 h-16 rounded-xl overflow-hidden transition-all duration-300",
+                  "w-16 h-16 rounded-xl overflow-hidden transition-all duration-300 flex-shrink-0",
                   idx === currentImageIndex 
                     ? "ring-2 ring-primary-foreground scale-110" 
                     : "opacity-60 hover:opacity-100"
                 )}
               >
-                <img src={img} alt="" className="w-full h-full object-cover" />
+                <img src={img.image_url} alt="" className="w-full h-full object-cover" />
               </button>
             ))}
           </div>

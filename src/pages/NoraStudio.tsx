@@ -177,7 +177,7 @@ export default function NoraStudio() {
         <div className="absolute inset-0 hero-overlay" />
 
         <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4 animate-fade-in">
-          <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-tight animate-fade-in anim-delay-60 px-8 py-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 shadow-[0_8px_32px_rgba(255,255,255,0.1)] inline-block">
+          <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-tight animate-fade-in anim-delay-60">
             آتلیه نورا
           </h1>
           <p className="text-xl md:text-2xl mb-8 text-white/90 animate-fade-in anim-delay-120">

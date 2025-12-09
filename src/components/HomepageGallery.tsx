@@ -1,9 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, X, Camera } from "lucide-react";
+import { ChevronLeft, ChevronRight, X, Camera, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { fetchHomepagePortfolio, type HomepagePortfolio } from "@/services/homepagePortfolio";
 import { fetchPortfolioImages, type PortfolioImage } from "@/services/portfolio";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
 
 interface HomepagePortfolioWithImage extends HomepagePortfolio {
   portfolio_image: PortfolioImage;
@@ -15,9 +17,41 @@ interface HomepageGalleryProps {
 
 export default function HomepageGallery({ showViewAllButton = true }: HomepageGalleryProps) {
   const [homepageImages, setHomepageImages] = useState<HomepagePortfolioWithImage[]>([]);
-  const [activeSlideIndex, setActiveSlideIndex] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+
+  // Embla carousel with autoplay
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { 
+      loop: true,
+      align: "center",
+      direction: "rtl"
+    },
+    [Autoplay({ delay: 5000, stopOnInteraction: false, stopOnMouseEnter: true })]
+  );
+
+  const scrollPrev = useCallback(() => {
+    if (emblaApi) emblaApi.scrollPrev();
+  }, [emblaApi]);
+
+  const scrollNext = useCallback(() => {
+    if (emblaApi) emblaApi.scrollNext();
+  }, [emblaApi]);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on('select', onSelect);
+    return () => {
+      emblaApi.off('select', onSelect);
+    };
+  }, [emblaApi, onSelect]);
 
   useEffect(() => {
     const loadHomepagePortfolio = async () => {
@@ -50,7 +84,6 @@ export default function HomepageGallery({ showViewAllButton = true }: HomepageGa
         setHomepageImages(joinedData.sort((a, b) => (a.display_order || 0) - (b.display_order || 0)));
       } catch (error) {
         console.error('خطا در بارگیری تصاویر صفحه اصلی:', error);
-        // Fallback to static data if database fails
         setHomepageImages([]);
       } finally {
         setLoading(false);
@@ -59,14 +92,6 @@ export default function HomepageGallery({ showViewAllButton = true }: HomepageGa
 
     loadHomepagePortfolio();
   }, []);
-
-  const goToNextSlide = () => {
-    setActiveSlideIndex((prev) => (prev + 1) % homepageImages.length);
-  };
-
-  const goToPreviousSlide = () => {
-    setActiveSlideIndex((prev) => (prev - 1 + homepageImages.length) % homepageImages.length);
-  };
 
   const navigateLightbox = (direction: "prev" | "next") => {
     if (!selectedImage) return;
@@ -128,109 +153,137 @@ export default function HomepageGallery({ showViewAllButton = true }: HomepageGa
 
   return (
     <>
-      <section id="portfolio" className="py-20 bg-white">
-        <div className="container">
-          <div className="text-center max-w-3xl mx-auto mb-12 animate-fade-in">
+      <section id="portfolio" className="py-20 bg-gradient-to-b from-background via-muted/20 to-background overflow-hidden relative">
+        {/* Decorative background */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-20 left-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-20 right-1/4 w-80 h-80 bg-primary/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+        </div>
+
+        <div className="container relative z-10">
+          <div className="text-center max-w-3xl mx-auto mb-14 animate-fade-in">
+            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full mb-4">
+              <Sparkles className="h-4 w-4" />
+              <span className="text-sm font-medium">نمونه کارها</span>
+            </div>
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">گالری آثار</h2>
-            <p className="text-muted-foreground">نمونه‌ای از بهترین کارهای ما</p>
+            <p className="text-muted-foreground max-w-xl mx-auto">نمونه‌ای از بهترین کارهای ما در نورا استودیو</p>
           </div>
 
-          <div className="w-full animate-fade-in">
-            <div className="max-w-4xl mx-auto">
-              {/* Main slide */}
-              <div className="relative aspect-[16/10] mb-6 overflow-hidden rounded-2xl shadow-2xl">
-                <div 
-                  className="flex transition-transform duration-700 ease-in-out h-full"
-                  style={{ transform: `translateX(${activeSlideIndex * -100}%)` }}
-                >
-                  {homepageImages.map((item, index) => (
+          <div className="relative max-w-5xl mx-auto">
+            {/* Navigation Buttons */}
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={scrollPrev}
+              className="absolute right-0 md:-right-6 top-1/2 transform -translate-y-1/2 z-20 bg-card/80 backdrop-blur-sm hover:bg-card border-border shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl h-12 w-12"
+            >
+              <ChevronRight className="h-6 w-6" />
+            </Button>
+            
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={scrollNext}
+              className="absolute left-0 md:-left-6 top-1/2 transform -translate-y-1/2 z-20 bg-card/80 backdrop-blur-sm hover:bg-card border-border shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl h-12 w-12"
+            >
+              <ChevronLeft className="h-6 w-6" />
+            </Button>
+
+            {/* Carousel Container */}
+            <div className="overflow-hidden mx-8 md:mx-0" ref={emblaRef}>
+              <div className="flex gap-6">
+                {homepageImages.map((item, index) => (
+                  <div 
+                    key={item.id} 
+                    className="flex-shrink-0 w-full md:w-[calc(60%-12px)] lg:w-[calc(50%-12px)]"
+                  >
                     <div 
-                      key={item.id} 
-                      className="w-full h-full flex-shrink-0 relative cursor-pointer group"
+                      className={cn(
+                        "group relative aspect-[4/3] overflow-hidden rounded-2xl cursor-pointer transition-all duration-700",
+                        index === selectedIndex 
+                          ? "shadow-2xl shadow-primary/20 scale-100" 
+                          : "shadow-lg scale-95 opacity-70"
+                      )}
                       onClick={() => setSelectedImage(item.portfolio_image?.image_url || null)}
                     >
                       <img 
                         src={item.portfolio_image?.image_url || ''}
                         alt={item.portfolio_image?.title || `تصویر ${index + 1}`}
-                        className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105"
+                        className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
                       />
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 flex items-center justify-center">
-                        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/95 backdrop-blur-sm rounded-full p-4 transform group-hover:scale-110 transition-transform border border-border">
+                      
+                      {/* Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
+                      
+                      {/* Title overlay */}
+                      <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                        <h3 className="text-white font-bold text-xl mb-1">{item.portfolio_image?.title}</h3>
+                        {item.portfolio_image?.description && (
+                          <p className="text-white/80 text-sm line-clamp-2">{item.portfolio_image?.description}</p>
+                        )}
+                      </div>
+                      
+                      {/* Camera icon */}
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
+                        <div className="bg-white/90 backdrop-blur-sm rounded-full p-4 transform scale-75 group-hover:scale-100 transition-transform duration-500 shadow-lg">
                           <Camera className="w-8 h-8 text-foreground" />
                         </div>
                       </div>
                     </div>
-                  ))}
-                </div>
-
-                {/* Navigation arrows - Fixed for RTL */}
-                <button 
-                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/95 hover:bg-white text-foreground p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10 border border-border"
-                  onClick={goToPreviousSlide}
-                  aria-label="قبلی"
-                >
-                  <ChevronRight className="w-6 h-6" />
-                </button>
-                <button 
-                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/95 hover:bg-white text-foreground p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10 border border-border"
-                  onClick={goToNextSlide}
-                  aria-label="بعدی"
-                >
-                  <ChevronLeft className="w-6 h-6" />
-                </button>
-              </div>
-
-              {/* Indicators */}
-              <div className="flex justify-center gap-4 mb-8">
-                {homepageImages.map((_, index) => (
-                  <button
-                    key={`dot-${index}`}
-                    className={cn(
-                      "transition-all duration-500 hover:scale-110",
-                      index === activeSlideIndex 
-                        ? "w-10 h-3 bg-primary rounded-full shadow-md" 
-                        : "w-3 h-3 bg-primary/30 rounded-full hover:bg-primary/60"
-                    )}
-                    onClick={() => setActiveSlideIndex(index)}
-                    aria-label={`رفتن به اسلاید ${index + 1}`}
-                  />
-                ))}
-              </div>
-
-              {/* Thumbnail grid */}
-              <div className="grid grid-cols-4 gap-4">
-                {homepageImages.map((item, index) => (
-                  <div 
-                    key={item.id}
-                    className={cn(
-                      "aspect-square overflow-hidden rounded-xl cursor-pointer transition-all duration-300 hover:scale-105",
-                      index === activeSlideIndex 
-                        ? "ring-4 ring-primary ring-offset-2 ring-offset-background" 
-                        : "hover:shadow-lg"
-                    )}
-                    onClick={() => {
-                      setActiveSlideIndex(index);
-                      setTimeout(() => setSelectedImage(item.portfolio_image?.image_url || null), 100);
-                    }}
-                  >
-                    <img 
-                      src={item.portfolio_image?.image_url || ''}
-                      alt={item.portfolio_image?.title || `تصویر ${index + 1}`}
-                      className="w-full h-full object-cover"
-                    />
                   </div>
                 ))}
               </div>
             </div>
+
+            {/* Dots Indicator */}
+            <div className="flex justify-center mt-10 gap-2">
+              {homepageImages.map((_, index) => (
+                <button
+                  key={`dot-${index}`}
+                  className={cn(
+                    "h-2.5 rounded-full transition-all duration-500",
+                    index === selectedIndex 
+                      ? "bg-gradient-to-r from-primary to-primary/70 w-10 shadow-lg shadow-primary/30" 
+                      : "bg-muted-foreground/20 hover:bg-primary/40 w-2.5"
+                  )}
+                  onClick={() => emblaApi?.scrollTo(index)}
+                  aria-label={`رفتن به اسلاید ${index + 1}`}
+                />
+              ))}
+            </div>
+            
+            {/* Thumbnail preview */}
+            <div className="flex justify-center gap-3 mt-8">
+              {homepageImages.slice(0, 6).map((item, index) => (
+                <button
+                  key={`thumb-${item.id}`}
+                  className={cn(
+                    "w-16 h-16 rounded-xl overflow-hidden transition-all duration-300 ring-2 ring-offset-2 ring-offset-background",
+                    index === selectedIndex 
+                      ? "ring-primary scale-110 shadow-lg" 
+                      : "ring-transparent opacity-60 hover:opacity-100 hover:scale-105"
+                  )}
+                  onClick={() => emblaApi?.scrollTo(index)}
+                >
+                  <img 
+                    src={item.portfolio_image?.image_url || ''}
+                    alt={item.portfolio_image?.title || `تصویر ${index + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                </button>
+              ))}
+            </div>
           </div>
 
           {showViewAllButton && (
-            <div className="text-center mt-12 animate-fade-in anim-delay-160">
+            <div className="text-center mt-14 animate-fade-in">
               <Button
                 onClick={() => (window.location.href = "/gallery")}
                 size="lg"
-                className="px-8 py-4 text-lg rounded-full transform transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                className="px-10 py-5 text-lg rounded-full transform transition-all duration-300 hover:scale-105 hover:shadow-xl bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
               >
+                <Sparkles className="ml-2 h-5 w-5" />
                 مشاهده همه آثار
               </Button>
             </div>

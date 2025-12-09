@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Camera, Instagram, Phone, Star, Heart, ChevronLeft, ChevronRight, MapPin, Clock, MessageCircle, Send, X, Quote, Check, Sparkles } from "lucide-react";
+import { Camera, Instagram, Phone, Star, Heart, ChevronLeft, ChevronRight, MapPin, Clock, MessageCircle, Send, X, Quote, Check, Sparkles, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -10,6 +10,7 @@ import { fetchDiscountPlans, type DiscountPlan } from "@/services/portfolio";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // ----- Types -----
 type PortfolioCategoryKey = "children" | "wedding" | "sport" | "family";
@@ -38,6 +39,92 @@ const PORTFOLIO_CATEGORIES: Record<PortfolioCategoryKey, PortfolioCategory> = {
   }
 };
 
+// Pricing Card Component
+function PricingCard({ plan, formatPrice, isActive = true }: { 
+  plan: DiscountPlan; 
+  formatPrice: (price: number) => string;
+  isActive?: boolean;
+}) {
+  return (
+    <Card className={cn(
+      "bg-card shadow-[0_10px_40px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] transition-all duration-300 relative hover:-translate-y-2 h-full flex flex-col border-2 border-border rounded-2xl",
+      isActive ? "scale-100" : "scale-95 opacity-80"
+    )}>
+      <CardHeader className="pb-4 pt-8 relative z-10">
+        <CardTitle className="text-2xl text-foreground font-bold text-center">{plan.plan_name}</CardTitle>
+        {plan.duration_months && (
+          <p className="text-sm text-muted-foreground text-center mt-2">
+            <Clock className="inline-block w-4 h-4 ml-1" />
+            مدت اعتبار: {plan.duration_months} ماه
+          </p>
+        )}
+      </CardHeader>
+      <CardContent className="p-6 pt-4 flex-1 flex flex-col relative z-10">
+        {/* Price Section with Before/After */}
+        <div className="mb-6 text-center pb-6 border-b-2 border-border">
+          {plan.original_price && plan.original_price > plan.price && (
+            <div className="mb-2">
+              <span className="text-lg text-muted-foreground line-through">
+                {formatPrice(plan.original_price)} تومان
+              </span>
+              <span className="mr-2 text-xs bg-red-100 text-red-600 px-2 py-1 rounded-full">
+                تخفیف {Math.round(((plan.original_price - plan.price) / plan.original_price) * 100)}%
+              </span>
+            </div>
+          )}
+          <span className="text-4xl font-bold bg-gradient-to-l from-primary to-accent bg-clip-text text-transparent">
+            {formatPrice(plan.price)}
+          </span>
+          <span className="text-muted-foreground mr-2 text-lg">تومان</span>
+        </div>
+        
+        {plan.description && (
+          <p className="text-muted-foreground text-sm mb-4 text-center leading-relaxed">
+            {plan.description}
+          </p>
+        )}
+        
+        {/* Features List */}
+        {plan.features && (
+          <ul className="space-y-2 mb-4">
+            {plan.features.split('\n').filter(f => f.trim()).map((feature, idx) => (
+              <li key={idx} className="flex items-center gap-2 text-sm text-foreground">
+                <Check className="w-4 h-4 text-green-500 flex-shrink-0" />
+                <span>{feature}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {/* Terms Section */}
+        {plan.terms && (
+          <div className="mb-4 p-3 bg-muted/50 rounded-lg border border-border/50">
+            <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground mb-1">
+              <FileText className="w-3 h-3" />
+              شرایط استفاده
+            </div>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              {plan.terms}
+            </p>
+          </div>
+        )}
+        
+        <div className="space-y-3 mt-auto">
+          <span className="block text-xs text-muted-foreground font-medium bg-muted/50 rounded-lg p-2 text-center border border-border/50">
+            🎁 تخفیف ویژه رزرو آنلاین
+          </span>
+          <Button 
+            className="w-full text-lg py-6 rounded-xl font-bold shadow-lg transition-all duration-300 bg-primary hover:bg-primary/90 hover:shadow-xl" 
+            onClick={() => window.location.href = "/booking"}
+          >
+            رزرو این پکیج
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 // ----- Component -----
 export default function NoraStudio() {
   const [activeCategoryKey, setActiveCategoryKey] = useState<PortfolioCategoryKey>("children");
@@ -47,6 +134,8 @@ export default function NoraStudio() {
   const [pricingPlans, setPricingPlans] = useState<DiscountPlan[]>([]);
   const [loading, setLoading] = useState(true);
   const [reviewSelectedIndex, setReviewSelectedIndex] = useState(0);
+  const [pricingSelectedIndex, setPricingSelectedIndex] = useState(0);
+  const isMobile = useIsMobile();
 
   // Embla carousel for reviews
   const [reviewEmblaRef, reviewEmblaApi] = useEmblaCarousel({
@@ -58,6 +147,18 @@ export default function NoraStudio() {
     stopOnInteraction: false,
     stopOnMouseEnter: true
   })]);
+
+  // Embla carousel for pricing (mobile only)
+  const [pricingEmblaRef, pricingEmblaApi] = useEmblaCarousel({
+    loop: true,
+    align: "center",
+    direction: "rtl"
+  }, [Autoplay({
+    delay: 4000,
+    stopOnInteraction: false,
+    stopOnMouseEnter: true
+  })]);
+
   const scrollReviewPrev = useCallback(() => {
     if (reviewEmblaApi) reviewEmblaApi.scrollPrev();
   }, [reviewEmblaApi]);
@@ -68,6 +169,18 @@ export default function NoraStudio() {
     if (!reviewEmblaApi) return;
     setReviewSelectedIndex(reviewEmblaApi.selectedScrollSnap());
   }, [reviewEmblaApi]);
+
+  const scrollPricingPrev = useCallback(() => {
+    if (pricingEmblaApi) pricingEmblaApi.scrollPrev();
+  }, [pricingEmblaApi]);
+  const scrollPricingNext = useCallback(() => {
+    if (pricingEmblaApi) pricingEmblaApi.scrollNext();
+  }, [pricingEmblaApi]);
+  const onPricingSelect = useCallback(() => {
+    if (!pricingEmblaApi) return;
+    setPricingSelectedIndex(pricingEmblaApi.selectedScrollSnap());
+  }, [pricingEmblaApi]);
+
   useEffect(() => {
     if (!reviewEmblaApi) return;
     onReviewSelect();
@@ -76,6 +189,15 @@ export default function NoraStudio() {
       reviewEmblaApi.off('select', onReviewSelect);
     };
   }, [reviewEmblaApi, onReviewSelect]);
+
+  useEffect(() => {
+    if (!pricingEmblaApi) return;
+    onPricingSelect();
+    pricingEmblaApi.on('select', onPricingSelect);
+    return () => {
+      pricingEmblaApi.off('select', onPricingSelect);
+    };
+  }, [pricingEmblaApi, onPricingSelect]);
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -153,7 +275,7 @@ export default function NoraStudio() {
       {/* Portfolio Gallery */}
       <HomepageGallery />
 
-      {/* Testimonials - Slideshow Style */}
+      {/* Testimonials - Full Image Cards with Text Overlay */}
       {reviews.length > 0 && <section className="section bg-gradient-to-b from-muted/20 via-muted/40 to-muted/20 overflow-hidden relative">
           {/* Decorative background */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -175,125 +297,159 @@ export default function NoraStudio() {
               </p>
             </div>
 
-            <div className="relative max-w-5xl mx-auto">
+            <div className="relative max-w-6xl mx-auto">
               {/* Navigation Buttons */}
-              <Button variant="outline" size="icon" onClick={scrollReviewPrev} className="absolute right-0 md:-right-6 top-1/2 transform -translate-y-1/2 z-20 bg-card/80 backdrop-blur-sm hover:bg-card border-border shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl h-12 w-12">
+              <Button variant="outline" size="icon" onClick={scrollReviewPrev} className="absolute right-0 md:-right-6 top-1/2 transform -translate-y-1/2 z-20 bg-white/90 backdrop-blur-sm hover:bg-white border-border shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl h-12 w-12">
                 <ChevronRight className="h-6 w-6" />
               </Button>
               
-              <Button variant="outline" size="icon" onClick={scrollReviewNext} className="absolute left-0 md:-left-6 top-1/2 transform -translate-y-1/2 z-20 bg-card/80 backdrop-blur-sm hover:bg-card border-border shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl h-12 w-12">
+              <Button variant="outline" size="icon" onClick={scrollReviewNext} className="absolute left-0 md:-left-6 top-1/2 transform -translate-y-1/2 z-20 bg-white/90 backdrop-blur-sm hover:bg-white border-border shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl h-12 w-12">
                 <ChevronLeft className="h-6 w-6" />
               </Button>
 
               {/* Carousel Container */}
               <div className="overflow-hidden mx-8 md:mx-0" ref={reviewEmblaRef}>
                 <div className="flex gap-6">
-                  {reviews.map((review, index) => <div key={review.id} className="flex-shrink-0 w-full md:w-[calc(60%-12px)] lg:w-[calc(50%-12px)]">
-                      <div className={cn("group relative overflow-hidden rounded-2xl transition-all duration-700 bg-card border border-border", index === reviewSelectedIndex ? "shadow-2xl shadow-primary/20 scale-100" : "shadow-lg scale-95 opacity-70")}>
-                        {/* Review content */}
-                        <div className="p-8 text-center">
-                          {/* Quote decoration */}
-                          <div className="absolute top-4 right-4 opacity-10">
-                            <Quote className="h-16 w-16 text-primary" />
-                          </div>
-                          
+                  {reviews.map((review, index) => (
+                    <div key={review.id} className="flex-shrink-0 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]">
+                      <div className={cn(
+                        "group relative overflow-hidden rounded-2xl transition-all duration-700 h-[400px] md:h-[450px]",
+                        index === reviewSelectedIndex ? "shadow-2xl shadow-primary/20 scale-100" : "shadow-lg scale-95 opacity-80"
+                      )}>
+                        {/* Background Image */}
+                        {review.avatar_url ? (
+                          <img 
+                            src={review.avatar_url} 
+                            alt={review.customer_name}
+                            className="absolute inset-0 w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="absolute inset-0 bg-gradient-to-br from-primary/30 to-accent/30" />
+                        )}
+                        
+                        {/* Dark Overlay for Text Readability */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/20" />
+                        
+                        {/* Content Overlay */}
+                        <div className="absolute inset-0 flex flex-col justify-end p-6 text-white text-right" dir="rtl">
                           {/* Rating Stars */}
-                          <div className="flex justify-center mb-5 gap-1">
-                            {[...Array(review.rating || 5)].map((_, i) => <Star key={i} className="h-5 w-5 text-yellow-400 fill-current drop-shadow-sm" />)}
+                          <div className="flex justify-start mb-3 gap-1">
+                            {[...Array(review.rating || 5)].map((_, i) => (
+                              <Star key={i} className="h-4 w-4 text-yellow-400 fill-current drop-shadow-lg" />
+                            ))}
                           </div>
 
                           {/* Review Text */}
-                          <blockquote className="text-lg text-foreground/90 mb-6 leading-relaxed relative z-10">
-                            <span className="text-primary/70 text-xl">"</span>
-                            {review.review_text}
-                            <span className="text-primary/70 text-xl">"</span>
+                          <blockquote className="text-base md:text-lg text-white/95 mb-4 leading-relaxed line-clamp-4">
+                            "{review.review_text}"
                           </blockquote>
 
-                          {/* Divider */}
-                          <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-primary/40 to-transparent mx-auto mb-5" />
-
-                          {/* Customer Info - Smaller */}
-                          <div className="flex items-center justify-center gap-3">
-                            {review.avatar_url ? <img src={review.avatar_url} alt={review.customer_name} className="w-10 h-10 rounded-full object-cover ring-2 ring-primary/20" /> : <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                                <span className="text-primary font-bold">
-                                  {review.customer_name.charAt(0)}
-                                </span>
-                              </div>}
-                            <div className="text-right">
-                              <div className="font-bold text-foreground">
+                          {/* Customer Info */}
+                          <div className="flex items-center gap-3 pt-3 border-t border-white/20">
+                            <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center flex-shrink-0">
+                              <span className="text-white font-bold text-sm">
+                                {review.customer_name.charAt(0)}
+                              </span>
+                            </div>
+                            <div>
+                              <div className="font-bold text-white text-sm">
                                 {review.customer_name}
                               </div>
-                              {review.customer_location && <div className="text-xs text-muted-foreground">
+                              {review.customer_location && (
+                                <div className="text-xs text-white/70 flex items-center gap-1">
+                                  <MapPin className="w-3 h-3" />
                                   {review.customer_location}
-                                </div>}
+                                </div>
+                              )}
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>)}
+                    </div>
+                  ))}
                 </div>
               </div>
 
               {/* Dots Indicator */}
               <div className="flex justify-center mt-10 gap-2">
-                {reviews.map((_, index) => <button key={`dot-${index}`} className={cn("h-2.5 rounded-full transition-all duration-500", index === reviewSelectedIndex ? "bg-gradient-to-r from-primary to-primary/70 w-10 shadow-lg shadow-primary/30" : "bg-muted-foreground/20 hover:bg-primary/40 w-2.5")} onClick={() => reviewEmblaApi?.scrollTo(index)} />)}
+                {reviews.map((_, index) => (
+                  <button 
+                    key={`dot-${index}`} 
+                    className={cn(
+                      "h-2.5 rounded-full transition-all duration-500",
+                      index === reviewSelectedIndex 
+                        ? "bg-gradient-to-r from-primary to-primary/70 w-10 shadow-lg shadow-primary/30" 
+                        : "bg-muted-foreground/20 hover:bg-primary/40 w-2.5"
+                    )} 
+                    onClick={() => reviewEmblaApi?.scrollTo(index)} 
+                  />
+                ))}
               </div>
             </div>
           </div>
         </section>}
 
-      {/* Pricing Plans */}
-      {pricingPlans.length > 0 && <section className="section bg-gradient-to-b from-white to-soft-pink">
+      {/* Pricing Plans - Horizontal with Mobile Swiper */}
+      {pricingPlans.length > 0 && <section className="section bg-gradient-to-b from-background to-muted/20">
           <div className="container">
             <div className="text-center mb-16 animate-fade-in anim-delay-80">
+              <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full mb-4">
+                <Sparkles className="h-4 w-4" />
+                <span className="text-sm font-medium">قیمت و پکیج‌ها</span>
+              </div>
               <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">پکیج‌های عکاسی</h2>
               <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
                 انتخاب مناسب برای سلیقه و بودجه شما
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-              {pricingPlans.map((plan, index) => <div key={`plan-${plan.id}`} className="animate-fade-in" style={{
-            animationDelay: `${100 + index * 80}ms`,
-            animationFillMode: "both"
-          }}>
-                  <Card className="bg-white shadow-[0_10px_40px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] transition-all duration-300 relative hover:-translate-y-2 h-full flex flex-col border-2 border-border rounded-2xl">
-                    <CardHeader className="pb-4 pt-8 relative z-10">
-                      <CardTitle className="text-2xl text-foreground font-bold text-center">{plan.plan_name}</CardTitle>
-                      {plan.duration_months && <p className="text-sm text-muted-foreground text-center mt-2">
-                          <Clock className="inline-block w-4 h-4 ml-1" />
-                          مدت اعتبار: {plan.duration_months} ماه
-                        </p>}
-                    </CardHeader>
-                    <CardContent className="p-6 pt-4 flex-1 flex flex-col relative z-10">
-                      <div className="mb-6 text-center pb-6 border-b-2 border-border">
-                        <span className="text-4xl font-bold bg-gradient-to-l from-primary to-accent bg-clip-text text-transparent">{formatPrice(plan.price)}</span>
-                        <span className="text-muted-foreground mr-2 text-lg">تومان</span>
-                      </div>
-                      
-                      {plan.description && <p className="text-muted-foreground text-sm mb-4 text-center leading-relaxed">
-                          {plan.description}
-                        </p>}
-                      
-                      {/* Features List */}
-                      {plan.features && <ul className="space-y-2 mb-6">
-                          {plan.features.split('\n').filter(f => f.trim()).map((feature, idx) => <li key={idx} className="flex items-center gap-2 text-sm text-foreground">
-                              <Check className="w-4 h-4 text-green-500 flex-shrink-0" />
-                              <span>{feature}</span>
-                            </li>)}
-                        </ul>}
-                      
-                      <div className="space-y-3 mt-auto">
-                        <span className="block text-xs text-muted-foreground font-medium bg-muted/50 rounded-lg p-2 text-center border border-border/50">
-                          🎁 تخفیف ویژه رزرو آنلاین
-                        </span>
-                        <Button className="w-full text-lg py-6 rounded-xl font-bold shadow-lg transition-all duration-300 bg-primary hover:bg-primary/90 hover:shadow-xl" onClick={() => window.location.href = "/booking"}>
-                          رزرو این پکیج
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>)}
+            {/* Desktop: Horizontal Grid */}
+            <div className="hidden md:flex gap-6 justify-center items-stretch">
+              {pricingPlans.map((plan, index) => (
+                <div key={`plan-${plan.id}`} className="flex-1 max-w-sm animate-fade-in" style={{
+                  animationDelay: `${100 + index * 80}ms`,
+                  animationFillMode: "both"
+                }}>
+                  <PricingCard plan={plan} formatPrice={formatPrice} />
+                </div>
+              ))}
+            </div>
+
+            {/* Mobile: Swiper Carousel */}
+            <div className="md:hidden relative">
+              <Button variant="outline" size="icon" onClick={scrollPricingPrev} className="absolute right-0 top-1/2 transform -translate-y-1/2 z-20 bg-white/90 backdrop-blur-sm hover:bg-white border-border shadow-lg transition-all duration-300 h-10 w-10">
+                <ChevronRight className="h-5 w-5" />
+              </Button>
+              
+              <Button variant="outline" size="icon" onClick={scrollPricingNext} className="absolute left-0 top-1/2 transform -translate-y-1/2 z-20 bg-white/90 backdrop-blur-sm hover:bg-white border-border shadow-lg transition-all duration-300 h-10 w-10">
+                <ChevronLeft className="h-5 w-5" />
+              </Button>
+
+              <div className="overflow-hidden mx-10" ref={pricingEmblaRef}>
+                <div className="flex gap-4">
+                  {pricingPlans.map((plan, index) => (
+                    <div key={`plan-mobile-${plan.id}`} className="flex-shrink-0 w-[calc(100%-20px)]">
+                      <PricingCard plan={plan} formatPrice={formatPrice} isActive={index === pricingSelectedIndex} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Mobile Dots */}
+              <div className="flex justify-center mt-6 gap-2">
+                {pricingPlans.map((_, index) => (
+                  <button 
+                    key={`pricing-dot-${index}`} 
+                    className={cn(
+                      "h-2 rounded-full transition-all duration-500",
+                      index === pricingSelectedIndex 
+                        ? "bg-primary w-8" 
+                        : "bg-muted-foreground/20 hover:bg-primary/40 w-2"
+                    )} 
+                    onClick={() => pricingEmblaApi?.scrollTo(index)} 
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </section>}

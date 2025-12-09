@@ -141,38 +141,16 @@ export default function TestimonialsSection() {
 
                     {/* Customer Info */}
                     <div className="flex items-center justify-center">
-                      <div className="flex items-center gap-4">
-                        {review.avatar_url ? (
-                          <div className="relative">
-                            <img 
-                              src={review.avatar_url} 
-                              alt={review.customer_name}
-                              className="w-14 h-14 rounded-full object-cover ring-2 ring-primary/20 ring-offset-2 ring-offset-card transition-all duration-300 group-hover:ring-primary/40"
-                            />
-                            <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-card flex items-center justify-center">
-                              <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                              </svg>
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center ring-2 ring-primary/20 ring-offset-2 ring-offset-card">
-                            <span className="text-primary text-lg font-bold">
-                              {review.customer_name.charAt(0)}
-                            </span>
+                      <div className="text-center">
+                        <div className="font-bold text-foreground text-lg">
+                          {review.customer_name}
+                        </div>
+                        {review.customer_location && (
+                          <div className="text-sm text-muted-foreground flex items-center justify-center gap-1">
+                            <span className="inline-block w-1.5 h-1.5 bg-primary rounded-full" />
+                            {review.customer_location}
                           </div>
                         )}
-                        <div className="text-right">
-                          <div className="font-bold text-foreground text-lg">
-                            {review.customer_name}
-                          </div>
-                          {review.customer_location && (
-                            <div className="text-sm text-muted-foreground flex items-center gap-1">
-                              <span className="inline-block w-1.5 h-1.5 bg-primary rounded-full" />
-                              {review.customer_location}
-                            </div>
-                          )}
-                        </div>
                       </div>
                     </div>
                   </div>

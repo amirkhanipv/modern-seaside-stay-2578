@@ -67,9 +67,6 @@ function PricingCard({ plan, formatPrice, isActive = true }: {
               <span className="text-lg text-muted-foreground line-through">
                 {formatPrice(plan.original_price)} تومان
               </span>
-              <span className="mr-2 text-xs bg-red-100 text-red-600 px-2 py-1 rounded-full">
-                تخفیف {Math.round(((plan.original_price - plan.price) / plan.original_price) * 100)}%
-              </span>
             </div>
           )}
           <span className="text-4xl font-bold bg-gradient-to-l from-primary to-accent bg-clip-text text-transparent">

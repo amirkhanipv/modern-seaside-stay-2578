@@ -155,6 +155,7 @@ export type Database = {
           created_at: string
           description: string | null
           duration_months: number | null
+          features: string | null
           id: string
           is_active: boolean | null
           plan_name: string
@@ -168,6 +169,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           duration_months?: number | null
+          features?: string | null
           id?: string
           is_active?: boolean | null
           plan_name: string
@@ -181,6 +183,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           duration_months?: number | null
+          features?: string | null
           id?: string
           is_active?: boolean | null
           plan_name?: string

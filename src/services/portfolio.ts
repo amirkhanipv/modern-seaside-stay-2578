@@ -32,6 +32,7 @@ export interface DiscountPlan {
   description?: string;
   price: number;
   duration_months?: number;
+  features?: string;
   category_id?: string;
   is_active: boolean;
   created_at: string;

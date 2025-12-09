@@ -158,10 +158,12 @@ export type Database = {
           features: string | null
           id: string
           is_active: boolean | null
+          original_price: number | null
           plan_name: string
           plan_name_en: string | null
           plan_name_it: string | null
           price: number
+          terms: string | null
           updated_at: string
         }
         Insert: {
@@ -172,10 +174,12 @@ export type Database = {
           features?: string | null
           id?: string
           is_active?: boolean | null
+          original_price?: number | null
           plan_name: string
           plan_name_en?: string | null
           plan_name_it?: string | null
           price: number
+          terms?: string | null
           updated_at?: string
         }
         Update: {
@@ -186,10 +190,12 @@ export type Database = {
           features?: string | null
           id?: string
           is_active?: boolean | null
+          original_price?: number | null
           plan_name?: string
           plan_name_en?: string | null
           plan_name_it?: string | null
           price?: number
+          terms?: string | null
           updated_at?: string
         }
         Relationships: [

@@ -215,11 +215,13 @@ export default function AdminPortfolio() {
     try {
       const newPlan = await createDiscountPlan({
         plan_name: planName,
-        price: parseFloat(planOriginalPrice),
+        price: planDiscountedPrice ? parseFloat(planDiscountedPrice) : parseFloat(planOriginalPrice),
+        original_price: parseFloat(planOriginalPrice),
         category_id: planCategory,
         description: planDescription,
         duration_months: planDuration ? parseInt(planDuration) : undefined,
         features: planFeatures || undefined,
+        terms: planConditions || undefined,
         is_active: true
       });
 
@@ -633,7 +635,17 @@ export default function AdminPortfolio() {
                     </p>
                     <p>{plan.description}</p>
                     
-                    <div className="flex items-center gap-2">
+                    <div className="space-y-1">
+                      {plan.original_price && plan.original_price > plan.price && (
+                        <div className="flex items-center gap-2">
+                          <span className="text-lg text-muted-foreground line-through">
+                            {formatPrice(plan.original_price)}
+                          </span>
+                          <Badge variant="destructive" className="text-xs">
+                            {Math.round(((plan.original_price - plan.price) / plan.original_price) * 100)}% تخفیف
+                          </Badge>
+                        </div>
+                      )}
                       <span className="text-2xl font-bold text-primary">
                         {formatPrice(plan.price)}
                       </span>
@@ -655,6 +667,13 @@ export default function AdminPortfolio() {
                             </li>
                           ))}
                         </ul>
+                      </div>
+                    )}
+
+                    {plan.terms && (
+                      <div className="p-2 bg-muted/50 rounded-lg">
+                        <p className="text-xs font-medium text-muted-foreground mb-1">شرایط استفاده:</p>
+                        <p className="text-sm text-muted-foreground">{plan.terms}</p>
                       </div>
                     )}
 

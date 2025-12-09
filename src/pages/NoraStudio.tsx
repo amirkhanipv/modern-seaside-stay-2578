@@ -169,7 +169,7 @@ export default function NoraStudio() {
                 <Quote className="h-4 w-4" />
                 <span className="text-sm font-medium">نظرات مشتریان</span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">تجربه‌های واقعی</h2>
+              <h2 className="text-4xl md:text-5xl mb-6 text-foreground font-extrabold">تجربه‌های واقعی</h2>
               <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
                 آنچه مشتریان ما درباره خدمات نورا استودیو می‌گویند
               </p>

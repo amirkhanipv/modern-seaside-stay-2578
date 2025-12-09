@@ -219,6 +219,7 @@ export default function AdminPortfolio() {
         category_id: planCategory,
         description: planDescription,
         duration_months: planDuration ? parseInt(planDuration) : undefined,
+        features: planFeatures || undefined,
         is_active: true
       });
 
@@ -640,8 +641,20 @@ export default function AdminPortfolio() {
 
                     {/* Additional plan details */}
                     {plan.duration_months && (
-                      <div className="space-y-2 text-sm text-muted-foreground">
-                        <p>مدت اعتبار: {plan.duration_months} ماه</p>
+                      <p className="text-sm text-muted-foreground">مدت اعتبار: {plan.duration_months} ماه</p>
+                    )}
+                    
+                    {plan.features && (
+                      <div className="space-y-1">
+                        <p className="text-sm font-medium">ویژگی‌ها:</p>
+                        <ul className="text-sm text-muted-foreground space-y-1">
+                          {plan.features.split('\n').filter(f => f.trim()).map((feature, idx) => (
+                            <li key={idx} className="flex items-center gap-2">
+                              <span className="w-1.5 h-1.5 bg-primary rounded-full" />
+                              {feature}
+                            </li>
+                          ))}
+                        </ul>
                       </div>
                     )}
 

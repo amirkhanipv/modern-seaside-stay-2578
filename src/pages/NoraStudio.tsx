@@ -12,6 +12,9 @@ import {
   MessageCircle,
   Send,
   X,
+  Quote,
+  Check,
+  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,6 +23,9 @@ import HomepageGallery from "@/components/HomepageGallery";
 import heroImage from "@/assets/hero-model.jpg";
 import { fetchCustomerReviews, type CustomerReview } from "@/services/customerReviews";
 import { fetchDiscountPlans, type DiscountPlan } from "@/services/portfolio";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
+import { cn } from "@/lib/utils";
 
 // ----- Types -----
 type PortfolioCategoryKey = "children" | "wedding" | "sport" | "family";
@@ -79,6 +85,39 @@ export default function NoraStudio() {
   const [reviews, setReviews] = useState<CustomerReview[]>([]);
   const [pricingPlans, setPricingPlans] = useState<DiscountPlan[]>([]);
   const [loading, setLoading] = useState(true);
+  const [reviewSelectedIndex, setReviewSelectedIndex] = useState(0);
+
+  // Embla carousel for reviews
+  const [reviewEmblaRef, reviewEmblaApi] = useEmblaCarousel(
+    { 
+      loop: true,
+      align: "center",
+      direction: "rtl"
+    },
+    [Autoplay({ delay: 5000, stopOnInteraction: false, stopOnMouseEnter: true })]
+  );
+
+  const scrollReviewPrev = useCallback(() => {
+    if (reviewEmblaApi) reviewEmblaApi.scrollPrev();
+  }, [reviewEmblaApi]);
+
+  const scrollReviewNext = useCallback(() => {
+    if (reviewEmblaApi) reviewEmblaApi.scrollNext();
+  }, [reviewEmblaApi]);
+
+  const onReviewSelect = useCallback(() => {
+    if (!reviewEmblaApi) return;
+    setReviewSelectedIndex(reviewEmblaApi.selectedScrollSnap());
+  }, [reviewEmblaApi]);
+
+  useEffect(() => {
+    if (!reviewEmblaApi) return;
+    onReviewSelect();
+    reviewEmblaApi.on('select', onReviewSelect);
+    return () => {
+      reviewEmblaApi.off('select', onReviewSelect);
+    };
+  }, [reviewEmblaApi, onReviewSelect]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -176,48 +215,138 @@ export default function NoraStudio() {
       {/* Portfolio Gallery */}
       <HomepageGallery />
 
-      {/* Testimonials */}
+      {/* Testimonials - Slideshow Style */}
       {reviews.length > 0 && (
-        <section className="section bg-white">
-          <div className="container">
-            <div className="text-center mb-16 animate-fade-in anim-delay-80">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">نظرات مشتریان</h2>
+        <section className="section bg-gradient-to-b from-muted/20 via-muted/40 to-muted/20 overflow-hidden relative">
+          {/* Decorative background */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute top-10 right-10 w-32 h-32 bg-primary/5 rounded-full blur-3xl animate-pulse" />
+            <div className="absolute bottom-10 left-10 w-40 h-40 bg-primary/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+          </div>
+
+          <div className="container relative z-10">
+            <div className="text-center mb-14 animate-fade-in">
+              <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full mb-4">
+                <Quote className="h-4 w-4" />
+                <span className="text-sm font-medium">نظرات مشتریان</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">تجربه‌های واقعی</h2>
               <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                تجربه‌های واقعی از مشتریان ما
+                آنچه مشتریان ما درباره خدمات نورا استودیو می‌گویند
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {reviews.map((review, index) => (
-                <Card
-                  key={`testimonial-${review.id}`}
-                  className="bg-white border-2 border-border shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden rounded-2xl hover:-translate-y-1 animate-fade-in"
-                  style={{ animationDelay: `${80 + index * 80}ms`, animationFillMode: "both" }}
-                >
-                  <div className="relative">
-                    {review.avatar_url && (
-                      <img
-                        src={review.avatar_url}
-                        alt={review.customer_name}
-                        className="w-full h-64 object-cover"
-                      />
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-                    <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                      <div className="flex mb-2">
-                        {Array.from({ length: review.rating || 5 }).map((_, i) => (
-                          <Star
-                            key={`star-${review.id}-${i}`}
-                            className="w-5 h-5 fill-yellow-400 text-yellow-400"
-                          />
-                        ))}
+            <div className="relative max-w-5xl mx-auto">
+              {/* Navigation Buttons */}
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={scrollReviewPrev}
+                className="absolute right-0 md:-right-6 top-1/2 transform -translate-y-1/2 z-20 bg-card/80 backdrop-blur-sm hover:bg-card border-border shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl h-12 w-12"
+              >
+                <ChevronRight className="h-6 w-6" />
+              </Button>
+              
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={scrollReviewNext}
+                className="absolute left-0 md:-left-6 top-1/2 transform -translate-y-1/2 z-20 bg-card/80 backdrop-blur-sm hover:bg-card border-border shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl h-12 w-12"
+              >
+                <ChevronLeft className="h-6 w-6" />
+              </Button>
+
+              {/* Carousel Container */}
+              <div className="overflow-hidden mx-8 md:mx-0" ref={reviewEmblaRef}>
+                <div className="flex gap-6">
+                  {reviews.map((review, index) => (
+                    <div 
+                      key={review.id} 
+                      className="flex-shrink-0 w-full md:w-[calc(60%-12px)] lg:w-[calc(50%-12px)]"
+                    >
+                      <div 
+                        className={cn(
+                          "group relative overflow-hidden rounded-2xl transition-all duration-700 bg-card border border-border",
+                          index === reviewSelectedIndex 
+                            ? "shadow-2xl shadow-primary/20 scale-100" 
+                            : "shadow-lg scale-95 opacity-70"
+                        )}
+                      >
+                        {/* Review content */}
+                        <div className="p-8 text-center">
+                          {/* Quote decoration */}
+                          <div className="absolute top-4 right-4 opacity-10">
+                            <Quote className="h-16 w-16 text-primary" />
+                          </div>
+                          
+                          {/* Rating Stars */}
+                          <div className="flex justify-center mb-5 gap-1">
+                            {[...Array(review.rating || 5)].map((_, i) => (
+                              <Star 
+                                key={i} 
+                                className="h-5 w-5 text-yellow-400 fill-current drop-shadow-sm" 
+                              />
+                            ))}
+                          </div>
+
+                          {/* Review Text */}
+                          <blockquote className="text-lg text-foreground/90 mb-6 leading-relaxed relative z-10">
+                            <span className="text-primary/70 text-xl">"</span>
+                            {review.review_text}
+                            <span className="text-primary/70 text-xl">"</span>
+                          </blockquote>
+
+                          {/* Divider */}
+                          <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-primary/40 to-transparent mx-auto mb-5" />
+
+                          {/* Customer Info - Smaller */}
+                          <div className="flex items-center justify-center gap-3">
+                            {review.avatar_url ? (
+                              <img 
+                                src={review.avatar_url} 
+                                alt={review.customer_name}
+                                className="w-10 h-10 rounded-full object-cover ring-2 ring-primary/20"
+                              />
+                            ) : (
+                              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                                <span className="text-primary font-bold">
+                                  {review.customer_name.charAt(0)}
+                                </span>
+                              </div>
+                            )}
+                            <div className="text-right">
+                              <div className="font-bold text-foreground">
+                                {review.customer_name}
+                              </div>
+                              {review.customer_location && (
+                                <div className="text-xs text-muted-foreground">
+                                  {review.customer_location}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      <h3 className="text-xl font-bold mb-2">{review.customer_name}</h3>
-                      <p className="text-white/90 leading-relaxed text-sm">{review.review_text}</p>
                     </div>
-                  </div>
-                </Card>
-              ))}
+                  ))}
+                </div>
+              </div>
+
+              {/* Dots Indicator */}
+              <div className="flex justify-center mt-10 gap-2">
+                {reviews.map((_, index) => (
+                  <button
+                    key={`dot-${index}`}
+                    className={cn(
+                      "h-2.5 rounded-full transition-all duration-500",
+                      index === reviewSelectedIndex 
+                        ? "bg-gradient-to-r from-primary to-primary/70 w-10 shadow-lg shadow-primary/30" 
+                        : "bg-muted-foreground/20 hover:bg-primary/40 w-2.5"
+                    )}
+                    onClick={() => reviewEmblaApi?.scrollTo(index)}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -249,17 +378,37 @@ export default function NoraStudio() {
                   >
                     <CardHeader className="pb-4 pt-8 relative z-10">
                       <CardTitle className="text-2xl text-foreground font-bold text-center">{plan.plan_name}</CardTitle>
+                      {plan.duration_months && (
+                        <p className="text-sm text-muted-foreground text-center mt-2">
+                          <Clock className="inline-block w-4 h-4 ml-1" />
+                          مدت اعتبار: {plan.duration_months} ماه
+                        </p>
+                      )}
                     </CardHeader>
                     <CardContent className="p-6 pt-4 flex-1 flex flex-col relative z-10">
                       <div className="mb-6 text-center pb-6 border-b-2 border-border">
                         <span className="text-4xl font-bold bg-gradient-to-l from-primary to-accent bg-clip-text text-transparent">{formatPrice(plan.price)}</span>
                         <span className="text-muted-foreground mr-2 text-lg">تومان</span>
                       </div>
+                      
                       {plan.description && (
-                        <p className="text-muted-foreground text-sm mb-6 text-center leading-relaxed">
+                        <p className="text-muted-foreground text-sm mb-4 text-center leading-relaxed">
                           {plan.description}
                         </p>
                       )}
+                      
+                      {/* Features List */}
+                      {plan.features && (
+                        <ul className="space-y-2 mb-6">
+                          {plan.features.split('\n').filter(f => f.trim()).map((feature, idx) => (
+                            <li key={idx} className="flex items-center gap-2 text-sm text-foreground">
+                              <Check className="w-4 h-4 text-green-500 flex-shrink-0" />
+                              <span>{feature}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                      
                       <div className="space-y-3 mt-auto">
                         <span className="block text-xs text-muted-foreground font-medium bg-muted/50 rounded-lg p-2 text-center border border-border/50">
                           🎁 تخفیف ویژه رزرو آنلاین

@@ -146,8 +146,7 @@ export default function TestimonialsSection() {
                           {review.customer_name}
                         </div>
                         {review.customer_location && (
-                          <div className="text-sm text-muted-foreground flex items-center justify-center gap-1">
-                            <span className="inline-block w-1.5 h-1.5 bg-primary rounded-full" />
+                          <div className="text-sm text-muted-foreground">
                             {review.customer_location}
                           </div>
                         )}
